@@ -50,3 +50,8 @@ compile_commands.json
 
 # QtCreator local machine specific files for imported projects
 *creator.user*
+
+# project specific (on4qz)
+documentation/api/api_html
+documentation/manual/manual_html
+
