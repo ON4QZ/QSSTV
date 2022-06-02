@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>831</width>
+    <height>566</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>8</pointsize>
+    <weight>50</weight>
+    <italic>false</italic>
+    <bold>false</bold>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QTabWidget" name="maintabWidget">
+      <property name="font">
+       <font>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="rxTab">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <attribute name="title">
+        <string>Receive</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>1</number>
+        </property>
+        <property name="leftMargin">
+         <number>1</number>
+        </property>
+        <property name="topMargin">
+         <number>1</number>
+        </property>
+        <property name="rightMargin">
+         <number>1</number>
+        </property>
+        <property name="bottomMargin">
+         <number>1</number>
+        </property>
+        <item>
+         <widget class="rxWidget" name="rxWindow" native="true"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="txTab">
+       <attribute name="title">
+        <string>Transmit</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="spacing">
+         <number>1</number>
+        </property>
+        <property name="leftMargin">
+         <number>1</number>
+        </property>
+        <property name="topMargin">
+         <number>1</number>
+        </property>
+        <property name="rightMargin">
+         <number>1</number>
+        </property>
+        <property name="bottomMargin">
+         <number>1</number>
+        </property>
+        <item>
+         <widget class="txWidget" name="txWindow" native="true"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="galleryTab">
+       <attribute name="title">
+        <string>Gallery</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="spacing">
+         <number>1</number>
+        </property>
+        <property name="leftMargin">
+         <number>1</number>
+        </property>
+        <property name="topMargin">
+         <number>1</number>
+        </property>
+        <property name="rightMargin">
+         <number>1</number>
+        </property>
+        <property name="bottomMargin">
+         <number>1</number>
+        </property>
+        <item>
+         <widget class="galleryWidget" name="galleryWindow" native="true"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="spectrumWidget" name="spectrumFrame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>180</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>831</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSaveWaterfallImage"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+    <addaction name="actionTxTestPattern"/>
+   </widget>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <addaction name="actionConfigure"/>
+    <addaction name="actionCalibrate"/>
+    <addaction name="separator"/>
+    <addaction name="actionLogSettings"/>
+    <addaction name="actionResetLog"/>
+    <addaction name="actionDumpSamplesPerLine"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAboutQSSTV"/>
+    <addaction name="actionAboutQt"/>
+    <addaction name="actionUsersGuide"/>
+   </widget>
+   <widget class="QMenu" name="menuScope">
+    <property name="title">
+     <string>Scope</string>
+    </property>
+    <addaction name="actionShowDataScope"/>
+    <addaction name="actionShowSyncScopeNarrow"/>
+    <addaction name="actionShowSyncScopeWide"/>
+    <addaction name="actionScopeOffset"/>
+    <addaction name="actionClearScope"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuOptions"/>
+   <addaction name="menuHelp"/>
+   <addaction name="menuScope"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>16777215</height>
+    </size>
+   </property>
+  </widget>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionConfigure">
+   <property name="text">
+    <string>Configuration</string>
+   </property>
+  </action>
+  <action name="actionDumpSamplesPerLine">
+   <property name="text">
+    <string>Dump Samples Per Line</string>
+   </property>
+  </action>
+  <action name="actionCalibrate">
+   <property name="text">
+    <string>Calibrate</string>
+   </property>
+  </action>
+  <action name="actionShowDataScope">
+   <property name="text">
+    <string>Show Data Scope</string>
+   </property>
+  </action>
+  <action name="actionLogSettings">
+   <property name="text">
+    <string>Log Settings</string>
+   </property>
+  </action>
+  <action name="actionResetLog">
+   <property name="text">
+    <string>Reset Log</string>
+   </property>
+  </action>
+  <action name="actionAboutQSSTV">
+   <property name="text">
+    <string>About QSSTV</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionUsersGuide">
+   <property name="text">
+    <string>Users Guide</string>
+   </property>
+  </action>
+  <action name="actionShowSyncScopeNarrow">
+   <property name="text">
+    <string>Show Sync Scope Narrow</string>
+   </property>
+  </action>
+  <action name="actionScopeOffset">
+   <property name="text">
+    <string>Scope Offset</string>
+   </property>
+  </action>
+  <action name="actionShowSyncScopeWide">
+   <property name="text">
+    <string>Show Sync Scope Wide</string>
+   </property>
+  </action>
+  <action name="actionTxTestPattern">
+   <property name="text">
+    <string>TX Test Pattern</string>
+   </property>
+  </action>
+  <action name="actionClearScope">
+   <property name="text">
+    <string>Clear</string>
+   </property>
+  </action>
+  <action name="actionFullScreen">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Full Screen</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::WidgetShortcut</enum>
+   </property>
+   <property name="autoRepeat">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionSaveWaterfallImage">
+   <property name="text">
+    <string>Save Waterfall Image</string>
+   </property>
+  </action>
+  <action name="actionBigTransfer">
+   <property name="text">
+    <string>BigTransfer</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>rxWidget</class>
+   <extends>QWidget</extends>
+   <header>rxwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>txWidget</class>
+   <extends>QWidget</extends>
+   <header>txwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>galleryWidget</class>
+   <extends>QWidget</extends>
+   <header>gallerywidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>spectrumWidget</class>
+   <extends>QFrame</extends>
+   <header>spectrumwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
