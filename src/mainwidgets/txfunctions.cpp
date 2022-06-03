@@ -525,12 +525,12 @@ void txFunctions:: sendFSKID()
     {
       sendFSKChar(IDChar);
       idx++;
-      QChar IDText=QChar(myCallsign[idx].toUpper());
-      IDChar=int(IDText.toLatin1());
-      IDChar = (IDChar - 0x20);
 
       if (idx < l)
         {
+          QChar IDText=QChar(myCallsign[idx].toUpper());
+          IDChar=int(IDText.toLatin1());
+          IDChar = (IDChar - 0x20);
           Checksum = Checksum ^ IDChar;
         }
     }
