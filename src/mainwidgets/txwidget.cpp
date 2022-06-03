@@ -379,8 +379,9 @@ void txWidget::startTxImage()
       addToLog("invalidImage",LOGTXMAIN);
       return;
     }
-  QFileInfo finf=imageViewerPtr->getFilename();
   QString fn;
+  fn=imageViewerPtr->getFilename();
+  QFileInfo finf(fn);
 
   switch(transmissionModeIndex)
     {
