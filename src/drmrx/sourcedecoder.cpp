@@ -462,7 +462,6 @@ void sourceDecoder::writeData(transportBlock *tbPtr)
 
   QByteArray ba;
 
-  int length=0;
   erasureList.clear();
   erasureList.append(tbPtr->totalSegments);
   erasureList.append(tbPtr->defaultSegmentSize);
@@ -478,7 +477,6 @@ void sourceDecoder::writeData(transportBlock *tbPtr)
         {
           ba.append(tbPtr->dataSegmentPtrList.at(i)->data);
         }
-      length+=tbPtr->dataSegmentPtrList.at(i)->data.size();
     }
   tbPtr->segmentsReceived=0;
   drmBlockList.clear();
