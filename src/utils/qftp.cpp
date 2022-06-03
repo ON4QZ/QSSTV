@@ -929,10 +929,10 @@ void QFtpPI::readyRead()
             }
         }
       QString endOfMultiLine;
-      endOfMultiLine[0] = '0' + replyCode[0];
-      endOfMultiLine[1] = '0' + replyCode[1];
-      endOfMultiLine[2] = '0' + replyCode[2];
-      endOfMultiLine[3] = QLatin1Char(' ');
+      endOfMultiLine.append(line[0]);
+      endOfMultiLine.append(line[1]);
+      endOfMultiLine.append(line[2]);
+      endOfMultiLine.append(QLatin1Char(' '));
       QString lineCont(endOfMultiLine);
       lineCont[3] = QLatin1Char('-');
       QString lineLeft4 = line.left(4);
