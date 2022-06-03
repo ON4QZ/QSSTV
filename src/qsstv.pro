@@ -121,7 +121,7 @@ SOURCES += main.cpp\
     drmtx/common/csoundout.cpp \
     drmtx/common/DataIO.cpp \
     drmtx/common/DRMSignalIO.cpp \
-    drmtx/common/DrmTransmitter.cpp \
+    drmtx/common/CDrmTransmitter.cpp \
     drmtx/common/OFDM.cpp \
     drmtx/common/Parameter.cpp \
     drmtx/bsrform.cpp \
@@ -288,7 +288,7 @@ HEADERS  += mainwindow.h \
     drmtx/common/csoundout.h \
     drmtx/common/DataIO.h \
     drmtx/common/DRMSignalIO.h \
-    drmtx/common/DrmTransmitter.h \
+    drmtx/common/CDrmTransmitter.h \
     drmtx/common/GlobalDefinitions.h \
     drmtx/common/OFDM.h \
     drmtx/common/Parameter.h \
