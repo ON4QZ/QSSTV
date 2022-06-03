@@ -394,7 +394,7 @@ void rigControl::activatePTT(bool b)
                                    QString("Unable to open serial port %1\ncheck Options->Configuration\n"
                                            "make sure that you have read/write permission\nIf you do not have a serial port,\n"
                                            "then disable -Serial PTT- option in the configuration").arg(catParams.pttSerialPort) ,
-                                   QMessageBox::Ok,0 );
+                                   QMessageBox::Ok);
               return;
             }
           else
