@@ -634,6 +634,7 @@ void txWidget::slotResizeChanged(int i)
 
 void txWidget::slotSnapshot()
 {
+#ifndef __APPLE__
   QImage *im;
   cameraDialog camera;
   if(camera.exec()==QDialog::Accepted)
@@ -649,6 +650,7 @@ void txWidget::slotSnapshot()
           galleryWidgetPtr->txStockImageChanged();
         }
     }
+#endif // __APPLE__
 }
 
 
