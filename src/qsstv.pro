@@ -26,7 +26,12 @@ INCLUDEPATH += config dispatch drmrx drmtx dsp editor logbook mainwidgets rig sc
 CONFIG += link_pkgconfig
 PKGCONFIG += libopenjp2
 TARGET = qsstv
+macx {
+ # Enable pkg-config (pkg-config is disabled by default in the Qt package for mac)
+ QT_CONFIG -= no-pkg-config
+}
 
+CONFIG += qwt
 
 SOURCES += main.cpp\
     mainwindow.cpp \
@@ -606,6 +611,7 @@ HEADERS  += scope/scopeoffset.h \
 
 FORMS   += scope/scopeoffset.ui \
                 scope/plotform.ui
-INCLUDEPATH += /usr/include/qwt /usr/include/qt5/qwt
-LIBS += -lqwt-qt5
+
+!macx: INCLUDEPATH += /usr/include/qwt /usr/include/qt5/qwt
+!macx: LIBS += -lqwt-qt5
 }
