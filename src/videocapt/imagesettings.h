@@ -41,7 +41,9 @@
 #ifndef IMAGESETTINGS_H
 #define IMAGESETTINGS_H
 
+#ifdef __Linux__
 #include <linux/types.h>          /* for videodev2.h */
+#endif /* __Linux__ */
 #include <linux/videodev2.h>
 
 #include <QDialog>
