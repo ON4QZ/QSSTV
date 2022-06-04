@@ -32,7 +32,6 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <math.h>
-#include <malloc.h>
 #include "drmdefs.h"
 #include "structtemplates.h"
 #include "drmproto.h"

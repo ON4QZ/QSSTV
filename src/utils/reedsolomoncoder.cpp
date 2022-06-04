@@ -136,7 +136,7 @@ bool reedSolomonCoder::decode(QByteArray &ba,QString fn,QString &newFileName,QBy
         }
     }
 
-  distribute((byte *)tr_buf.data(),(byte *)ec_buf.data(),bep_size,rs_bsize,DECODE);
+  distribute((_BYTE *)tr_buf.data(),(_BYTE *)ec_buf.data(),bep_size,rs_bsize,DECODE);
   if(!decode_and_write())
     {
       //      fpout.close();
@@ -178,7 +178,7 @@ bool reedSolomonCoder::decode(QByteArray &ba,QString fn,QString &newFileName,QBy
 }
 
 
-void reedSolomonCoder::distribute(byte *src, byte *dst, int rows, int cols, int reverse)
+void reedSolomonCoder::distribute(_BYTE *src, _BYTE *dst, int rows, int cols, int reverse)
 {
   unsigned int i,j,rc,ri,rl;
   rc=rows*cols;
@@ -229,7 +229,7 @@ bool reedSolomonCoder::decode_and_write()
             }
         }
       if(nr_erasures>(rs_bsize-rs_dsize)) nr_erasures=rs_bsize-rs_dsize-1;
-      int failure=rsd32(((byte *)ec_buf.data()+(i*rs_bsize)),eras_pos, nr_erasures);
+      int failure=rsd32(((_BYTE *)ec_buf.data()+(i*rs_bsize)),eras_pos, nr_erasures);
       if (failure>0)
         {
           sumOfFailures+=failure;
@@ -249,7 +249,7 @@ bool reedSolomonCoder::encode(QByteArray &ba,QString extension,eRSType rsType)
   int i,j;
   unsigned char dataByte;
   QByteArray temp;
-  QString suffix=extension.leftJustified(3,0);
+  QString suffix=extension.leftJustified(3,(char)0);
   tr_buf=ba;
   fileType=rsType;
   rs_bsize=RSBSIZE;
@@ -283,7 +283,7 @@ bool reedSolomonCoder::encode(QByteArray &ba,QString extension,eRSType rsType)
   ec_buf.append(dataByte);
   ec_buf.append(tr_buf.left(rs_dsize-7));
   ec_buf.resize(ec_buf.count()+RSBSIZE-rs_dsize);
-  rse32(((byte *)ec_buf.data()),((byte *)ec_buf.data()+(rs_dsize)));
+  rse32(((_BYTE *)ec_buf.data()),((_BYTE *)ec_buf.data()+(rs_dsize)));
   for (i=1;i<bep_size;i++)
     {
       temp=tr_buf.mid(i*rs_dsize-7,rs_dsize);
@@ -297,10 +297,10 @@ bool reedSolomonCoder::encode(QByteArray &ba,QString extension,eRSType rsType)
             }
         }
       ec_buf.resize(ec_buf.count()+RSBSIZE-rs_dsize);
-      rse32(((byte *)ec_buf.data()+i*rs_bsize),((byte *)ec_buf.data()+i*rs_bsize+rs_dsize));
+      rse32(((_BYTE *)ec_buf.data()+i*rs_bsize),((_BYTE *)ec_buf.data()+i*rs_bsize+rs_dsize));
     }
   ba.resize(ec_buf.count());
-  distribute((byte *)ec_buf.data(),(byte *)ba.data(),bep_size,rs_bsize,ENCODE);
+  distribute((_BYTE *)ec_buf.data(),(_BYTE *)ba.data(),bep_size,rs_bsize,ENCODE);
   return true;
 }
 

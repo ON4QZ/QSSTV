@@ -32,7 +32,9 @@
 #include <cerrno>
 #include <cstring>
 //#include <libv4l2.h>
+#ifndef __Linux__
 #include <linux/types.h>          /* for videodev2.h */
+#endif /* __Linux__ */
 #include <linux/videodev2.h>
 
 #include <QPushButton>

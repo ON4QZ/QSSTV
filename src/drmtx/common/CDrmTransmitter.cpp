@@ -28,7 +28,7 @@
  *
 \******************************************************************************/
 
-#include "DrmTransmitter.h"
+#include "CDrmTransmitter.h"
 #include "csoundout.h"
 #include "appglobal.h"
 #include "drm.h"

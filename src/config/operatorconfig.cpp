@@ -35,8 +35,8 @@ QString onlineStatusText;
 operatorConfig::operatorConfig(QWidget *parent) :  baseConfig(parent), ui(new Ui::operatorConfig)
 {
   ui->setupUi(this);
-  QRegExp rx("^\\w*$");
-  QValidator *validator = new QRegExpValidator(rx, this);
+  QRegularExpression rx("^\\w*$");
+  QValidator *validator = new QRegularExpressionValidator(rx, this);
   ui->onlineStatusText->setValidator(validator);
 }
 

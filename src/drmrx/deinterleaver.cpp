@@ -29,7 +29,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <malloc.h>
 #include <math.h>
 int *deinterleaver(int xinA, int tA, int xinB, int tB)
 {

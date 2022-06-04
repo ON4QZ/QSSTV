@@ -110,7 +110,7 @@ enum egraphType {BASE=QGraphicsItem::UserType+1,RECTANGLE,ELLIPSE,IMAGE,LINE,TEX
       param.rct=QRectF(x,y,width,height);
       param.modified=true;
     }
-  int type() { return param.type;}
+  int type() const { return param.type;}
   sitemParam *getParamPtr() {return &param;}
   bool markedForDeletion;
 

@@ -34,7 +34,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sys/types.h>
-#include <malloc.h>
 #include "structtemplates.h"
 #include "drmproto.h"
 #include "drmdefs.h"

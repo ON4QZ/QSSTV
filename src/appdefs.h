@@ -20,7 +20,6 @@ using namespace std; /* Because of the library: "complex" */
 #undef DISABLENARROW
 
 typedef double DSPFLOAT;
-typedef unsigned char byte;
 
 
 /* Define the application specific data-types ------------------------------- */

@@ -2,6 +2,7 @@
 #define JP2READER_H
 #include "openjpeg.h"
 
+#include <QObject>
 #include <QString>
 #include <QImage>
 

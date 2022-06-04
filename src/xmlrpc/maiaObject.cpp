@@ -53,9 +53,14 @@ QDomElement MaiaObject::toXml(QVariant arg)
     }
 
     QDomElement tagValue = doc.createElement("value");
-    switch(arg.type())
+# if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    int metatypeId = arg.type();
+# else
+    int metatypeId = arg.typeId();
+#endif
+    switch(metatypeId)
     {
-    case QVariant::String:
+    case QMetaType::QString:
     {
 
         QDomElement tagString = doc.createElement("string");
@@ -67,7 +72,7 @@ QDomElement MaiaObject::toXml(QVariant arg)
         return tagValue;
 
     }
-    case QVariant::Int:
+    case QMetaType::Int:
     {
 
         QDomElement tagInt = doc.createElement("int");
@@ -79,7 +84,7 @@ QDomElement MaiaObject::toXml(QVariant arg)
         return tagValue;
 
     }
-    case QVariant::Double:
+    case QMetaType::Double:
     {
 
         QDomElement tagDouble = doc.createElement("double");
@@ -91,7 +96,7 @@ QDomElement MaiaObject::toXml(QVariant arg)
         return tagValue;
 
     }
-    case QVariant::Bool:
+    case QMetaType::Bool:
     {
 
         QString textValue = arg.toBool() ? "1" : "0";
@@ -105,7 +110,7 @@ QDomElement MaiaObject::toXml(QVariant arg)
         return tagValue;
 
     }
-    case QVariant::ByteArray:
+    case QMetaType::QByteArray:
     {
 
         QString textValue = arg.toByteArray().toBase64();
@@ -119,7 +124,7 @@ QDomElement MaiaObject::toXml(QVariant arg)
         return tagValue;
 
     }
-    case QVariant::DateTime:
+    case QMetaType::QDateTime:
     {
 
         QString textValue = arg.toDateTime().toString("yyyyMMddThh:mm:ss");
@@ -133,7 +138,7 @@ QDomElement MaiaObject::toXml(QVariant arg)
         return tagValue;
 
     }
-    case QVariant::List: {
+    case QMetaType::QVariantList: {
 
         QDomElement tagArray = doc.createElement("array");
         QDomElement tagData = doc.createElement("data");
@@ -148,7 +153,7 @@ QDomElement MaiaObject::toXml(QVariant arg)
         return tagValue;
 
     }
-    case QVariant::Map:
+    case QMetaType::QVariantMap:
     {
 
         QDomElement tagStruct = doc.createElement("struct");
@@ -179,9 +184,11 @@ QDomElement MaiaObject::toXml(QVariant arg)
 
     }
     default:
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
-        errorOut() << "Failed to marshal unknown variant type: " << arg.type() <<Qt::endl;
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        errorOut() << "Failed to marshal unknown variant type: " << arg.typeId() <<Qt::endl;
 
+#elif (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+        errorOut() << "Failed to marshal unknown variant type: " << arg.type() <<Qt::endl;
 #else
         errorOut() << "Failed to marshal unknown variant type: " << arg.type() <<endl;
 #endif

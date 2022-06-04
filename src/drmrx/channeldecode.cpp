@@ -28,7 +28,6 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <math.h>
-#include <malloc.h>
 #include <float.h>
 #include "drmproto.h"
 #include "drmdefs.h"

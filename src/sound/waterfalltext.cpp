@@ -135,7 +135,6 @@ DSPFLOAT * waterfallText::nextLine()
 void waterfallText::setupImage(QString txt)
 {
   QRect rct;
-  QColor c;
   QPainter p;
   QPen pen;
   pen.setColor(Qt::white);

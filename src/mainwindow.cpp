@@ -25,7 +25,9 @@
 #include "dispatch/dispatcher.h"
 #include "ui_mainwindow.h"
 #include "soundpulse.h"
-#include "soundalsa.h"
+#ifndef __APPLE__
+#  include "soundalsa.h"
+#endif
 #include "configdialog.h"
 #include "configparams.h"
 #include "rigcontrol.h"
@@ -112,8 +114,13 @@ mainWindow::mainWindow(QWidget *parent) : QMainWindow(parent),  ui(new Ui::MainW
   txWidgetPtr=ui->txWindow;
   galleryWidgetPtr=ui->galleryWindow;
   readSettings();
-  if(pulseSelected) soundIOPtr=new soundPulse;
+#ifndef __APPLE__
+  if(pulseSelected)
+#endif
+    soundIOPtr=new soundPulse;
+#ifndef __APPLE__
   else  soundIOPtr=new soundAlsa;
+#endif
   dispatcherPtr=new dispatcher;
   waterfallPtr=new waterfallText;
   xmlIntfPtr=new xmlInterface;
@@ -222,8 +229,13 @@ void mainWindow::restartSound(bool inStartUp)
       delete soundIOPtr;
       soundIOPtr=nullptr;
     }
-  if(pulseSelected) soundIOPtr=new soundPulse;
+#ifndef __APPLE__
+  if(pulseSelected)
+#endif
+    soundIOPtr=new soundPulse;
+#ifndef __APPLE__
   else soundIOPtr=new soundAlsa;
+#endif
   if(!soundIOPtr->init(BASESAMPLERATE))
     {
       if(inStartUp)

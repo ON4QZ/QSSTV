@@ -470,7 +470,7 @@ void scopePlot::setupWheels(int size)
     {
       QMessageBox::warning(0,"Scope Plot",
                            "No data in Scope Plot" ,
-                           QMessageBox::Ok,0 );
+                           QMessageBox::Ok);
       return;
     }
   blockSignals(true);
