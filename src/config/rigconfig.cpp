@@ -129,6 +129,7 @@ void rigConfig::getParams()
   getValue(cp->activeDTR,ui->DTRCheckBox);
   getValue(cp->nactiveRTS,ui->nRTSCheckBox);
   getValue(cp->nactiveDTR,ui->nDTRCheckBox);
+  if(ui->noPttRadioButton->isChecked()) cp->pttType=RIG_PTT_NONE;
   if(ui->catVoiceRadioButton->isChecked()) cp->pttType=RIG_PTT_RIG;
   if(ui->catDataRadioButton->isChecked()) cp->pttType=RIG_PTT_RIG_MICDATA;
   if(ui->rtsRadioButton->isChecked()) cp->pttType=RIG_PTT_SERIAL_RTS;
@@ -195,7 +196,7 @@ void rigConfig::setParams()
       setValue(true,ui->dtrRadioButton);
     break;
     default:
-      setValue(true,ui->catVoiceRadioButton);
+      setValue(true,ui->noPttRadioButton);
     break;
     }
   if(cp->enableCAT && cp->enableSerialPTT)

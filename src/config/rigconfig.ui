@@ -582,9 +582,6 @@
           <property name="text">
            <string>CAT (Voice port)</string>
           </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
          </widget>
         </item>
         <item>
@@ -614,6 +611,16 @@
          <widget class="QRadioButton" name="dtrRadioButton">
           <property name="text">
            <string>DTR</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="noPttRadioButton">
+          <property name="text">
+           <string>None</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
