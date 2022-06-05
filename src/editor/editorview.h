@@ -23,6 +23,7 @@
 
 #include <QtGui>
 #include "editorscene.h"
+#include <QPlainTextEdit>
 #include "ui_editorform.h"
 
 
@@ -55,6 +56,7 @@ public slots:
   void slotRectangle();
   void slotCircle();
   void slotText();
+  void slotMacro(QString);
   void slotImage();
   void slotReplay();
   void slotLine();
@@ -86,6 +88,7 @@ private:
   editorScene *scene;
   bool modified;
   QImage *image;
+  QPlainTextEdit *textEdit;
   void setTransform();
   QIcon createColorToolButtonIcon(const QString &imageFile, QColor color);
   QMenu *createColorMenu(const char *,int,QString text);

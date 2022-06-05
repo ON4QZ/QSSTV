@@ -1230,6 +1230,11 @@ If you right click on an object then the following pop-up menu will be shown:</p
 
 <p> We need some sort of macro's to enable variable text when transmitting images. The editor uses predefined strings that will be replaced by
 the "actual content" when the template is processed just before transmission.<br>
+The list of available macros is displayed in the right part of the popup that
+is used to enter text. Each list entry contains the macro name to the left, and
+a short explanation of the macro next to it. A somewhat more detailed explanation
+is displayed as a "tooltip" by hovering with the mouse over the entry. Clicking
+one macro entry inserts it into the text editor.<br>
 
 Here's an example of the editor using macros and the result in the transmitter.</p>
 <br>

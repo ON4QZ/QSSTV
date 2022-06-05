@@ -224,12 +224,27 @@ void editorView::slotCircle()
   modified=true;
 }
 
+
+void editorView::slotMacro(QString entry)
+{
+  // All entries which represent actual macros start with %<letter>,
+  // so just pick the first two letters, and add them to the text
+  // edit widget.
+  if (entry[0] != '%')
+    return;
+  QString macro = entry.left(2);
+  textEdit->insertPlainText(macro);
+}
+
+
 void editorView::slotText()
 {
   QDialog d(this);
   Ui::textForm t;
   t.setupUi(&d);
   t.plainTextEdit->setPlainText(txt);
+  textEdit = t.plainTextEdit;
+  connect(t.listWidget, SIGNAL(currentTextChanged(QString)), this, SLOT(slotMacro(QString)));
   if(d.exec()==QDialog::Accepted)
     {
       scene->setMode(editorScene::INSERT);
