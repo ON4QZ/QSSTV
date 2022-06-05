@@ -243,13 +243,13 @@ void editorView::slotText()
   Ui::textForm t;
   t.setupUi(&d);
   t.plainTextEdit->setPlainText(txt);
+  textEdit = t.plainTextEdit;
+  connect(t.listWidget, SIGNAL(currentTextChanged(QString)), this, SLOT(slotMacro(QString)));
   if(d.exec()==QDialog::Accepted)
     {
       scene->setMode(editorScene::INSERT);
       scene->setItemType(graphItemBase::TEXT);
       scene->text=t.plainTextEdit->toPlainText();
-      textEdit = t.plainTextEdit;
-      connect(t.listWidget, SIGNAL(currentTextChanged(QString)), this, SLOT(slotMacro(QString)));
       txt=t.plainTextEdit->toPlainText();
       scene->apply(editorScene::DTEXT);
     }
