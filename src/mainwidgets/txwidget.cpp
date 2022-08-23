@@ -318,6 +318,7 @@ void txWidget::prepareTx()
 {
   addToLog(QString("doTx=%1").arg(doTx),LOGTXMAIN);
   enableButtons(false);
+  applyTemplate();
   switch (transmissionModeIndex)
     {
     case TRXSSTV: txFunctionsPtr->prepareTX(txFunctions::TXPREPARESSTV);
