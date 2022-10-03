@@ -129,7 +129,9 @@ bool rigControl::init()
   canGetFreq=(my_rig->caps->get_freq != NULL);
   canSetMode=(my_rig->caps->set_mode != NULL);
   canGetMode=(my_rig->caps->get_mode != NULL);
-  canSetPTT=(my_rig->caps->set_ptt != NULL);
+  canSetPTT=(my_rig->caps->set_ptt != NULL) ||
+          (my_rig->state.pttport.type.ptt == RIG_PTT_SERIAL_DTR) ||
+          (my_rig->state.pttport.type.ptt == RIG_PTT_SERIAL_RTS);
   canGetPTT=(my_rig->caps->get_ptt != NULL);
   double fr;
   getFrequency(fr);
