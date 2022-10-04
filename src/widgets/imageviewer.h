@@ -184,6 +184,7 @@ private:
   QImage tempImage;
   bool emitSignal;
   QString cacheFileName;
+  QString cachePath;
   bool  processImageDisplay(bool success, bool showMessage, bool fromCache);
 #ifdef IMAGETESTVIEWER
   void imageTestViewer(QImage *im, QString infoStr);

@@ -32,6 +32,7 @@ QString templatesPath;
 QString audioPath;
 bool saveTXimages;
 QString docURL;
+bool recursiveScanDirs;
 
 
 
@@ -66,6 +67,7 @@ void directoriesConfig::readSettings()
   audioPath=qSettings.value("audioPath",QString(getenv("HOME"))+"/qsstv/audio/").toString();
   docURL=qSettings.value("docURL","http://users.telenet.be/on4qz/qsstv/manual").toString();
   saveTXimages=qSettings.value("saveTXimages",false).toBool();
+  recursiveScanDirs=qSettings.value("recursiveScanDirs",false).toBool();
   qSettings.endGroup();
   setParams();
 }
@@ -84,7 +86,7 @@ void directoriesConfig::writeSettings()
   qSettings.setValue("audioPath",audioPath);
   qSettings.setValue("docURL",docURL);
   qSettings.setValue("saveTXimages",saveTXimages);
-
+  qSettings.setValue("recursiveScanDirs",recursiveScanDirs);
   qSettings.endGroup();
 }
 
@@ -105,6 +107,7 @@ void directoriesConfig::getParams()
   getValue(audioPath,ui->audioPathLineEdit);
   getValue(docURL,ui->docPathLineEdit);
   getValue(saveTXimages,ui->saveTXcheckBox);
+  getValue(recursiveScanDirs,ui->recursiveScanDirscheckBox);
   changed=false;
   if(rxSSTVImagePathSaved!=rxSSTVImagesPath || rxDRMImagePathSaved!=rxDRMImagesPath ||
      txSSTVImagePathSaved!=txSSTVImagesPath ||
@@ -126,6 +129,7 @@ void directoriesConfig::setParams()
   setValue(audioPath,ui->audioPathLineEdit);
   setValue(docURL,ui->docPathLineEdit);
   setValue(saveTXimages,ui->saveTXcheckBox);
+  setValue(recursiveScanDirs,ui->recursiveScanDirscheckBox);
   // create directories if not exist
   createDir(rxSSTVImagesPath);
   createDir(rxDRMImagesPath);

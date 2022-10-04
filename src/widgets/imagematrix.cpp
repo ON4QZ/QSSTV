@@ -1,4 +1,5 @@
 #include "imagematrix.h"
+#include "configparams.h"
 #include <QDir>
 #include <QDebug>
 #include <iostream>
@@ -119,18 +120,37 @@ void imageMatrix::init(int numRows, int numColumns, QString dir,imageViewer::thu
 //  displayFiles();
 }
 
+bool compareFile(QFileInfo f1, QFileInfo f2) {
+    return f1.lastModified() > f2.lastModified();
+}
 
 void imageMatrix::getList()
 {
+    QDateTime listFileTime;
+    QDirIterator::IteratorFlags flags = QDirIterator::NoIteratorFlags;
+
+    if(!fileList.isEmpty()) {
+        fileList.erase(fileList.begin(), fileList.end());
+    }
+
+    if(recursiveScanDirs) {
+      flags = QDirIterator::Subdirectories;
+    }
+
+    QDirIterator it(dirPath, QDir::Files | QDir::NoSymLinks, flags);
 
 
-  QDir dir(dirPath);
-  dir.setFilter(QDir::Files | QDir::NoSymLinks);
-  dir.setSorting(sortFlags);
-  fileList = dir.entryInfoList();
-  numPages=ceil((double)fileList.count()/(double)(rows*columns));
-  if(numPages==0) numPages=1;
-  slotBegin();
+    while (it.hasNext()) {
+        it.next();
+        QFileInfo f(it.fileInfo());
+        if(!f.canonicalPath().endsWith("cache")) {
+         fileList.append(f);
+        }
+    }
+    std::sort(fileList.begin(), fileList.end(), compareFile);
+    numPages=ceil((double)fileList.count()/(double)(rows*columns));
+    if(numPages==0) numPages=1;
+    slotBegin();
 }
 
 QString imageMatrix::getLastFile()
