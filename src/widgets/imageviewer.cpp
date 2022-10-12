@@ -148,10 +148,16 @@ bool imageViewer::openImage(QString &filename,QString start,bool ask,bool showMe
 
   if(fromCache)
     {
+      cachePath=finf.absolutePath()+"/cache/";
+      QDir dd(cachePath);
+      if(!dd.exists())
+        {
+          dd.mkpath(cachePath);
+        }
 #if (QT_VERSION < QT_VERSION_CHECK(5,10,0))
-      cacheFileName=finf.absolutePath()+"/cache/"+finf.baseName()+finf.created().toString()+".png";
+      cacheFileName=cachePath+finf.baseName()+finf.created().toString()+".png";
 #else
-      cacheFileName=finf.absolutePath()+"/cache/"+finf.baseName()+finf.birthTime().toString()+".png";
+      cacheFileName=cachePath+finf.baseName()+finf.birthTime().toString()+".png";
 #endif
       if(tempImage.load(cacheFileName))
         {

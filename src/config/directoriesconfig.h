@@ -12,6 +12,7 @@ extern QString templatesPath;
 extern QString audioPath;
 extern bool saveTXimages;
 extern QString docURL;
+extern bool recursiveScanDirs;
 
 namespace Ui {
 class directoriesConfig;

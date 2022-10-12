@@ -3,6 +3,7 @@
 #include "configparams.h"
 #include "logging.h"
 #include "appglobal.h"
+#include "filewatcher.h"
 #include <QSplashScreen>
 #include "dispatch/dispatcher.h"
 #include <QFileInfo>
@@ -29,8 +30,6 @@ galleryWidget::~galleryWidget()
 }
 
 
-
-
 void galleryWidget::init()
 {
   readSettings();
@@ -49,11 +48,14 @@ void galleryWidget::changedMatrix()
 
 void galleryWidget::slotDirChanged(QString dn)
 {
-  if(dn==txStockImagesPath)
+  if(recursiveScanDirs) {
+    fileWatcherPtr->addPathRecursive(dn);
+  }
+  if(dn.startsWith(txStockImagesPath))
     {
       ui->txStockMatrix->changed();
     }
-  if(dn==templatesPath)
+  if(dn.startsWith(templatesPath))
     {
       ui->templateMatrix->changed();
       txWidgetPtr->setupTemplatesComboBox();

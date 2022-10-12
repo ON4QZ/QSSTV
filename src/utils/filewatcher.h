@@ -10,9 +10,8 @@ public:
   fileWatcher();
   void init();
 
-signals:
-
 public slots:
+  void addPathRecursive(QString path);
 };
 
 #endif // FILEWATCHER_H
