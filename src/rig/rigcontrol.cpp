@@ -389,14 +389,14 @@ void rigControl::activatePTT(bool b)
       if (catParams.pttSerialPort.isEmpty()) return;
       if(serialP==0)
         {
-          serialP=::open(catParams.pttSerialPort.toLatin1().data(),O_RDWR);
+          serialP=::open(catParams.pttSerialPort.toLatin1().data(),O_RDWR|O_NONBLOCK);
           if (serialP<=0)
             {
               QMessageBox::warning(txWidgetPtr,"Serial Port Error",
                                    QString("Unable to open serial port %1\ncheck Options->Configuration\n"
                                            "make sure that you have read/write permission\nIf you do not have a serial port,\n"
                                            "then disable -Serial PTT- option in the configuration").arg(catParams.pttSerialPort) ,
-                                   QMessageBox::Ok,0 );
+                                   QMessageBox::Ok);
               return;
             }
           else

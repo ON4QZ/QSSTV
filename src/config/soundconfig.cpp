@@ -23,7 +23,11 @@
 #include "ui_soundconfig.h"
 #include "configparams.h"
 #include "supportfunctions.h"
-#include "soundalsa.h"
+#ifdef __APPLE__
+#  include "soundbase.h"
+#else
+#  include "soundalsa.h"
+#endif
 
 #include <QSettings>
 
@@ -49,7 +53,11 @@ soundConfig::soundConfig(QWidget *parent) :  baseConfig(parent), ui(new Ui::soun
 {
   QStringList inputPCMList, outputPCMList;
   ui->setupUi(this);
+#ifdef __APPLE__
+  ui->alsaRadioButton->setCheckable(false);
+#else
   getCardList(inputPCMList, outputPCMList);
+#endif
   ui->inputPCMNameComboBox->addItems(inputPCMList);
   ui->outputPCMNameComboBox->addItems(outputPCMList);
 }

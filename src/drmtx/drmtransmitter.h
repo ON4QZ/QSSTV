@@ -2,7 +2,7 @@
 #define DRMTRANSMITTER_H
 
 #include "common/GlobalDefinitions.h"
-#include "common/DrmTransmitter.h"
+#include "common/CDrmTransmitter.h"
 #include "drmparams.h"
 
 

@@ -26,7 +26,12 @@ INCLUDEPATH += config dispatch drmrx drmtx dsp editor logbook mainwidgets rig sc
 CONFIG += link_pkgconfig
 PKGCONFIG += libopenjp2
 TARGET = qsstv
+macx {
+ # Enable pkg-config (pkg-config is disabled by default in the Qt package for mac)
+ QT_CONFIG -= no-pkg-config
+}
 
+CONFIG += qwt
 
 SOURCES += main.cpp\
     mainwindow.cpp \
@@ -48,7 +53,6 @@ SOURCES += main.cpp\
     widgets/markerwidget.cpp \
     dsp/downsamplefilter.cpp \
     utils/arraydumper.cpp \
-    sound/soundalsa.cpp \
     sound/calibration.cpp \
     dsp/synthes.cpp \
     dsp/filterparam.cpp \
@@ -117,7 +121,7 @@ SOURCES += main.cpp\
     drmtx/common/csoundout.cpp \
     drmtx/common/DataIO.cpp \
     drmtx/common/DRMSignalIO.cpp \
-    drmtx/common/DrmTransmitter.cpp \
+    drmtx/common/CDrmTransmitter.cpp \
     drmtx/common/OFDM.cpp \
     drmtx/common/Parameter.cpp \
     drmtx/bsrform.cpp \
@@ -171,10 +175,6 @@ SOURCES += main.cpp\
     config/repeaterconfig.cpp \
     config/waterfallconfig.cpp \
     utils/hybridcrypt.cpp \
-    videocapt/cameradialog.cpp \
-    videocapt/imagesettings.cpp \
-    videocapt/v4l2control.cpp \
-    videocapt/videocapture.cpp \
     sstv/visfskid.cpp \
     dsp/filters.cpp \
     dsp/filter.cpp \
@@ -193,6 +193,11 @@ SOURCES += main.cpp\
     editor/basegraphicitem.cpp \
     editor/templateviewer.cpp
 
+!macx: SOURCES += sound/soundalsa.cpp \
+    videocapt/cameradialog.cpp \
+    videocapt/imagesettings.cpp \
+    videocapt/v4l2control.cpp \
+    videocapt/videocapture.cpp
 
 HEADERS  += mainwindow.h \
     config/baseconfig.h \
@@ -219,7 +224,6 @@ HEADERS  += mainwindow.h \
     dsp/nco.h \
     utils/macroexpansion.h \
     utils/arraydumper.h \
-    sound/soundalsa.h \
     sound/calibration.h \
     dsp/synthes.h \
     dsp/filterparam.h \
@@ -284,7 +288,7 @@ HEADERS  += mainwindow.h \
     drmtx/common/csoundout.h \
     drmtx/common/DataIO.h \
     drmtx/common/DRMSignalIO.h \
-    drmtx/common/DrmTransmitter.h \
+    drmtx/common/CDrmTransmitter.h \
     drmtx/common/GlobalDefinitions.h \
     drmtx/common/OFDM.h \
     drmtx/common/Parameter.h \
@@ -342,10 +346,6 @@ HEADERS  += mainwindow.h \
     config/repeaterconfig.h \
     config/waterfallconfig.h \
     utils/hybridcrypt.h \
-    videocapt/cameradialog.h \
-    videocapt/imagesettings.h \
-    videocapt/v4l2control.h \
-    videocapt/videocapture.h \
     sstv/visfskid.h \
     dsp/filters.h \
     dsp/filter.h \
@@ -364,6 +364,12 @@ HEADERS  += mainwindow.h \
     utils/ftpfunctions.h \
     editor/basegraphicitem.h \
     editor/templateviewer.h
+
+!macx: HEADERS +=  sound/soundalsa.h \
+    videocapt/cameradialog.h \
+    videocapt/imagesettings.h \
+    videocapt/v4l2control.h \
+    videocapt/videocapture.h
 
 
 FORMS += mainwindow.ui \
@@ -398,14 +404,15 @@ FORMS += mainwindow.ui \
     mainwidgets/txwidget.ui \
     widgets/freqform.ui \
     rig/freqdisplay.ui \
-    videocapt/cameradialog.ui \
-    videocapt/imagesettings.ui \
     widgets/drmsegmentsview.ui \
     drmrx/fixform.ui \
     config/frequencyselectwidget.ui \
     editor/canvassizeform.ui \
     widgets/testpatternselection.ui \
     editor/templateviewer.ui
+
+!macx: FORMS += videocapt/cameradialog.ui \
+    videocapt/imagesettings.ui
 
 
 OTHER_FILES += \
@@ -580,19 +587,19 @@ DISTFILES += \
     documentation/manual/images/spectrum1.png \
     documentation/manual/images/cat_flrig.png
 
+
 INSTALLS += target
 
-
-LIBS +=  -lasound \
-         -lpulse \
+LIBS +=  -lpulse \
          -lpulse-simple \
          -lfftw3f \
          -lfftw3 \
-         -lhamlib \
+         -lhamlib
+
+!macx: LIBS +=  -lasound \
          -lv4l2 \
          -lv4lconvert \
          -lrt
-
 CONFIG(debug ,debug|release){
 
 SOURCES +=      scope/scopeoffset.cpp \
@@ -604,6 +611,7 @@ HEADERS  += scope/scopeoffset.h \
 
 FORMS   += scope/scopeoffset.ui \
                 scope/plotform.ui
-INCLUDEPATH += /usr/include/qwt /usr/include/qt5/qwt
-LIBS += -lqwt-qt5
+
+!macx: INCLUDEPATH += /usr/include/qwt /usr/include/qt5/qwt
+!macx: LIBS += -lqwt-qt5
 }
