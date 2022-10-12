@@ -12,7 +12,7 @@ QSSTV is a program for receiving and transmitting SSTV and HAMDRM (sometimes cal
 * libpulse-dev
 * libopenjp2-7
 * libopenjp2-7-dev
-* lib4l-dev
+* libv4l-dev
 
 ### Compile and Install
 	mkdir src/build
