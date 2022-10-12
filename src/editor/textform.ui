@@ -6,56 +6,202 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>284</width>
-    <height>103</height>
+    <width>512</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Enter text</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0" rowspan="2" colspan="2">
     <widget class="QPlainTextEdit" name="plainTextEdit"/>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+   <item row="2" column="2">
+    <widget class="QListWidget" name="listWidget">
      <item>
-      <widget class="QDialogButtonBox" name="buttonBox">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="standardButtons">
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-       </property>
-      </widget>
+      <property name="text">
+       <string>Configuration:</string>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Macros where the value is defined in the configuration&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="flags">
+       <set>ItemIsDragEnabled|ItemIsEnabled</set>
+      </property>
      </item>
      <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
+      <property name="text">
+       <string>%m - my callsign</string>
+      </property>
      </item>
-    </layout>
+     <item>
+      <property name="text">
+       <string>%q - my QTH</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%l - my locator</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%n - my last name</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%f - my first name</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>TX-window:</string>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Macros where the value is entered in the TX-window prior to transmission&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="flags">
+       <set>ItemIsEnabled</set>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%c - their call</string>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;call of the contacted station&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%r - RSV (max 595)</string>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;RSV (radio-strength-video best is 595) You can also input free text as is sometimes required for contest (e.g. 595#007 or Good Copy)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%o - operator</string>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;name of operator of the contacted station&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%x - comment1</string>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;comment #1, can be multi-line&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%y - comment2</string>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;comment #2, can be multi-line&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%z - comment3</string>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;comment #3, can be multi-line&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>System defined:</string>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Macros where the value is defined by the system&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="flags">
+       <set>ItemIsEnabled</set>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%t - time</string>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;time in hours:minutes format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%d - date</string>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;date in year/month/day format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%v - qsstv version</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>%s - SNR</string>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SNR - only to be used for DRM in the WF Text&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </item>
+    </widget>
    </item>
-   <item>
-    <spacer name="verticalSpacer">
+   <item row="1" column="2">
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Macros are replaced by their actual values if the image is stored as a Template (i.e. not yet rendered).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Available Macros</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <layout class="QHBoxLayout" name="horizontalLayout"/>
+   </item>
+   <item row="3" column="1">
+    <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>19</height>
-      </size>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
-    </spacer>
+    </widget>
    </item>
   </layout>
  </widget>
