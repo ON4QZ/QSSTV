@@ -34,6 +34,7 @@ bool slowCPU;
 bool lowRes;
 bool confirmDeletion;
 bool confirmClose;
+QString defaultImageFormat;
 
 guiConfig::guiConfig(QWidget *parent) : baseConfig(parent),  ui(new Ui::guiConfig)
 {
