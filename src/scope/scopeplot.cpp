@@ -351,7 +351,7 @@ void scopePlot::show()
 {
   QMainWindow::show();
   plW->show();
-  plW->replot();
+//  plW->replot();
 }
 
 void scopePlot::refresh()
@@ -468,9 +468,7 @@ void scopePlot::setupWheels(int size)
   // range is from 10 to
   if (x.size()==0)
     {
-      QMessageBox::warning(0,"Scope Plot",
-                           "No data in Scope Plot" ,
-                           QMessageBox::Ok);
+      QMessageBox::warning(0,"Scope Plot","No data in Scope Plot" , QMessageBox::Ok);
       return;
     }
   blockSignals(true);

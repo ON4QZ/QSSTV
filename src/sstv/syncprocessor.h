@@ -145,9 +145,11 @@ public:
   bool         retraceFlag;
   bool tempOutOfSync;
 
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
   void setOffset(unsigned int dataScopeOffset);
+  void setSize(unsigned int numSamples);
   unsigned int xOffset;
+  unsigned int xNumSamples;
   unsigned int syncStateBuffer[RXSTRIPE];
 #endif
 

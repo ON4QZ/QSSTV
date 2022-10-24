@@ -103,14 +103,14 @@ bool imageSettings::loadCapabilities()
   if(fd < 0)
     {
       QString msg=QString("Unable to open file %1\n%2").arg(camDev.constData()).arg(strerror(errno));
-      QMessageBox::warning(NULL, "v4l2ucp: Unable to open file", msg, "OK");
+      QMessageBox::warning(NULL, "v4l2ucp: Unable to open file", msg, QMessageBox::Ok);
       return false;
     }
 
   if(v4l2_ioctl(fd, VIDIOC_QUERYCAP, &cap) == -1) {
       QString msg;
       msg=QString("%1 is not a V4L2 device").arg(camDev.constData());
-      QMessageBox::warning(NULL, "v4l2ucp: Not a V4L2 device", msg, "OK");
+      QMessageBox::warning(NULL, "v4l2ucp: Not a V4L2 device", msg, QMessageBox::Ok);
       return false;
     }
   ui->driverLabel->setText((const char *)cap.driver);
@@ -243,7 +243,6 @@ void imageSettings::addNewTab(QString tabName)
   gridLayout = new QGridLayout();
   grid->setLayout(gridLayout);
   gridLayout->setSpacing(0);
-  gridLayout->setMargin(1);
   gridLayout->setContentsMargins(0, 0, 0, 0);
 }
 

@@ -207,14 +207,14 @@ void cameraDialog::getCameraInfo(QStringList devList)
       if(fd < 0)
         {
           QString msg=QString("Unable to open file %1\n%2").arg(camDev).arg(strerror(errno));
-          QMessageBox::warning(this,"v4l2ucp: Unable to open file", msg, "OK");
+          QMessageBox::warning(this,"v4l2ucp: Unable to open file", msg, QMessageBox::Ok);
           continue;
         }
 
       if(v4l2_ioctl(fd, VIDIOC_QUERYCAP, &cap) == -1)
         {
           QString msg=QString("%1 is not a V4L2 device").arg(camDev);
-          QMessageBox::warning(this, "Camera selection error", msg, "OK");
+          QMessageBox::warning(this, "Camera selection error", msg, QMessageBox::Ok);
           ok=false;
         }
       formats=getFormatList(fd);
@@ -230,10 +230,10 @@ void cameraDialog::getCameraInfo(QStringList devList)
 QString cameraDialog::pixelFormatStr(int pixelFormat)
 {
   QString t;
-  t=pixelFormat&0xFF;
-  t+=(pixelFormat>>8)&0xFF;
-  t+=(pixelFormat>>16)&0xFF;
-  t+=(pixelFormat>>24)&0xFF;
+  t=QChar(pixelFormat&0xFF);
+  t+=QChar((pixelFormat>>8)&0xFF);
+  t+=QChar((pixelFormat>>16)&0xFF);
+  t+=QChar((pixelFormat>>24)&0xFF);
   return t;
 }
 

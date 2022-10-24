@@ -196,9 +196,9 @@ void rxFunctions::switchRxState(erxState newState)
 
 
 
-#ifndef QT_NO_DEBUG
-unsigned int rxFunctions::setOffset(unsigned int offset,bool ask)
+#ifdef ENABLESCOPE
+unsigned int rxFunctions::setScopeParam(unsigned int offset,unsigned int numSamples,bool ask)
 {
-  return sstvRxPtr->setOffset(offset,ask);
+  return sstvRxPtr->setScopeParam(offset,numSamples,ask);
 }
 #endif

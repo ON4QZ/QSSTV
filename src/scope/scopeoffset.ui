@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>417</width>
-    <height>149</height>
+    <width>463</width>
+    <height>154</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,26 +15,50 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="numberOfSamplesLabel">
        <property name="text">
-        <string>Select offset</string>
+        <string>Number of Samples</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QSpinBox" name="spinBox">
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="numberOfSamplesSpinbox">
        <property name="maximum">
-        <number>10000</number>
+        <number>400</number>
        </property>
        <property name="singleStep">
         <number>10</number>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLabel" name="label_2">
+     <item row="0" column="2">
+      <widget class="QLabel" name="ksamplesLabel1">
+       <property name="text">
+        <string>K samples</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="selectOffsetLabel">
+       <property name="text">
+        <string>Select offset</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="offsetSpinbox">
+       <property name="maximum">
+        <number>1000</number>
+       </property>
+       <property name="singleStep">
+        <number>10</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLabel" name="lksamplesLabel2">
        <property name="text">
         <string>K samples</string>
        </property>

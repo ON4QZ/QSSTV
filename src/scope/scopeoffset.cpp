@@ -1,7 +1,6 @@
 #include "scopeoffset.h"
 #include "ui_scopeoffset.h"
 
-uint dataScopeOffset;
 
 scopeOffset::scopeOffset(QWidget *parent) :
   QDialog(parent),
@@ -15,15 +14,24 @@ scopeOffset::~scopeOffset()
   delete ui;
 }
 
+void scopeOffset::setNumSamples(uint numSamples)
+{
+  ui->numberOfSamplesSpinbox->setValue(numSamples);
+}
+
+uint scopeOffset::getNumSamples()
+{
+  return ui->numberOfSamplesSpinbox->value();
+}
 
 void scopeOffset::setOffset(unsigned int offset)
 {
-  ui->spinBox->setValue(offset);
+  ui->offsetSpinbox->setValue(offset);
 }
 
 unsigned int scopeOffset::getOffset()
 {
-  return ui->spinBox->value();
+  return ui->offsetSpinbox ->value();
 }
 
 

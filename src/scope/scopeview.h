@@ -35,7 +35,10 @@
 
 #include "scopeplot.h"
 
-#define SCOPEMAXDATA	300000
+extern unsigned int scopeXOffset;
+extern unsigned int scopeArraySize;
+
+//#define SCOPEMAXDATA	30000
 /**
 	@author Johan Maes <on4qz@telenet.be>
 */
@@ -50,7 +53,8 @@ public:
   ~scopeView();
   void init();
   void clear();
-  void setOffset (int xoffset);
+  void setOffset (uint xoffset);
+  void setSize(uint numSamples);
 
   void addData(ecurve idx,double  *data,unsigned int position,unsigned int len);
   void addData(ecurve idx,float   *data,unsigned int position,unsigned int len);
@@ -72,16 +76,16 @@ public:
   }
 
 private:
-  double array1[SCOPEMAXDATA];
-  double array2[SCOPEMAXDATA];
-  double array3[SCOPEMAXDATA];
-  double array4[SCOPEMAXDATA];
+  void allocateArray();
+  double *array1Ptr;
+  double *array2Ptr;
+  double *array3Ptr;
+  double *array4Ptr;
   unsigned int index;
   QString curveNameArray[NUMCURVES];
   QString xTitle;
   QString yLeftTitle;
   QString yRightTitle;
-  unsigned int xOffset;
 };
 
 #endif

@@ -71,7 +71,7 @@ extern ftpThread *saveImageIntfPtr;
 extern etransmissionMode transmissionModeIndex;  // SSTV , DRM
 
 
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
 extern scopeView *scopeViewerData;
 extern scopeView *scopeViewerSyncNarrow;
 extern scopeView *scopeViewerSyncWide;

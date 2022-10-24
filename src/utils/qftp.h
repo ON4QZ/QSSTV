@@ -136,10 +136,10 @@ public:
     Error error() const;
     QString errorString() const;
 
-public Q_SLOTS:
+public slots:
     void abort();
 
-Q_SIGNALS:
+signals:
     void stateChanged(int);
     void listInfo(const QUrlInfo&);
     void readyRead();

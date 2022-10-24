@@ -148,9 +148,9 @@ void imageMatrix::getList()
       }
     }
     std::sort(fileList.begin(), fileList.end(), compareFile);
-    numPages=ceil((double)fileList.count()/(double)(rows*columns));
-    if(numPages==0) numPages=1;
-    slotBegin();
+  numPages=ceil((double)fileList.count()/(double)(rows*columns));
+  if(numPages==0) numPages=1;
+  slotBegin();
 }
 
 QString imageMatrix::getLastFile()
@@ -165,6 +165,7 @@ QString imageMatrix::getLastFile()
 void imageMatrix::displayFiles()
 {
   int i,j,k;
+
   QString tempStr;
   int offset=currentPage*rows*columns;
   pageLabel->setText(QString("   Page %1 of %2").arg(currentPage+1).arg(numPages).leftJustified(17,' '));

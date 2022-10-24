@@ -120,14 +120,8 @@ QVariantList xmlInterface::systemMulticall(QVariantList s)
             args=m["params"].toList();
             for(j=0;j<args.count();)
             {
-# if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-                if(args.at(j).type()==QVariant::Invalid)
-# else
-                if(args.at(j).typeId()==QMetaType::UnknownType)
-# endif
-                    args.takeAt(j);
-                else
-                    j++;
+                if(args.at(j).isValid()) args.takeAt(j);
+                else j++;
             }
             if(!invokeMethodWithVariants(responseObject, responseSlot, args, &ret))
             { /* error invoking... */

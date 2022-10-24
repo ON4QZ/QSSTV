@@ -31,11 +31,18 @@
 #include "scopeview.h"
 #include "loggingparams.h"
 
+uint scopeXOffset;
+uint scopeArraySize;
 
 
 scopeView::scopeView(QString title) : scopePlot(title)
 {
-  xOffset=0;
+  scopeXOffset=0;
+  scopeArraySize=10000;
+  array1Ptr=nullptr;
+  array2Ptr=nullptr;
+  array3Ptr=nullptr;
+  array4Ptr=nullptr;
   init();
 }
 
@@ -46,6 +53,7 @@ scopeView::~scopeView()
 
 void scopeView::init()
 {
+  allocateArray();
   setCurveName("data1",SCDATA1);
   setCurveName("data2",SCDATA2);
   setCurveName("data3",SCDATA3);
@@ -55,67 +63,70 @@ void scopeView::init()
 
 void scopeView::clear()
 {
-  int i;
+  uint i;
   index=0;
-  for (i=0;i<SCOPEMAXDATA;i++)
+  for (i=0;i<scopeArraySize;i++)
     {
-      array1[i]=0.;
-      array2[i]=0.;
-      array3[i]=0.;
-      array4[i]=0.;
+      array1Ptr[i]=0.;
+      array2Ptr[i]=0.;
+      array3Ptr[i]=0.;
+      array4Ptr[i]=0.;
     }
 }
 
-void scopeView::setOffset (int xoffset)
+void scopeView::setOffset (uint xoffset)
 {
-  xOffset=xoffset;
-  scopePlot::setOffset(xOffset);
+  scopeXOffset=xoffset;
+  scopePlot::setOffset(scopeXOffset);
+}
+
+void scopeView::setSize(uint numSamples)
+{
+  scopeArraySize=numSamples;
+  allocateArray();
 }
 
 void scopeView::addData(ecurve idx,double *data,unsigned int position,unsigned int len)
 {
   unsigned int i,j;
   double *ar=NULL;
-  if(position<xOffset) return;
+  if(position<scopeXOffset) return;
   switch(idx)
     {
-    case SCDATA1:
-      ar=array1;
-      break;
-    case SCDATA2: ar=array2; break;
-    case SCDATA3: ar=array3; break;
-    case SCDATA4: ar=array4; break;
+    case SCDATA1: ar=array1Ptr; break;
+    case SCDATA2: ar=array2Ptr; break;
+    case SCDATA3: ar=array3Ptr; break;
+    case SCDATA4: ar=array4Ptr; break;
     }
-  for(i=position-xOffset,j=0;i<(position+len-xOffset)&& (i<SCOPEMAXDATA);i++,j++)
+  for(i=position-scopeXOffset,j=0;i<(position+len-scopeXOffset)&& (i<scopeArraySize);i++,j++)
     {
-
       ar[i]=data[j];
     }
-  if(i>SCOPEMAXDATA) i=SCOPEMAXDATA;
+  if(i>scopeArraySize) i=scopeArraySize;
   index=i;
-  addToLog(QString("data1 %1").arg(index+xOffset),LOGSCOPE);
+  addToLog(QString("data1 %1").arg(index+scopeXOffset),LOGSCOPE);
 }
 
 void scopeView::addData(ecurve idx,float *data,unsigned int position,unsigned int len)
 {
   unsigned int i,j;
   double *ar=NULL;
-  if(position<xOffset) return;
+  if(position<scopeXOffset) return;
   switch(idx)
     {
-    case SCDATA1: ar=array1; break;
-    case SCDATA2: ar=array2; break;
-    case SCDATA3: ar=array3; break;
-    case SCDATA4: ar=array4; break;
+    case SCDATA1: ar=array1Ptr; break;
+    case SCDATA2: ar=array2Ptr; break;
+    case SCDATA3: ar=array3Ptr; break;
+    case SCDATA4: ar=array4Ptr; break;
     }
-  for(i=position-xOffset,j=0;i<(position+len-xOffset)&& (i<SCOPEMAXDATA);i++,j++)
+  for(i=position-scopeXOffset,j=0;i<(position+len-scopeXOffset)&& (i<scopeArraySize);i++,j++)
     {
 
       ar[i]=(double)data[j];
     }
-  if(i>SCOPEMAXDATA) i=SCOPEMAXDATA;
+  if(i>scopeArraySize) i=scopeArraySize;
   index=i;
-  addToLog(QString("data1 %1").arg(index+xOffset),LOGSCOPE);
+  addToLog(QString("data1 %1").arg(index+scopeXOffset),LOGSCOPE);
 }
 
 
@@ -123,42 +134,42 @@ void scopeView::addData(ecurve idx, qint8 *data, unsigned int position, unsigned
 {
   unsigned int i,j;
   double *ar=NULL;
-  if(position<xOffset) return;
+  if(position<scopeXOffset) return;
   switch(idx)
     {
-    case SCDATA1: ar=array1; break;
-    case SCDATA2: ar=array2; break;
-    case SCDATA3: ar=array3; break;
-    case SCDATA4: ar=array4; break;
+    case SCDATA1: ar=array1Ptr; break;
+    case SCDATA2: ar=array2Ptr; break;
+    case SCDATA3: ar=array3Ptr; break;
+    case SCDATA4: ar=array4Ptr; break;
     }
-  for(i=position-xOffset,j=0;i<(position+len-xOffset)&& (i<SCOPEMAXDATA);i++,j++)
+  for(i=position-scopeXOffset,j=0;i<(position+len-scopeXOffset)&& (i<scopeArraySize);i++,j++)
     {
        ar[i]=(double)data[j];
     }
-  if(i>SCOPEMAXDATA) i=SCOPEMAXDATA;
+  if(i>scopeArraySize) i=scopeArraySize;
   index=i;
-  addToLog(QString("data1 %1").arg(index+xOffset),LOGSCOPE);
+  addToLog(QString("data1 %1").arg(index+scopeXOffset),LOGSCOPE);
 }
 
 void scopeView::addData(ecurve idx,quint8 *data, unsigned int position, unsigned int len)
 {
   unsigned int i,j;
   double *ar=NULL;
-  if(position<xOffset) return;
+  if(position<scopeXOffset) return;
   switch(idx)
     {
-    case SCDATA1: ar=array1; break;
-    case SCDATA2: ar=array2; break;
-    case SCDATA3: ar=array3; break;
-    case SCDATA4: ar=array4; break;
+    case SCDATA1: ar=array1Ptr; break;
+    case SCDATA2: ar=array2Ptr; break;
+    case SCDATA3: ar=array3Ptr; break;
+    case SCDATA4: ar=array4Ptr; break;
     }
-  for(i=position-xOffset,j=0;i<(position+len-xOffset)&& (i<SCOPEMAXDATA);i++,j++)
+  for(i=position-scopeXOffset,j=0;i<(position+len-scopeXOffset)&& (i<scopeArraySize);i++,j++)
     {
        ar[i]=(double)data[j];
     }
-  if(i>SCOPEMAXDATA) i=SCOPEMAXDATA;
+  if(i>scopeArraySize) i=scopeArraySize;
   index=i;
-  addToLog(QString("data1 %1").arg(index+xOffset),LOGSCOPE);
+  addToLog(QString("data1 %1").arg(index+scopeXOffset),LOGSCOPE);
 }
 
 
@@ -166,44 +177,44 @@ void scopeView::addData(ecurve idx,qint16 *data,unsigned int position,unsigned i
 {
   unsigned int i,j;
   double *ar=NULL;
-  if(position<xOffset) return;
+  if(position<scopeXOffset) return;
   switch(idx)
     {
-    case SCDATA1: ar=array1; break;
-    case SCDATA2: ar=array2; break;
-    case SCDATA3: ar=array3; break;
-    case SCDATA4: ar=array4; break;
+    case SCDATA1: ar=array1Ptr; break;
+    case SCDATA2: ar=array2Ptr; break;
+    case SCDATA3: ar=array3Ptr; break;
+    case SCDATA4: ar=array4Ptr; break;
     }
-  for(i=position-xOffset,j=0;i<(position+len-xOffset)&& (i<SCOPEMAXDATA);i++,j++)
+  for(i=position-scopeXOffset,j=0;i<(position+len-scopeXOffset)&& (i<scopeArraySize);i++,j++)
     {
 
       ar[i]=(double)data[j];
     }
-  if(i>SCOPEMAXDATA) i=SCOPEMAXDATA;
+  if(i>scopeArraySize) i=scopeArraySize;
   index=i;
-  addToLog(QString("data1 %1").arg(index+xOffset),LOGSCOPE);
+  addToLog(QString("data1 %1").arg(index+scopeXOffset),LOGSCOPE);
 }
 
 void scopeView::addData(ecurve idx,quint16 *data,unsigned int position,unsigned int len)
 {
   unsigned int i,j;
   double *ar=NULL;
-  if(position<xOffset) return;
+  if(position<scopeXOffset) return;
   switch(idx)
     {
-    case SCDATA1: ar=array1; break;
-    case SCDATA2: ar=array2; break;
-    case SCDATA3: ar=array3; break;
-    case SCDATA4: ar=array4; break;
+    case SCDATA1: ar=array1Ptr; break;
+    case SCDATA2: ar=array2Ptr; break;
+    case SCDATA3: ar=array3Ptr; break;
+    case SCDATA4: ar=array4Ptr; break;
     }
-  for(i=position-xOffset,j=0;i<(position+len-xOffset)&& (i<SCOPEMAXDATA);i++,j++)
+  for(i=position-scopeXOffset,j=0;i<(position+len-scopeXOffset)&& (i<scopeArraySize);i++,j++)
     {
 
       ar[i]=(double)data[j];
     }
-  if(i>SCOPEMAXDATA) i=SCOPEMAXDATA;
+  if(i>scopeArraySize) i=scopeArraySize;
   index=i;
-  addToLog(QString("data1 %1").arg(index+xOffset),LOGSCOPE);
+  addToLog(QString("data1 %1").arg(index+scopeXOffset),LOGSCOPE);
 }
 
 
@@ -211,47 +222,47 @@ void scopeView::addData(ecurve idx,qint32 *data,unsigned int position,unsigned i
 {
   unsigned int i,j;
   double *ar=NULL;
-  if(position<xOffset) return;
+  if(position<scopeXOffset) return;
   switch(idx)
     {
-    case SCDATA1: ar=array1; break;
-    case SCDATA2: ar=array2; break;
-    case SCDATA3: ar=array3; break;
-    case SCDATA4: ar=array4; break;
+    case SCDATA1: ar=array1Ptr; break;
+    case SCDATA2: ar=array2Ptr; break;
+    case SCDATA3: ar=array3Ptr; break;
+    case SCDATA4: ar=array4Ptr; break;
     }
-  for(i=position-xOffset,j=0;i<(position+len-xOffset)&& (i<SCOPEMAXDATA);i++,j++)
+  for(i=position-scopeXOffset,j=0;i<(position+len-scopeXOffset)&& (i<scopeArraySize);i++,j++)
     {
 
       ar[i]=(double)data[j];
     }
-  if(i>SCOPEMAXDATA) i=SCOPEMAXDATA;
+  if(i>scopeArraySize) i=scopeArraySize;
   index=i;
-  addToLog(QString("data1 %1").arg(index+xOffset),LOGSCOPE);
+  addToLog(QString("data1 %1").arg(index+scopeXOffset),LOGSCOPE);
 }
 
 void scopeView::addData(ecurve idx,quint32 *data,unsigned int position,unsigned int len)
 {
   unsigned int i,j;
   double *ar=NULL;
-  if(position<xOffset) return;
+  if(position<scopeXOffset) return;
   switch(idx)
     {
     case SCDATA1:
-      ar=array1;
+      ar=array1Ptr;
       break;
 
-    case SCDATA2: ar=array2; break;
-    case SCDATA3: ar=array3; break;
-    case SCDATA4: ar=array4; break;
+    case SCDATA2: ar=array2Ptr; break;
+    case SCDATA3: ar=array3Ptr; break;
+    case SCDATA4: ar=array4Ptr; break;
     }
-  for(i=position-xOffset,j=0;i<(position+len-xOffset)&& (i<SCOPEMAXDATA);i++,j++)
+  for(i=position-scopeXOffset,j=0;i<(position+len-scopeXOffset)&& (i<scopeArraySize);i++,j++)
     {
 
       ar[i]=(double)data[j];
     }
-  if(i>SCOPEMAXDATA) i=SCOPEMAXDATA;
+  if(i>scopeArraySize) i=scopeArraySize;
   index=i;
-  addToLog(QString("data1 %1").arg(index+xOffset),LOGSCOPE);
+  addToLog(QString("data1 %1").arg(index+scopeXOffset),LOGSCOPE);
 }
 
 
@@ -263,30 +274,45 @@ void scopeView::setCurveName(QString title,int idx)
       curveNameArray[idx]=title;
     }
 }
+
+void scopeView::allocateArray()
+{
+  if(array1Ptr!=nullptr)
+    {
+      delete [] array1Ptr;
+      delete [] array2Ptr;
+      delete [] array3Ptr;
+      delete [] array4Ptr;
+    }
+  array1Ptr=new double[scopeArraySize];
+  array2Ptr=new double[scopeArraySize];
+  array3Ptr=new double[scopeArraySize];
+  array4Ptr=new double[scopeArraySize];
+}
 void scopeView::show(bool d1,bool d2,bool d3,bool d4)
 {
   if(d1)
     {
-      add1(array1,index,curveNameArray[SCDATA1],yLeftTitle);
+      add1(array1Ptr,index,curveNameArray[SCDATA1],yLeftTitle);
       setCurveOn(SCDATA1,true);
     }
   else setCurveOn(SCDATA1,false);
   if(d2)
     {
-      add2(array2,index,curveNameArray[SCDATA2]);
+      add2(array2Ptr,index,curveNameArray[SCDATA2]);
       setCurveOn(SCDATA2,true);
     }
   else setCurveOn(SCDATA2,false);
 
   if (d3)
     {
-      add3(array3,index,curveNameArray[SCDATA3],yRightTitle);
+      add3(array3Ptr,index,curveNameArray[SCDATA3],yRightTitle);
       setCurveOn(SCDATA3,true);
     }
   else setCurveOn(SCDATA3,false);
   if (d4)
     {
-      add4(array4,index,curveNameArray[SCDATA4]);
+      add4(array4Ptr,index,curveNameArray[SCDATA4]);
       setCurveOn(SCDATA4,true);
     }
   else setCurveOn(SCDATA4,false);

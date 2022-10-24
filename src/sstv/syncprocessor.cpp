@@ -6,7 +6,7 @@
 #include "dispatcher.h"
 #include "modes/modes.h"
 
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
 #include "scope/scopeview.h"
 #endif
 
@@ -103,7 +103,7 @@ void syncProcessor::reset()
   init();
   streamDecode.reset();
 
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
   scopeViewerSyncNarrow->setCurveName("SYNC VOL",SCDATA1);
   scopeViewerSyncNarrow->setCurveName("INPUT VOL",SCDATA2);
   scopeViewerSyncNarrow->setCurveName("SYNC STATE",SCDATA3);
@@ -191,7 +191,7 @@ void syncProcessor::process()
   }
 #endif
 
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
   if(detectNarrow)
   {
     scopeViewerSyncNarrow->addData(SCDATA1,syncVolumePtr,sampleCounter,RXSTRIPE);
@@ -259,7 +259,7 @@ void syncProcessor::extractSync()
       }
       break;
     }
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
     syncStateBuffer[i]=(unsigned char)syncState*STATESCALER;
 #endif
   }
@@ -1152,12 +1152,19 @@ void syncProcessor::switchProcessState(esyncProcessState  newState)
   syncProcesState=newState;
 }
 
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
 void syncProcessor::setOffset(unsigned int dataScopeOffset)
 {
   xOffset=dataScopeOffset;
   scopeViewerSyncNarrow->setOffset(xOffset);
   scopeViewerSyncWide->setOffset(xOffset);
+}
+
+void syncProcessor::setSize(unsigned int numSamples)
+{
+  xNumSamples=numSamples;
+  scopeViewerSyncNarrow->setSize(xNumSamples);
+  scopeViewerSyncWide->setSize(xNumSamples);
 }
 
 void syncProcessor::clear()

@@ -34,8 +34,8 @@ public:
   void stopThread();
   bool rxBusy();
 
-#ifndef QT_NO_DEBUG
-  unsigned int setOffset(unsigned int offset,bool ask);
+#ifdef ENABLESCOPE
+  unsigned int setScopeParam(unsigned int offset,unsigned int numSamples,bool ask);
 #endif
 private:
 

@@ -159,18 +159,17 @@ void editor::slotFileNew()
 {
   if(ev->isModified())
     {
-      switch( QMessageBox::information( this, "Editor",
-                                        "The document has not been saved as a template.\n"
-                                        "Discard changes, or cancel \"New file\" action?",
-                                        QMessageBox::Cancel | QMessageBox::Discard,
-                                        QMessageBox::Cancel) )
-        {
-        case QMessageBox::Discard:
+      int ret=QMessageBox::question( this, "Editor",
+                                        "The document has not been saved as a template\n"
+                                        "&Continue Anyway",
+                                        QMessageBox::Yes |  QMessageBox::No,QMessageBox::No );
+      switch (ret)
+        { // Escape == button 2
+        case QMessageBox::Yes: // Continu clicked
           break;
-        case QMessageBox::Cancel:
+        case QMessageBox::No: // Cancel clicked
           return;
-        default: // cannot happen ;-)
-          return;
+          break;
         }
     }
   ev->slotClearAll();

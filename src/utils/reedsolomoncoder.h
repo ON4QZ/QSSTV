@@ -25,7 +25,7 @@ public:
   bool decode(QByteArray &ba, QString fn, QString &newFileName, QByteArray &baFile, QString extension, QList<int> &erasuresArray);
   bool encode(QByteArray &ba, QString extension, eRSType rsType);
 private:
-  void distribute(_BYTE *src, _BYTE *dst, int rows, int cols, int reverse);
+  void distribute(unsigned char *src, unsigned char *dst, int rows, int cols, int reverse);
   bool decode_and_write();
   QByteArray ec_buf;  /* pointer to encoding/decoding buffer */
   QByteArray tr_buf;  /* pointer to transmit-buffer (fread/fwrite) */

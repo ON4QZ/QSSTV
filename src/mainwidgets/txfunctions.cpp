@@ -420,7 +420,7 @@ void txFunctions::stopAndWait()
     {
       sstvTxPtr->abort();
       switchTxState(TXRESTART);
-      while(txState!=TXIDLE)
+      while((txState!=TXIDLE) && (isRunning()))
         {
           qApp->processEvents();
         }

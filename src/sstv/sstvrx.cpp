@@ -9,11 +9,12 @@
 
 #ifndef QT_NO_DEBUG
 #include "arraydumper.h"
+#endif
+#ifdef ENABLESCOPE
 #include "scope/scopeview.h"
 #include "scope/scopeoffset.h"
 #endif
 
-QString defaultImageFormat;
 int minCompletion;
 
 #define DECAY 0.9956
@@ -40,7 +41,7 @@ sstvRx::sstvRx(QObject *parent) : QObject(parent),syncNarrowProc(true),syncWideP
   syncFilterPtr=NULL;
   videoFilterPtr=NULL;
   syncProcPtr=NULL;
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
   scopeViewerData=new scopeView("Data Scope");
   scopeViewerSyncNarrow=new scopeView("Sync Scope Narrow");
   scopeViewerSyncWide=new scopeView("Sync Scope Wide");
@@ -51,7 +52,7 @@ void sstvRx::init()
 {
   setFilters(); // setup sstvRx Filters
   resetParams(true);
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
   scopeViewerData->setAlternativeScaleMultiplier(SUBSAMPLINGFACTOR/rxClock);
   scopeViewerData->setCurveName("RX VOL",SCDATA1);
   scopeViewerData->setCurveName("TEST",SCDATA2);
@@ -147,7 +148,7 @@ void sstvRx::run(DSPFLOAT *dataPtr,DSPFLOAT *volumePtr)
           ce = new displaySyncEvent(0);
         }
       QApplication::postEvent(dispatcherPtr, ce);
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
       scopeViewerData->addData(SCDATA1,bufferInputVol.readPointer(),syncWideProc.sampleCounter,RXSTRIPE);
       scopeViewerData->addData(SCDATA2,dataPtr,syncWideProc.sampleCounter,RXSTRIPE);
       scopeViewerData->addData(SCDATA4,bufferVideoDemod.readPointer(),syncWideProc.sampleCounter,RXSTRIPE);
@@ -272,7 +273,7 @@ void sstvRx::process()
 
       //    scopeViewerData->addData(SCDATA2,bufferVideoDemod.readPointer(),syncProcPtr->sampleCounter,RXSTRIPE);
       //      addToLog(QString("slant scope add demodIdx=%1; syncProcPtr->sampleCounter=%2").arg(bufferVideoDemod.getReadIndex()).arg(syncProcPtr->sampleCounter),LOGRXFUNC);
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
       scopeViewerData->addData(SCDATA3,syncProcPtr->currentModePtr->debugStatePtr,syncProcPtr->sampleCounter,RXSTRIPE);
 #endif
       addToLog(QString("rxFunctions: currentMode pos:=%1, syncProcPtr->sampleCounter %2").arg(syncPosition-syncProcPtr->sampleCounter).arg(syncProcPtr->sampleCounter),LOGRXFUNC);
@@ -284,7 +285,7 @@ void sstvRx::process()
           //          addToLog(QString("loop readIndex: %1,syncProcPtr->sampleCounter: %2").arg(rxHoldingBuffer.getReadIndex()).arg(syncProcPtr->sampleCounter),LOGRXFUNC);
           syncProcPtr->currentModePtr->process(bufferVideoDemod.readPointer(),0,false,syncProcPtr->sampleCounter);
           //      scopeViewerData->addData(SCDATA2,bufferVideoDemod.readPointer(),syncProcPtr->sampleCounter,RXSTRIPE);
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
           scopeViewerData->addData(SCDATA3,syncProcPtr->currentModePtr->debugStatePtr,syncProcPtr->sampleCounter,RXSTRIPE);
 #endif
         }
@@ -321,7 +322,7 @@ void sstvRx::process()
           syncProcPtr->currentModePtr->init(syncProcPtr->getNewClock());
           switchState(SLANTADJUST);
         }
-#ifndef QT_NO_DEBUG
+#ifdef ENABLESCOPE
       scopeViewerData->addData(SCDATA3,syncProcPtr->currentModePtr->debugStatePtr,syncProcPtr->sampleCounter,RXSTRIPE);
 #endif
       advanceBuffers();
@@ -434,22 +435,26 @@ void sstvRx::eraseImage()
 }
 
 
-#ifndef QT_NO_DEBUG
-unsigned int sstvRx::setOffset(unsigned int offset,bool ask)
+#ifdef ENABLESCOPE
+unsigned int sstvRx::setScopeParam(unsigned int offset, unsigned int numSamples,bool ask)
 {
-  unsigned int xOffset=0;
+  unsigned int xOffset=scopeXOffset;
+  unsigned int xNumSamples=scopeArraySize;
   if(ask)
     {
       scopeOffset so;
-      so.setOffset(offset);
+      so.setOffset(xOffset/1000);
+      so.setNumSamples(xNumSamples/1000);
       if(so.exec()==QDialog::Accepted)
         {
           xOffset=so.getOffset()*1000;
+          xNumSamples=so.getNumSamples()*1000;
         }
     }
   else
     {
       xOffset=offset*1000;
+      xNumSamples=numSamples*1000;
     }
   syncNarrowProc.clear();
   syncWideProc.clear();
@@ -459,6 +464,9 @@ unsigned int sstvRx::setOffset(unsigned int offset,bool ask)
   scopeViewerData->setOffset(xOffset);
 
 
+  syncNarrowProc.setSize(xNumSamples);
+  syncWideProc.setSize(xNumSamples);
+  scopeViewerData->setSize(xNumSamples);
   return xOffset/1000;
 }
 #endif

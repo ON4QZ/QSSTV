@@ -2,9 +2,9 @@
 #define JP2READER_H
 #include "openjpeg.h"
 
-#include <QObject>
 #include <QString>
 #include <QImage>
+#include <QObject>
 
 #define J2K_CFMT 0
 #define JP2_CFMT 1
