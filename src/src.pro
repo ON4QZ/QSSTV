@@ -1,8 +1,9 @@
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network xml
+greaterThan(QT_MAJOR_VERSION, 4): QT += svg widgets network xml
 
-CONFIG += c++11
+#CONFIG += c++11 enablescope
+CONFIG += c++11 silent
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -20,20 +21,18 @@ QMAKE_CXXFLAGS_DEBUG += -O0 -Wno-implicit-fallthrough -Wno-psabi
 QMAKE_CXXFLAGS_RELEASE-= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3 -Wno-implicit-fallthrough -Wno-psabi
 
-INCLUDEPATH += config dispatch drmrx drmtx dsp editor logbook mainwidgets rig scope sound sstv utils widgets xmlrpc videocapt
+INCLUDEPATH += config dispatch drmrx drmtx dsp editor logbook mainwidgets  rig scope sound sstv utils widgets xmlrpc videocapt
 #QMAKE_LIBDIR += $$[QT_SYSROOT]/usr/local/lib
 
 CONFIG += link_pkgconfig
 PKGCONFIG += libopenjp2
-TARGET = qsstv
-macx {
- # Enable pkg-config (pkg-config is disabled by default in the Qt package for mac)
- QT_CONFIG -= no-pkg-config
-}
 
-CONFIG += qwt
+TARGET = qsstv
+
 
 SOURCES += main.cpp\
+    drmtx/common/CDrmTransmitter.cpp \
+    drmtx/common/DRMSignalIO.cpp \
     mainwindow.cpp \
     config/baseconfig.cpp \
     config/soundconfig.cpp \
@@ -53,6 +52,7 @@ SOURCES += main.cpp\
     widgets/markerwidget.cpp \
     dsp/downsamplefilter.cpp \
     utils/arraydumper.cpp \
+    sound/soundalsa.cpp \
     sound/calibration.cpp \
     dsp/synthes.cpp \
     dsp/filterparam.cpp \
@@ -120,8 +120,6 @@ SOURCES += main.cpp\
     drmtx/common/util/Utilities.cpp \
     drmtx/common/csoundout.cpp \
     drmtx/common/DataIO.cpp \
-    drmtx/common/DRMSignalIO.cpp \
-    drmtx/common/CDrmTransmitter.cpp \
     drmtx/common/OFDM.cpp \
     drmtx/common/Parameter.cpp \
     drmtx/bsrform.cpp \
@@ -175,6 +173,10 @@ SOURCES += main.cpp\
     config/repeaterconfig.cpp \
     config/waterfallconfig.cpp \
     utils/hybridcrypt.cpp \
+    videocapt/cameradialog.cpp \
+    videocapt/imagesettings.cpp \
+    videocapt/v4l2control.cpp \
+    videocapt/videocapture.cpp \
     sstv/visfskid.cpp \
     dsp/filters.cpp \
     dsp/filter.cpp \
@@ -193,16 +195,13 @@ SOURCES += main.cpp\
     editor/basegraphicitem.cpp \
     editor/templateviewer.cpp
 
-!macx: SOURCES += sound/soundalsa.cpp \
-    videocapt/cameradialog.cpp \
-    videocapt/imagesettings.cpp \
-    videocapt/v4l2control.cpp \
-    videocapt/videocapture.cpp
 
 HEADERS  += mainwindow.h \
     config/baseconfig.h \
     config/configparams.h \
     config/soundconfig.h \
+    drmtx/common/CDrmTransmitter.h \
+    drmtx/common/DRMSignalIO.h \
     utils/dirdialog.h \
     utils/logging.h \
     utils/loggingparams.h \
@@ -224,6 +223,7 @@ HEADERS  += mainwindow.h \
     dsp/nco.h \
     utils/macroexpansion.h \
     utils/arraydumper.h \
+    sound/soundalsa.h \
     sound/calibration.h \
     dsp/synthes.h \
     dsp/filterparam.h \
@@ -287,8 +287,6 @@ HEADERS  += mainwindow.h \
     drmtx/common/util/Utilities.h \
     drmtx/common/csoundout.h \
     drmtx/common/DataIO.h \
-    drmtx/common/DRMSignalIO.h \
-    drmtx/common/CDrmTransmitter.h \
     drmtx/common/GlobalDefinitions.h \
     drmtx/common/OFDM.h \
     drmtx/common/Parameter.h \
@@ -346,6 +344,10 @@ HEADERS  += mainwindow.h \
     config/repeaterconfig.h \
     config/waterfallconfig.h \
     utils/hybridcrypt.h \
+    videocapt/cameradialog.h \
+    videocapt/imagesettings.h \
+    videocapt/v4l2control.h \
+    videocapt/videocapture.h \
     sstv/visfskid.h \
     dsp/filters.h \
     dsp/filter.h \
@@ -364,13 +366,6 @@ HEADERS  += mainwindow.h \
     utils/ftpfunctions.h \
     editor/basegraphicitem.h \
     editor/templateviewer.h
-
-!macx: HEADERS +=  sound/soundalsa.h \
-    videocapt/cameradialog.h \
-    videocapt/imagesettings.h \
-    videocapt/v4l2control.h \
-    videocapt/videocapture.h
-
 
 FORMS += mainwindow.ui \
     config/guiconfig.ui \
@@ -404,15 +399,14 @@ FORMS += mainwindow.ui \
     mainwidgets/txwidget.ui \
     widgets/freqform.ui \
     rig/freqdisplay.ui \
+    videocapt/cameradialog.ui \
+    videocapt/imagesettings.ui \
     widgets/drmsegmentsview.ui \
     drmrx/fixform.ui \
     config/frequencyselectwidget.ui \
     editor/canvassizeform.ui \
     widgets/testpatternselection.ui \
     editor/templateviewer.ui
-
-!macx: FORMS += videocapt/cameradialog.ui \
-    videocapt/imagesettings.ui
 
 
 OTHER_FILES += \
@@ -445,63 +439,8 @@ OTHER_FILES += \
     icons/tone.png \
     icons/transparency.png \
     icons/whatsthis.png \
-    documentation/manual/qsstv.css \
-    documentation/manual/images/rxdrm_segments.png \
-    documentation/manual/images/hybrid_dis_checkbox.png \
-    documentation/manual/images/hybrid_checkbox.png \
-    documentation/manual/images/statusleds.png \
-    documentation/manual/images/txdrm_compression.png \
-    documentation/manual/images/rxdrm_constellation.png \
-    documentation/manual/images/statusbar.png \
-    documentation/manual/images/wf_bsr_id.png \
-    documentation/manual/images/bsr_nfy.png \
-    documentation/manual/images/rxdrm_status.png \
-    documentation/manual/images/txdrm_status.png \
-    documentation/manual/images/config.png \
-    documentation/manual/images/calibration.png \
-    documentation/manual/images/wftextpopup.png \
-    documentation/manual/images/txdrm_options.png \
-    documentation/manual/images/editor_1.png \
-    documentation/manual/images/bsr_select.png \
-    documentation/manual/images/config9.png \
-    documentation/manual/images/cqrlog1.png \
-    documentation/manual/images/config5.png \
-    documentation/manual/images/config1.png \
-    documentation/manual/images/config8.png \
-    documentation/manual/images/config11.png \
-    documentation/manual/images/flrig1.png \
-    documentation/manual/images/editor_2.png \
-    documentation/manual/images/config6.png \
-    documentation/manual/images/config3.png \
-    documentation/manual/images/fix.png \
-    documentation/manual/images/config2.png \
-    documentation/manual/images/config10.png \
-    documentation/manual/images/config7.png \
-    documentation/manual/images/config4.png \
-    documentation/manual/images/cqrlog2.png \
-    documentation/manual/images/Gallery_template.png \
-    documentation/manual/images/editor_3.png \
-    documentation/manual/images/waterfall.png \
-    documentation/manual/images/receivedrm.png \
-    documentation/manual/images/Gallery_tx.png \
-    documentation/manual/images/transmitdrm.png \
-    documentation/manual/images/tx-with-template.png \
-    documentation/manual/images/Gallery_rx.png \
-    documentation/manual/manual.txt \
-    documentation/manual/manual.doxy \
-    documentation/manual/images/txwidget1.png \
-    documentation/manual/images/rxwidget1.png \
-    icons/binary.png \
-    documentation/manual/images/Gallery_image_options.png \
-    documentation/manual/images/refreshbutton.png \
-    documentation/manual/images/config12.png \
-    documentation/manual/images/vk4aes.jpg \
-    documentation/manual/images/multiline.png \
-    documentation/manual/images/entertext.png \
-    documentation/manual/images/editor_image_size.png \
-    documentation/manual/images/Gallery_templates.png \
-    documentation/manual/images/Gallery_txdrm.png
-    
+    icons/binary.png
+
 
 
 contains(QMAKE_HOST.arch, arm.*):{
@@ -510,21 +449,8 @@ contains(QMAKE_HOST.arch, arm.*):{
     }
   else {
        message(Compiling for x86)
-       CONFIG(debug ,debug|release){
-       dox.commands = cd $$PWD/documentation/manual ;doxygen  manual.doxy; cd $$PWD ;doxygen  $$PWD/documentation/api/api.doxy;
-       dox.depends= FORCE
-       PRE_TARGETDEPS       +=    dox
-       message(dox will be generated)
        }
-    }
 
-
-
-
-
-dox.path=/usr/share/doc/$$TARGET
-dox.files= $$PWD/manual/*
-QMAKE_EXTRA_TARGETS   +=   dox
 
 
 isEmpty(PREFIX) {
@@ -537,70 +463,39 @@ shortcutfiles.path = $$PREFIX/share/applications/
 data.files += icons/qsstv.png
 data.path=$$PREFIX/share/icons/hicolor/42x42/apps/
 
-
-
 RESOURCES += \
     qsstv.qrc
 
 
-
-DISTFILES += \
-    COPYING \
-    README.txt \
-    documentation/manual/images/i_binary.png \
-    documentation/manual/images/i_eraser.png \
-    qsstv.desktop \
-    documentation/api/api.doxy \
-    documentation/manual/images/editor_1b.png \
-    documentation/manual/images/editor_2b.png \
-    documentation/manual/images/editor_image_sizeb.png \
-    documentation/manual/images/entertextb.png \
-    documentation/manual/images/multilineb.png \
-    documentation/manual/images/editor_text_rotate.png \
-    documentation/manual/images/editor_rotate2.png \
-    documentation/manual/images/editor_rotate.png \
-    documentation/manual/images/editor_resize.png \
-    documentation/manual/images/transmitdrmb.png \
-    documentation/manual/images/editor_2b.png \
-    documentation/manual/images/multilineb.png \
-    documentation/manual/images/entertextb.png \
-    documentation/manual/images/editor_image_sizeb.png \
-    documentation/manual/images/editor_1b.png \
-    documentation/manual/images/rxwidget1.png \
-    documentation/manual/images/Gallery_image_options.png \
-    documentation/manual/images/pavu_playback.png \
-    documentation/manual/images/pavu_rec.png \
-    documentation/manual/images/spectrum_wf.png \
-    documentation/manual/images/receivedrm.png \
-    documentation/manual/images/pavu_rec.png \
-    documentation/manual/images/pavu_playback.png \
-    documentation/manual/images/editor_2b.png \
-    documentation/manual/images/transmitdrmb.png \
-    documentation/manual/images/editor_text_rotate.png \
-    documentation/manual/images/editor_rotate2.png \
-    documentation/manual/images/editor_rotate.png \
-    documentation/manual/images/editor_resize.png \
-    documentation/manual/images/multilineb.png \
-    documentation/manual/images/entertextb.png \
-    documentation/manual/images/editor_image_sizeb.png \
-    documentation/manual/images/editor_1b.png \
-    documentation/manual/images/spectrum1.png \
-    documentation/manual/images/cat_flrig.png
-
-
 INSTALLS += target
 
-LIBS +=  -lpulse \
+LIBS +=  -lasound \
+         -lpulse \
          -lpulse-simple \
          -lfftw3f \
          -lfftw3 \
-         -lhamlib
-
-!macx: LIBS +=  -lasound \
+         -lhamlib \
          -lv4l2 \
          -lv4lconvert \
          -lrt
-CONFIG(debug ,debug|release){
+
+
+if(CONFIG(debug,debug|release)|CONFIG(enablescope)){
+message(including scope)
+greaterThan(QT_MAJOR_VERSION,5){
+message(QT6)
+INCLUDEPATH += /usr/local/qwt-qt6/include
+LIBS += -L/usr/local/qwt-qt6/lib -lqwt
+}
+else{
+message(QT5)
+INCLUDEPATH += /usr/local/qwt-qt5/include
+LIBS += -L/usr/local/qwt-qt5/lib -lqwt
+}
+
+
+
+DEFINES +=ENABLESCOPE
 
 SOURCES +=      scope/scopeoffset.cpp \
                 scope/scopeview.cpp \
@@ -608,10 +503,7 @@ SOURCES +=      scope/scopeoffset.cpp \
 HEADERS  += scope/scopeoffset.h \
                 scope/scopeview.h \
                 scope/scopeplot.h
-
 FORMS   += scope/scopeoffset.ui \
                 scope/plotform.ui
-
-!macx: INCLUDEPATH += /usr/include/qwt /usr/include/qt5/qwt
-!macx: LIBS += -lqwt-qt5
 }
+
