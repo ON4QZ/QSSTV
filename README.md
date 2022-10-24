@@ -38,3 +38,11 @@ You can also run qmake with the following atributes:
 `qmake CONFIG+=debug`
 
 and use an external debugger (such as gdb)
+
+## Copying
+QSSTV uses Qt see http://qt.digia.com/ if any restrictions apply.
+
+As far as I know, QSSTV does not use any none-public software.
+If there are doubts, please let me know by email: on4qz@telenet.be
+
+If part of whole of this code is used, you have to include a statement to indicate that the program is based in whole or in part on QSSTV.
