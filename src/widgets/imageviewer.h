@@ -103,7 +103,7 @@ public:
 
 
   int applyTemplate();
-
+  void setTXEnabled(bool enabled);
 
 protected:
   void resizeEvent(QResizeEvent *);
@@ -126,7 +126,6 @@ private slots:
   void slotZoomOut();
   void slotLeftClick();
   void slotJp2ImageDone(bool success, bool fromCache);
-
 
 signals:
   void layoutChanged();
@@ -186,6 +185,7 @@ private:
   QString cacheFileName;
   QString cachePath;
   bool  processImageDisplay(bool success, bool showMessage, bool fromCache);
+  void setCanTX(bool canTx);
 #ifdef IMAGETESTVIEWER
   void imageTestViewer(QImage *im, QString infoStr);
 #endif

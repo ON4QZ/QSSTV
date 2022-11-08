@@ -62,6 +62,15 @@ void galleryWidget::slotDirChanged(QString dn)
     }
 }
 
+void galleryWidget::setTXEnabled(bool enabled) {
+    ui->rxSSTVMatrix->setTXEnabled(enabled);
+    ui->rxDRMMatrix->setTXEnabled(enabled);
+    ui->txSSTVMatrix->setTXEnabled(enabled);
+    ui->txDRMMatrix->setTXEnabled(enabled);
+    ui->txStockMatrix->setTXEnabled(enabled);
+    ui->templateMatrix->setTXEnabled(enabled);
+}
+
 
 void galleryWidget::changedMatrix(imageViewer::thumbType itype)
 {

@@ -27,9 +27,11 @@ public:
   void putRxImage(QString fn);
   void txImageChanged ();
   void txStockImageChanged();
+  void setTXEnabled(bool enabled);
   QString getTemplateFileName(int);
   const QStringList &getFilenames();
   QString getLastRxImage();
+
 
 public slots:
   void slotDirChanged(QString);

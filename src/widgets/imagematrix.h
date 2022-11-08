@@ -22,6 +22,7 @@ public:
   QFileInfoList getFileList(){return fileList;}
   QString getLastFile();
   void setSortFlag(QDir::SortFlags sf) {sortFlags=sf;}
+  void setTXEnabled(bool enabled);
 
 private:
   void getList();
