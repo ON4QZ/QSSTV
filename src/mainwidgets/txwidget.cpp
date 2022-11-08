@@ -44,6 +44,7 @@ txWidget::txWidget(QWidget *parent) :  QWidget(parent), ui(new Ui::txWidget)
 
   connect(ui->sstvModeComboBox,SIGNAL(activated(int)),SLOT(slotModeChanged(int )));
   connect(ui->sstvResizeComboBox,SIGNAL(activated(int)),SLOT(slotResizeChanged(int)));
+  connect(ui->alignImageButtonGroup,SIGNAL(buttonClicked(QAbstractButton*)),SLOT(slotAlignmentChange(QAbstractButton*)));
 
   connect(ui->drmTxBandwidthComboBox,SIGNAL(activated(int)),SLOT(slotGetTXParams()));
   connect(ui->drmTxInterleaveComboBox,SIGNAL(activated(int)),SLOT(slotGetTXParams()));
@@ -636,20 +637,47 @@ void txWidget::slotModeChanged(int m)
 
 void txWidget::slotResizeChanged(int i)
 {
+  QList<QAbstractButton*> buttons = ui->alignImageButtonGroup->buttons();
   switch (i) {
     case 0: // Stretch
+      for( int s=0; s<buttons.count(); ++s )
+      {
+        buttons[s]->setEnabled(false);
+      }
       imageViewerPtr->setAspectMode(Qt::IgnoreAspectRatio);
       break;
     case 1: // Crop
+      for( int s=0; s<buttons.count(); ++s )
+      {
+        buttons[s]->setEnabled(true);
+      }
       imageViewerPtr->setAspectMode(Qt::KeepAspectRatioByExpanding);
       break;
     case 2: // Fit
+      for( int s=0; s<buttons.count(); ++s )
+      {
+        buttons[s]->setEnabled(true);
+      }
       imageViewerPtr->setAspectMode(Qt::KeepAspectRatio);
       break;
     }
   applyTemplate();
 }
 
+void txWidget::slotAlignmentChange(QAbstractButton* button) {
+    int i = 4;
+    if (button->objectName() == "alignButtonTopCenter") {
+      i = 1;
+    }else if (button->objectName() == "alignButtonCenterLeft") {
+      i = 3;
+    }else if (button->objectName() == "alignButtonCenterRight") {
+      i = 5;
+    }else if (button->objectName() == "alignButtonBottomCenter") {
+      i = 7;
+    }
+    imageViewerPtr->setImageAlignment(i);
+    applyTemplate();
+}
 
 
 
