@@ -66,7 +66,8 @@ void V4L2Control::updateHardware()
     {
       QString msg;
       msg=QString("Unable to set %1\n%2").arg(name).arg(strerror(errno));
-      QMessageBox::warning(this, "Unable to set control", msg, "OK");
+      (void)QMessageBox::warning(this, "Unable to set control", msg,
+                                 QMessageBox::Ok, QMessageBox::Ok);
     }
   updateStatus();
 }
@@ -79,7 +80,8 @@ void V4L2Control::updateStatus()
     {
       QString msg;
       msg=QString("Unable to get %1\n%2").arg(name).arg(strerror(errno));
-      QMessageBox::warning(this, "Unable to get control", msg, "OK");
+      (void)QMessageBox::warning(this, "Unable to get control", msg,
+                                 QMessageBox::Ok, QMessageBox::Ok);
     }
   else
     {
@@ -92,7 +94,8 @@ void V4L2Control::updateStatus()
     {
       QString msg;
       msg=QString("Unable to get %1\n%2").arg(name).arg(strerror(errno));
-      QMessageBox::warning(this, "Unable to get control status", msg, "OK");
+      (void)QMessageBox::warning(this, "Unable to get control status", msg,
+                                 QMessageBox::Ok, QMessageBox::Ok);
     }
   else
     {
@@ -290,7 +293,8 @@ void V4L2ButtonControl::updateStatus()
   if(v4l2_ioctl(fd, VIDIOC_QUERYCTRL, &ctrl) == -1) {
       QString msg;
       msg=QString("Unable to get the status of %1\n%2").arg(name).arg(strerror(errno));
-      QMessageBox::warning(this, "Unable to get control status", msg, "OK");
+      (void)QMessageBox::warning(this, "Unable to get control status", msg,
+                                 QMessageBox::Ok, QMessageBox::Ok);
     } else {
       setEnabled((ctrl.flags &( V4L2_CTRL_FLAG_DISABLED | V4L2_CTRL_FLAG_GRABBED)) == 0);
     }
