@@ -2,17 +2,14 @@
 QSSTV is a program for receiving and transmitting SSTV and HAMDRM (sometimes called DSSTV). It is compatible with most of MMSSTV and EasyPal
 
 ## Installation
-### Dependencies
-* pkg-config
-* g++
-* libfftw3-dev
-* qt5-default
-* hamlib-dev or libhamlib++-dev
-* libasound2-dev
-* libpulse-dev
-* libopenjp2-7
-* libopenjp2-7-dev
-* libv4l-dev
+
+### Dependencies 
+
+For Ubuntu 20 you can install dependencies as follows:
+
+```
+apt install pkg-config g++ libfftw3-dev qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libhamlib++-dev libasound2-dev libpulse-dev libopenjp2-7 libopenjp2-7-dev libv4l-dev build-essential
+```
 
 ### Compile and Install
 	mkdir src/build
