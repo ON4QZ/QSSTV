@@ -101,6 +101,7 @@ public slots:
 
   void slotModeChanged(int);
   void slotResizeChanged(int);
+  void slotAlignmentChange(QAbstractButton*);
   void slotBinary();
   void slotHybridToggled();
   void slotNotifyTimeout();

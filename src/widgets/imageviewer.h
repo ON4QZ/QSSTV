@@ -90,6 +90,7 @@ public:
   //  int calcSize(int &sizeRatio);
   uint setSize(int tcommpressSize,bool usesCompression);
   void setAspectMode(Qt::AspectRatioMode mode);
+  void setImageAlignment(int align);
   int getFileSize(){return fileSize;}
   QString toCall;
   QString toOperator;
@@ -168,6 +169,7 @@ private:
   bool useCompression;
   QString templateFileName;
   Qt::AspectRatioMode aspectRatioMode;
+  int imageAlignment;
   bool useTemplate;
   int targetWidth;
   int targetHeight;
