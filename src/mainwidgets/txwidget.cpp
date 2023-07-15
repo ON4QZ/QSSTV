@@ -491,6 +491,7 @@ void txWidget::enableButtons(bool enable)
   ui->templateCheckBox->setEnabled(enable);
   ui->templatesComboBox->setEnabled(enable);
   ui->refreshPushButton->setEnabled(enable);
+  galleryWidgetPtr->setTXEnabled(enable);
 }
 
 

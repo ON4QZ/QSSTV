@@ -116,6 +116,10 @@ void imageViewer::init(thumbType tp)
   clear();
 }
 
+void imageViewer::setTXEnabled(bool enabled) {
+  toTXAct->setEnabled(enabled);
+}
+
 bool imageViewer::openImage(QString &filename,QString start,bool ask,bool showMessage,bool temitSignal,bool fromCache,bool background)
 {
   //background=false;

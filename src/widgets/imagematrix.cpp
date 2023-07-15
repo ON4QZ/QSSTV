@@ -1,4 +1,4 @@
-#include "imagematrix.h"
+﻿#include "imagematrix.h"
 #include "configparams.h"
 #include <QDir>
 #include <QDebug>
@@ -241,4 +241,16 @@ void imageMatrix::slotLayoutChanged()
     }
   currentPage=curPag;
   displayFiles();
+}
+
+void imageMatrix::setTXEnabled(bool enabled) {
+    int i,j;
+
+    for(i=0;i<rows;i++)
+    {
+        for(j=0;j<columns;j++)
+        {
+            ((imageViewer *)gridLayout->itemAtPosition(i,j)->widget())->setTXEnabled(enabled);
+        }
+    }
 }
