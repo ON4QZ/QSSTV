@@ -191,7 +191,7 @@ bool fskIdDecoder::assemble(bool reset)
       checksum=checksum^symbol;
       fskIDStr.append(char(symbol+0x20));
       addToLog(QString("fskstr %1 %2").arg(fskIDStr).arg(QString::number(symbol,16)),LOGFSKID);
-      if(fskIDStr.length()>9)
+      if(fskIDStr.length()>10)
         {
           fskIDStr.clear();
           return true;
