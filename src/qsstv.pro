@@ -535,7 +535,7 @@ target.path = $$PREFIX/bin
 shortcutfiles.files =qsstv.desktop
 shortcutfiles.path = $$PREFIX/share/applications/
 data.files += icons/qsstv.png
-data.path=$$PREFIX/share/icons/hicolor/42x42/apps/
+data.path=$$PREFIX/share/icons/hicolor/128x128/apps/
 
 
 
