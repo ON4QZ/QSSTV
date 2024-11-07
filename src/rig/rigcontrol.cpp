@@ -115,6 +115,9 @@ bool rigControl::init()
 {
   int retcode;
   if(!catParams.enableCAT) return false;
+  if (catParams.enableHamlibNetworkControl) {
+      return initHamlibNetwork();  // Initialize network connection if enabled
+  }
 
   catParams.radioModelNumber=getModelNumber(getRadioModelIndex());
   my_rig = rig_init(catParams.radioModelNumber);
