@@ -254,6 +254,22 @@ void rigConfig::slotEnableCAT()
     {
       rigController->disable();
     }
+  // Handle Hamlib Network Control separately from CAT
+    if (ui->hamNetCheck->isChecked())
+    {
+        enableHamlibNetworkControl = true;  // Enable network control
+        rigController->init();  // Initialize with network control
+    }
+    else if (ui->enableCATCheckBox->isChecked())
+    {
+        enableHamlibNetworkControl = false;  // Disable network control if CAT is enabled
+        ui->enableXMLRPCCheckBox->setChecked(false);
+        rigController->init();  // Initialize with regular CAT control
+    }
+    else
+    {
+        rigController->disable();  // Disable both if neither is enabled
+    }
   getParams();
 }
 
