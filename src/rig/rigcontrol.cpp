@@ -111,188 +111,84 @@ rigControl::~rigControl()
   rig_cleanup(my_rig); /* if you care about memory */
 }
 
-bool rigControl::init()
-{
-  int retcode;
-  if(!catParams.enableCAT) return false;
-  if (catParams.enableHamlibNetworkControl) {
-      return initHamlibNetwork();  // Initialize network connection if enabled
-  }
+bool rigControl::init() {
+    int retcode;
 
-  catParams.radioModelNumber=getModelNumber(getRadioModelIndex());
-  my_rig = rig_init(catParams.radioModelNumber);
-  if(!my_rig)
-    {
-      addToLog(QString("Error in connection using radio model %1").arg(catParams.radioModel),LOGALL);
-      initError=QString("Error in connection using radio model %1").arg(catParams.radioModel);
-      return false;
-    }
-
-  if(QString(my_rig->caps->mfg_name)=="Icom")
-    {
-      if(!catParams.civAddress.isEmpty())
-        {
-          rig_set_conf(my_rig, rig_token_lookup(my_rig, "civaddr"), catParams.civAddress.toLatin1());
-        }
-    }
-  if(!catParams.serialPort.isEmpty())
-    {
-      strncpy(my_rig->state.rigport.pathname,(const char *)catParams.serialPort.toLatin1().data(),HAMLIB_FILPATHLEN-1);
-    }
-  my_rig->state.rigport.parm.serial.rate = catParams.baudrate;
-  my_rig->state.rigport.parm.serial.data_bits=catParams.databits;
-  my_rig->state.rigport.parm.serial.stop_bits=catParams.stopbits;
-  if(catParams.parity=="Even") my_rig->state.rigport.parm.serial.parity= RIG_PARITY_EVEN;
-  else if (catParams.parity=="Odd") my_rig->state.rigport.parm.serial.parity = RIG_PARITY_ODD;
-  else  my_rig->state.rigport.parm.serial.parity = RIG_PARITY_NONE;
-  if(catParams.handshake=="XOn/Xoff") my_rig->state.rigport.parm.serial.handshake = RIG_HANDSHAKE_XONXOFF;
-  if(catParams.handshake=="Hardware") my_rig->state.rigport.parm.serial.handshake = RIG_HANDSHAKE_HARDWARE;
-  else my_rig->state.rigport.parm.serial.handshake = RIG_HANDSHAKE_NONE;
-  my_rig->state.pttport.type.ptt = catParams.pttType;
-
-  addToLog(QString("rigcontrol:init rigport.pathname: %1").arg(my_rig->state.rigport.pathname),LOGRIGCTRL);
-  retcode = rig_open(my_rig);
-
-  if (retcode != RIG_OK )
-    {
-      addToLog(QString("CAT Error: %1").arg(QString(rigerror(retcode))),LOGALL);
-      initError=QString("CAT Error: %1").arg(QString(rigerror(retcode)));
-      return false;
-    }
-  addToLog("rigcontroller successfully opened",LOGRIGCTRL);
-  rigControlEnabled=true;
-
-
-
-  // int verbose=0;
-  // rig_set_debug(verbose<2 ? RIG_DEBUG_NONE: (rig_debug_level_e)verbose);
-  // rig_debug(RIG_DEBUG_VERBOSE, "rigctl, %s\n", hamlib_version);
-  // test if we can contact the tranceiver
-
-  canSetFreq=(my_rig->caps->set_freq != NULL);
-  canGetFreq=(my_rig->caps->get_freq != NULL);
-  canSetMode=(my_rig->caps->set_mode != NULL);
-  canGetMode=(my_rig->caps->get_mode != NULL);
-  canSetPTT=(my_rig->caps->set_ptt != NULL) ||
-          (my_rig->state.pttport.type.ptt == RIG_PTT_SERIAL_DTR) ||
-          (my_rig->state.pttport.type.ptt == RIG_PTT_SERIAL_RTS);
-  canGetPTT=(my_rig->caps->get_ptt != NULL);
-  double fr;
-  getFrequency(fr);
-  return true;
-}
-
-
-bool rigControl::getFrequency(double &frequency) {
-    // Network control check
-    if (catParams.enableHamlibNetworkControl) {
-        if (!sendHamlibCommand("f")) {  // 'f' command to get frequency
-            return false;
-        }
-        QString response = readHamlibResponse();
-        if (response.startsWith("RPRT 0")) {
-            frequency = response.section(' ', 1).toDouble();  // Parse frequency from response
-            return true;
-        }
+    // Check if CAT control is enabled
+    if (!catParams.enableCAT) {
+        addToLog("CAT control is disabled.", LOGALL);
         return false;
     }
-
-    // Serial interface (existing functionality)
-    if (catParams.enableXMLRPC) {
-        frequency = xmlIntfPtr->getFrequency();
-        return true;
-    }
-
-    if (!rigControlEnabled || !canGetFreq) return false;
-
-    int retcode = rig_get_freq(my_rig, RIG_VFO_CURR, &frequency);
-    for (int i = 0; i < RIGCMDTRIES && retcode != RIG_OK; i++) {
-        retcode = rig_get_freq(my_rig, RIG_VFO_CURR, &frequency);
-    }
-
-    if (retcode == RIG_OK) {
-        return true;
-    }
-    
-    canGetFreq = false;  // Disable if too many errors
-    frequency = lastFrequency;
-    return false;
-}
-
-
-bool rigControl::setFrequency(double frequency) {
-    int retcode = -1;
 
     // Check if Hamlib Network Control is enabled
     if (catParams.enableHamlibNetworkControl) {
-        // If enabled, use network command
-        QString command = QString("F %1").arg(frequency);
-        if (!sendHamlibCommand(command)) {
+        addToLog("Attempting to initialize Hamlib Network Control...", LOGALL);
+        if (initHamlibNetwork()) {
+            rigControlEnabled = true;
+            addToLog("Hamlib Network Control successfully initialized.", LOGRIGCTRL);
+            return true;
+        } else {
+            addToLog("Failed to initialize Hamlib Network Control.", LOGALL);
             return false;
         }
-        QString response = readHamlibResponse();
-        return response.startsWith("RPRT 0");  // Hamlib success response for network commands
     }
 
-    // Standard Hamlib Serial Interface (existing functionality)
-    if (catParams.enableXMLRPC) {
-        xmlIntfPtr->setFrequency(frequency);
-        return true;
-    }
+    // Proceed with Serial Control setup
+    catParams.radioModelNumber = getModelNumber(getRadioModelIndex());
+    my_rig = rig_init(catParams.radioModelNumber);
 
-    if (!rigControlEnabled || !canSetFreq) return false;
-
-    for (int i = 0; i < RIGCMDTRIES; i++) {
-        retcode = rig_set_freq(my_rig, RIG_VFO_CURR, frequency);
-        if (retcode == RIG_OK) {
-            return true;
-        }
-    }
-
-    errorMessage(retcode, "setFrequency");
-    canSetFreq = false;  // Disable if too many errors
-    return false;
-}
-
-
-bool rigControl::getMode(QString &mode) {
-    // Network control check
-    if (catParams.enableHamlibNetworkControl) {
-        if (!sendHamlibCommand("m")) {  // 'm' command to get mode
-            return false;
-        }
-        QString response = readHamlibResponse();
-        if (response.startsWith("RPRT 0")) {
-            mode = response.section(' ', 1);  // Parse mode from response
-            return true;
-        }
+    if (!my_rig) {
+        addToLog(QString("Error in connection using radio model %1").arg(catParams.radioModel), LOGALL);
+        initError = QString("Error in connection using radio model %1").arg(catParams.radioModel);
         return false;
     }
 
-    // Serial interface (existing functionality)
-    if (catParams.enableXMLRPC) {
-        mode = xmlIntfPtr->getMode();
-        return true;
+    // Configure rig settings for serial control
+    if (QString(my_rig->caps->mfg_name) == "Icom" && !catParams.civAddress.isEmpty()) {
+        rig_set_conf(my_rig, rig_token_lookup(my_rig, "civaddr"), catParams.civAddress.toLatin1());
+    }
+    
+    if (!catParams.serialPort.isEmpty()) {
+        strncpy(my_rig->state.rigport.pathname, catParams.serialPort.toLatin1().data(), HAMLIB_FILPATHLEN - 1);
+    }
+    my_rig->state.rigport.parm.serial.rate = catParams.baudrate;
+    my_rig->state.rigport.parm.serial.data_bits = catParams.databits;
+    my_rig->state.rigport.parm.serial.stop_bits = catParams.stopbits;
+    my_rig->state.rigport.parm.serial.parity = (catParams.parity == "Even") ? RIG_PARITY_EVEN : 
+                                               (catParams.parity == "Odd") ? RIG_PARITY_ODD : RIG_PARITY_NONE;
+    my_rig->state.rigport.parm.serial.handshake = (catParams.handshake == "XOn/Xoff") ? RIG_HANDSHAKE_XONXOFF :
+                                                   (catParams.handshake == "Hardware") ? RIG_HANDSHAKE_HARDWARE : RIG_HANDSHAKE_NONE;
+    my_rig->state.pttport.type.ptt = catParams.pttType;
+
+    // Attempt to open serial connection
+    addToLog(QString("Initializing rigcontrol on serial port: %1").arg(my_rig->state.rigport.pathname), LOGRIGCTRL);
+    retcode = rig_open(my_rig);
+
+    if (retcode != RIG_OK) {
+        addToLog(QString("CAT Error: %1").arg(rigerror(retcode)), LOGALL);
+        initError = QString("CAT Error: %1").arg(rigerror(retcode));
+        return false;
     }
 
-    rmode_t rmode;
-    pbwidth_t width;
-    if (!rigControlEnabled || !canGetMode) return false;
+    rigControlEnabled = true;
+    addToLog("rigcontroller successfully opened via serial.", LOGRIGCTRL);
 
-    int retcode = rig_get_mode(my_rig, RIG_VFO_CURR, &rmode, &width);
-    for (int i = 0; i < RIGCMDTRIES && retcode != RIG_OK; i++) {
-        retcode = rig_get_mode(my_rig, RIG_VFO_CURR, &rmode, &width);
-    }
+    // Check capabilities for serial-based control
+    canSetFreq = (my_rig->caps->set_freq != NULL);
+    canGetFreq = (my_rig->caps->get_freq != NULL);
+    canSetMode = (my_rig->caps->set_mode != NULL);
+    canGetMode = (my_rig->caps->get_mode != NULL);
+    canSetPTT = (my_rig->caps->set_ptt != NULL) || 
+                (my_rig->state.pttport.type.ptt == RIG_PTT_SERIAL_DTR) || 
+                (my_rig->state.pttport.type.ptt == RIG_PTT_SERIAL_RTS);
+    canGetPTT = (my_rig->caps->get_ptt != NULL);
 
-    if (retcode == RIG_OK) {
-        mode = QString(rig_strrmode(rmode));
-        return true;
-    }
-
-    canGetMode = false;  // Disable if too many errors
-    errorMessage(retcode, "getMode");
-    return false;
+    // Test serial connection by getting frequency
+    double fr;
+    getFrequency(fr);
+    return true;
 }
+
 
 
 bool rigControl::setMode(QString mode, QString passBand) {
