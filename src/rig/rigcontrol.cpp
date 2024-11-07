@@ -511,6 +511,15 @@ void rigControl::activatePTT(bool b)
     }
 }
 
+void rigControl::disable()
+{
+  if(rigControlEnabled)
+    {
+      rig_close(my_rig); /* close port */
+      rig_cleanup(my_rig);
+      rigControlEnabled=false;
+    }
+}
 
 int  rigControl::rawCommand(QByteArray ba)
 {
