@@ -42,6 +42,7 @@ rigConfig::rigConfig(QWidget *parent) : baseConfig(parent),  ui(new Ui::rigConfi
   connect(ui->nDTRCheckBox,SIGNAL(clicked()),SLOT(slotCheckPTT3()));
   connect(ui->hamNetCheck, SIGNAL(clicked()), SLOT(slotEnableHamlibNetworkControl()));
 
+
   rigController=NULL;
   cp=NULL;
   // Initialize hamlib variables
@@ -143,7 +144,7 @@ void rigConfig::getParams()
   getValue(cp->nactiveDTR,ui->nDTRCheckBox);
   getValue(enableHamlibNetworkControl, ui->hamNetCheck);
   getValue(hamlibHost, ui->hamlibIpEdit);
-  getValue(hamlibPort, ui->hamlibPortEdit);
+  getValue(hamlibPort, ui->hamLibPortEdit);
   if(ui->noPttRadioButton->isChecked()) cp->pttType=RIG_PTT_NONE;
   if(ui->catVoiceRadioButton->isChecked()) cp->pttType=RIG_PTT_RIG;
   if(ui->catDataRadioButton->isChecked()) cp->pttType=RIG_PTT_RIG_MICDATA;
@@ -191,7 +192,7 @@ void rigConfig::setParams()
   setValue(cp->pttSerialPort,ui->pttSerialPortLineEdit);
   setValue(enableHamlibNetworkControl, ui->hamNetCheck);
   setValue(hamlibHost, ui->hamlibIpEdit);
-  setValue(hamlibPort, ui->hamlibPortEdit);
+  setValue(hamlibPort, ui->hamLibPortEdit);
   if(cp->activeRTS) cp->nactiveRTS=false;
   if(cp->activeDTR) cp->nactiveDTR=false;
 
