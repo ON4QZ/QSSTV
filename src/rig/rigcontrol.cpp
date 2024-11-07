@@ -555,23 +555,4 @@ int  rigControl::rawCommand(QByteArray ba)
 
 }
 
-bool rigControl::sendHamlibCommand(const QString &command) {
-    if (!hamlibSocket || !hamlibSocket->isOpen()) {
-        if (!initHamlibNetwork()) {
-            return false;
-        }
-    }
-
-    QString fullCommand = command + "\n";  // Hamlib expects newline
-    hamlibSocket->write(fullCommand.toUtf8());
-
-    return hamlibSocket->waitForBytesWritten(1000);  // 1-second timeout for writing
-}
-
-QString rigControl::readHamlibResponse() {
-    if (hamlibSocket->waitForReadyRead(1000)) {  // 1-second timeout for reading
-        return QString::fromUtf8(hamlibSocket->readAll()).trimmed();
-    }
-    return QString();
-}
 
