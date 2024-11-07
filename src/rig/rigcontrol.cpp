@@ -547,5 +547,3 @@ int  rigControl::rawCommand(QByteArray ba)
 }
 
 
-}
-
