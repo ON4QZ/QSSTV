@@ -33,7 +33,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <QTcpSocket>
+
 
 #define MAXCONFLEN 128
 #ifndef HAMLIB_FILPATHLEN
@@ -44,47 +44,6 @@
 QList<const rig_caps *> capsList;
 bool radiolistLoaded=false;
 
-
-bool rigControl::initHamlibNetwork() {
-    // Check if socket is open and close if needed
-    if (hamlibSocket && hamlibSocket->isOpen()) {
-        hamlibSocket->close();
-    }
-
-    // Initialize the socket if it doesn’t exist
-    if (!hamlibSocket) {
-        hamlibSocket = new QTcpSocket(this);
-    }
-
-    // Connect to the host and port specified in config
-    hamlibSocket->connectToHost(catParams.hamlibHost, catParams.hamlibPort);
-
-    // Check if connected successfully
-    if (!hamlibSocket->waitForConnected(3000)) {  // 3-second timeout
-        QMessageBox::critical(nullptr, "Hamlib Connection Error", "Failed to connect to Hamlib server.");
-        return false;
-    }
-
-    return true;
-}
-
-bool rigControl::sendHamlibCommand(const QString &command) {
-    if (!hamlibSocket->isOpen() && !initHamlibNetwork()) {
-        return false;
-    }
-
-    QString fullCommand = command + "\n";  // Hamlib expects commands with newline
-    hamlibSocket->write(fullCommand.toUtf8());
-
-    return hamlibSocket->waitForBytesWritten(1000);  // 1-second timeout for writing
-}
-
-QString rigControl::readHamlibResponse() {
-    if (hamlibSocket->waitForReadyRead(1000)) {  // 1-second timeout for reading
-        return QString::fromUtf8(hamlibSocket->readAll()).trimmed();
-    }
-    return QString();
-}
 
 
 
@@ -114,21 +73,6 @@ rigControl::~rigControl()
 bool rigControl::init()
 {
   int retcode;
-  if (catParams.enableHamlibNetworkControl) {
-        // Attempt to initialize network connection to Hamlib server
-        if (!initHamlibNetwork()) {
-            addToLog("Failed to initialize Hamlib Network Control.", LOGALL);
-            initError = "Hamlib Network Control initialization failed";
-            
-            return false;
-        }
-        addToLog("Hamlib Network Control initialized successfully.", LOGRIGCTRL);
-        
-        rigControlEnabled = true;
-        
-        return true;
-    }
-
   if(!catParams.enableCAT) return false;
 
   catParams.radioModelNumber=getModelNumber(getRadioModelIndex());
@@ -195,162 +139,149 @@ bool rigControl::init()
 }
 
 
-bool rigControl::getFrequency(double &frequency) {
-    // Network control check
-    if (catParams.enableHamlibNetworkControl) {
-        if (!sendHamlibCommand("f")) {  // 'f' command to get frequency
-            return false;
+bool rigControl::getFrequency(double &frequency)
+{
+  int retcode;
+  if(catParams.enableXMLRPC)
+    {
+      frequency=xmlIntfPtr->getFrequency();
+      return true;
+    }
+
+  if(!rigControlEnabled || !canGetFreq) return false;
+  retcode = rig_get_freq(my_rig, RIG_VFO_CURR, &frequency);
+  for(int i=0;i<RIGCMDTRIES;i++)
+    {
+      qDebug() << "getFreq";
+      retcode = rig_get_freq(my_rig, RIG_VFO_CURR, &frequency);
+      qDebug() << "got Freq";
+      if (retcode==RIG_OK)
+        {
+          return true;
         }
-        QString response = readHamlibResponse();
-        if (response.startsWith("RPRT 0")) {
-            frequency = response.section(' ', 1).toDouble();  // Parse frequency from response
-            return true;
-        }
-        return false;
     }
+  //  errorMessage(retcode,"getFrequency");
+  canGetFreq=false; // too many errors;
+  frequency=lastFrequency;
+  return false;
 
-    // Serial interface (existing functionality)
-    if (catParams.enableXMLRPC) {
-        frequency = xmlIntfPtr->getFrequency();
-        return true;
-    }
-
-    if (!rigControlEnabled || !canGetFreq) return false;
-
-    int retcode = rig_get_freq(my_rig, RIG_VFO_CURR, &frequency);
-    for (int i = 0; i < RIGCMDTRIES && retcode != RIG_OK; i++) {
-        retcode = rig_get_freq(my_rig, RIG_VFO_CURR, &frequency);
-    }
-
-    if (retcode == RIG_OK) {
-        return true;
-    }
-    
-    canGetFreq = false;  // Disable if too many errors
-    frequency = lastFrequency;
-    return false;
 }
 
-
-bool rigControl::setFrequency(double frequency) {
-    int retcode = -1;
-
-    // Check if Hamlib Network Control is enabled
-    if (catParams.enableHamlibNetworkControl) {
-        // If enabled, use network command
-        QString command = QString("F %1").arg(frequency);
-        if (!sendHamlibCommand(command)) {
-            return false;
-        }
-        QString response = readHamlibResponse();
-        return response.startsWith("RPRT 0");  // Hamlib success response for network commands
+bool rigControl::setFrequency(double frequency)
+{
+  int retcode=-1;
+  if(catParams.enableXMLRPC)
+    {
+      xmlIntfPtr->setFrequency(frequency);
+      return true;
     }
+  if(!rigControlEnabled || !canSetFreq) return false;
+  //        retcode = rig_set_vfo(my_rig, RIG_VFO_CURR);
+  //        if (retcode != RIG_OK ) {errorMessage(retcode,"setVFO"); return false; }
 
-    // Standard Hamlib Serial Interface (existing functionality)
-    if (catParams.enableXMLRPC) {
-        xmlIntfPtr->setFrequency(frequency);
-        return true;
-    }
-
-    if (!rigControlEnabled || !canSetFreq) return false;
-
-    for (int i = 0; i < RIGCMDTRIES; i++) {
-        retcode = rig_set_freq(my_rig, RIG_VFO_CURR, frequency);
-        if (retcode == RIG_OK) {
-            return true;
+  for(int i=0;i<RIGCMDTRIES;i++)
+    {
+      retcode = rig_set_freq(my_rig, RIG_VFO_CURR, frequency);
+      if (retcode==RIG_OK)
+        {
+          return true;
         }
     }
-
-    errorMessage(retcode, "setFrequency");
-    canSetFreq = false;  // Disable if too many errors
-    return false;
+  errorMessage(retcode,"setFrequency");
+  canSetFreq=false; // too many errors;
+  return false;
 }
 
-
-bool rigControl::getMode(QString &mode) {
-    // Network control check
-    if (catParams.enableHamlibNetworkControl) {
-        if (!sendHamlibCommand("m")) {  // 'm' command to get mode
-            return false;
-        }
-        QString response = readHamlibResponse();
-        if (response.startsWith("RPRT 0")) {
-            mode = response.section(' ', 1);  // Parse mode from response
-            return true;
-        }
-        return false;
+void rigControl::disable()
+{
+  if(rigControlEnabled)
+    {
+      rig_close(my_rig); /* close port */
+      rig_cleanup(my_rig);
+      rigControlEnabled=false;
     }
-
-    // Serial interface (existing functionality)
-    if (catParams.enableXMLRPC) {
-        mode = xmlIntfPtr->getMode();
-        return true;
-    }
-
-    rmode_t rmode;
-    pbwidth_t width;
-    if (!rigControlEnabled || !canGetMode) return false;
-
-    int retcode = rig_get_mode(my_rig, RIG_VFO_CURR, &rmode, &width);
-    for (int i = 0; i < RIGCMDTRIES && retcode != RIG_OK; i++) {
-        retcode = rig_get_mode(my_rig, RIG_VFO_CURR, &rmode, &width);
-    }
-
-    if (retcode == RIG_OK) {
-        mode = QString(rig_strrmode(rmode));
-        return true;
-    }
-
-    canGetMode = false;  // Disable if too many errors
-    errorMessage(retcode, "getMode");
-    return false;
 }
 
-
-bool rigControl::setMode(QString mode, QString passBand) {
-    int pb;
-    int retcode = -1;
-
-    // Check if Hamlib Network Control is enabled
-    if (catParams.enableHamlibNetworkControl) {
-        // If enabled, use network command with passband (optional)
-        QString command = QString("M %1 3000").arg(mode);  // Using 3000 as a placeholder for passband
-        if (!sendHamlibCommand(command)) {
-            return false;
-        }
-        QString response = readHamlibResponse();
-        return response.startsWith("RPRT 0");  // Hamlib success response
+bool rigControl::getMode(QString &mode)
+{
+  if(catParams.enableXMLRPC)
+    {
+      mode =xmlIntfPtr->getMode();
+      return true;
     }
 
-    // Standard Hamlib Serial Interface (existing functionality)
-    if (catParams.enableXMLRPC) {
-        xmlIntfPtr->setMode(mode);
-        return true;
-    }
+  rmode_t rmode;
+  pbwidth_t width;
+  int retcode;
+  if(!rigControlEnabled || !canGetMode) return false;
 
-    rmode_t rmode = rig_parse_mode(mode.toLatin1().data());
-    if (passBand == "Narrow") {
-        pb = rig_passband_narrow(my_rig, rmode);
-    } else if (passBand == "Wide") {
-        pb = rig_passband_wide(my_rig, rmode);
-    } else {
-        pb = rig_passband_normal(my_rig, rmode);
-    }
-
-    if (!rigControlEnabled || !canSetMode) return false;
-
-    for (int i = 0; i < RIGCMDTRIES; i++) {
-        retcode = rig_set_mode(my_rig, RIG_VFO_CURR, rmode, pb);
-        if (retcode == RIG_OK) {
-            return true;
+  for(int i=0;i<RIGCMDTRIES;i++)
+    {
+      retcode = rig_get_mode(my_rig, RIG_VFO_CURR, &rmode, &width);
+      if (retcode==RIG_OK)
+        {
+          mode=QString(rig_strrmode(rmode));
+          return true;
         }
     }
+  canGetMode=false; // too many errors
+  errorMessage(retcode,"getMode");
+  return false;
 
-    errorMessage(retcode, "setMode");
-    canSetMode = false;  // Disable if too many errors
-    return false;
+
 }
 
+bool rigControl::setMode(QString mode,QString passBand)
+{
+  QString orgMode;
+  int pb;
+  int i;
+  int pos=-1;
+  if(catParams.enableXMLRPC)
+    {
+      orgMode=xmlIntfPtr->getMode();
+      for(i=0;i<xmlModes.count();i++)
+        {
+          pos=orgMode.indexOf(xmlModes.at(i),Qt::CaseInsensitive);
+          if(pos>=0)
+            {
+              orgMode.replace(xmlModes.at(i),mode);
+              break;
+            }
+        }
+      if(pos>=0) xmlIntfPtr->setMode(orgMode);
+      return true;
+    }
+
+  rmode_t rmode=rig_parse_mode(mode.toLatin1().data());
+  if(passBand=="Narrow")
+    {
+      pb=rig_passband_narrow(my_rig,rmode);
+    }
+  else if(passBand=="Wide")
+    {
+      pb=rig_passband_wide(my_rig,rmode);
+    }
+  else
+    {
+      pb=rig_passband_normal(my_rig,rmode);
+    }
+  int retcode;
+  if(!rigControlEnabled || !canSetMode) return false;
+
+  for(int i=0;i<RIGCMDTRIES;i++)
+    {
+      retcode = rig_set_mode(my_rig, RIG_VFO_CURR, rmode, pb);
+      if (retcode==RIG_OK)
+        {
+          mode=QString(rig_strrmode(rmode));
+          return true;
+        }
+    }
+  canSetMode=false; // too many errors
+  errorMessage(retcode,"setMode");
+  return false;
+}
 
 
 bool rigControl::setPTT(bool on)
@@ -559,14 +490,4 @@ int  rigControl::rawCommand(QByteArray ba)
   read_block(&rs->rigport,rxBuffer,99);
   return result;
 
-}
-
-void rigControl::disable()
-{
-  if(rigControlEnabled)
-    {
-      rig_close(my_rig); /* close port */
-      rig_cleanup(my_rig);
-      rigControlEnabled=false;
-    }
 }

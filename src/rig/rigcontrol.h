@@ -6,12 +6,13 @@
 
 #include <QObject>
 #include <QComboBox>
-#include <QTcpSocket>
 
 extern "C" int write_block(hamlib_port_t *p, const char *txbuffer, size_t count);
 extern "C" int read_block(hamlib_port_t *p, char *rxbuffer, size_t count);
 
 #define RIGCMDTRIES 4
+
+
 
 bool model_Sort(const rig_caps *caps1,const rig_caps *caps2);
 
@@ -39,10 +40,6 @@ struct scatParams
   int XMLRPCPort;
   double txOnDelay;
 
-  // Network control settings
-  bool enableHamlibNetworkControl;
-  QString hamlibHost;  // Hamlib server host
-  int hamlibPort;      // Hamlib server port
 };
 
 class rigControl: public QObject
@@ -51,7 +48,6 @@ class rigControl: public QObject
 public:
   rigControl(int radioIndex);
   ~rigControl();
-
   bool init();
   bool enabled() {return rigControlEnabled;}
   bool getFrequency(double &frequency);
@@ -69,8 +65,8 @@ public:
   QString initError;
 
 private:
-  // Existing variables
-  RIG *my_rig;            // handle to rig (instance)
+
+  RIG *my_rig;            // handle to rig (nstance)
   freq_t freq;            // frequency
   rmode_t rmode;          // radio mode of operation
   pbwidth_t width;
@@ -79,7 +75,7 @@ private:
   int retcode;            // generic return code from functions
   rig_model_t myrig_model;
   bool rigControlEnabled;
-  void errorMessage(int errorCode, QString command);
+  void errorMessage(int errorCode,QString command);
   void getRadioList();
   scatParams catParams;
   int serialP;
@@ -92,13 +88,7 @@ private:
   bool canGetMode;
   bool canSetPTT;
   bool canGetPTT;
-
-  // New members for Hamlib network control
-  QTcpSocket *hamlibSocket;
-  
-  bool initHamlibNetwork();           // Initialize network connection
-  bool sendHamlibCommand(const QString &command); // Send command helper
-  QString readHamlibResponse();       // Read response helper
 };
+
 
 #endif

@@ -23,9 +23,6 @@ public:
   void writeSettings();
   void getParams();
   void setParams();
-  bool enableHamlibNetworkControl;
-  QString hamlibHost;
-  int hamlibPort;
 
 public slots:
   void slotEnableCAT();
@@ -36,7 +33,6 @@ public slots:
   void slotCheckPTT1();
   void slotCheckPTT2();
   void slotCheckPTT3();
-  void slotEnableHamlibNetworkControl();
   
 private:
 
