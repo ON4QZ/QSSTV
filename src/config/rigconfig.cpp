@@ -40,15 +40,8 @@ rigConfig::rigConfig(QWidget *parent) : baseConfig(parent),  ui(new Ui::rigConfi
   connect(ui->DTRCheckBox,SIGNAL(clicked()),SLOT(slotCheckPTT1()));
   connect(ui->nRTSCheckBox,SIGNAL(clicked()),SLOT(slotCheckPTT2()));
   connect(ui->nDTRCheckBox,SIGNAL(clicked()),SLOT(slotCheckPTT3()));
-  connect(ui->hamNetCheck, SIGNAL(clicked()), SLOT(slotEnableHamlibNetworkControl()));
-
-
   rigController=NULL;
   cp=NULL;
-  // Initialize hamlib variables
-  enableHamlibNetworkControl = false;
-  hamlibHost = "127.0.0.1";
-  hamlibPort = 4532;
 }
 
 
@@ -86,9 +79,6 @@ void rigConfig::readSettings()
   cp->XMLRPCPort=qSettings.value("XMLRPCPort","7362").toInt();
   cp->txOnDelay=qSettings.value("txOnDelay",0.0).toDouble();
   cp->pttType=(ptt_type_t)qSettings.value("pttType",(int)RIG_PTT_RIG).toInt();
-  enableHamlibNetworkControl = qSettings.value("enableHamlibNetworkControl", false).toBool();
-  hamlibHost = qSettings.value("hamlibHost", "127.0.0.1").toString();
-  hamlibPort = qSettings.value("hamlibPort", 4532).toInt();
   qSettings.endGroup();
   setParams();
 }
@@ -117,9 +107,6 @@ void rigConfig::writeSettings()
   qSettings.setValue("enableXMLRPC",cp->enableXMLRPC);
   qSettings.setValue("XMLRPCPort",cp->XMLRPCPort);
   qSettings.setValue("txOnDelay",cp->txOnDelay);
-  qSettings.setValue("enableHamlibNetworkControl", enableHamlibNetworkControl);
-  qSettings.setValue("hamlibHost", hamlibHost);
-  qSettings.setValue("hamlibPort", hamlibPort);
   qSettings.endGroup();
 }
 
@@ -142,9 +129,6 @@ void rigConfig::getParams()
   getValue(cp->activeDTR,ui->DTRCheckBox);
   getValue(cp->nactiveRTS,ui->nRTSCheckBox);
   getValue(cp->nactiveDTR,ui->nDTRCheckBox);
-  getValue(enableHamlibNetworkControl, ui->hamNetCheck);
-  getValue(hamlibHost, ui->hamlibIpEdit);
-  getValue(hamlibPort, ui->hamLibPortEdit);
   if(ui->noPttRadioButton->isChecked()) cp->pttType=RIG_PTT_NONE;
   if(ui->catVoiceRadioButton->isChecked()) cp->pttType=RIG_PTT_RIG;
   if(ui->catDataRadioButton->isChecked()) cp->pttType=RIG_PTT_RIG_MICDATA;
@@ -190,9 +174,6 @@ void rigConfig::setParams()
   setValue(cp->enableCAT,ui->enableCATCheckBox);
   setValue(cp->enableSerialPTT,ui->enablePTTCheckBox);
   setValue(cp->pttSerialPort,ui->pttSerialPortLineEdit);
-  setValue(enableHamlibNetworkControl, ui->hamNetCheck);
-  setValue(hamlibHost, ui->hamlibIpEdit);
-  setValue(hamlibPort, ui->hamLibPortEdit);
   if(cp->activeRTS) cp->nactiveRTS=false;
   if(cp->activeDTR) cp->nactiveDTR=false;
 
@@ -254,22 +235,6 @@ void rigConfig::slotEnableCAT()
     {
       rigController->disable();
     }
-  // Handle Hamlib Network Control separately from CAT
-    if (ui->hamNetCheck->isChecked())
-    {
-        enableHamlibNetworkControl = true;  // Enable network control
-        rigController->init();  // Initialize with network control
-    }
-    else if (ui->enableCATCheckBox->isChecked())
-    {
-        enableHamlibNetworkControl = false;  // Disable network control if CAT is enabled
-        ui->enableXMLRPCCheckBox->setChecked(false);
-        rigController->init();  // Initialize with regular CAT control
-    }
-    else
-    {
-        rigController->disable();  // Disable both if neither is enabled
-    }
   getParams();
 }
 
@@ -317,17 +282,6 @@ void rigConfig::slotRestart()
     }
 }
 
-void rigConfig::slotEnableHamlibNetworkControl() {
-    if (ui->hamNetCheck->isChecked()) {
-        ui->enableCATCheckBox->setChecked(false);
-        ui->enablePTTCheckBox->setChecked(false);
-        ui->enableXMLRPCCheckBox->setChecked(false);
-        enableHamlibNetworkControl = true;
-    } else {
-        enableHamlibNetworkControl = false;
-    }
-    getParams();
-}
 
 void rigConfig::slotCheckPTT0()
 {
