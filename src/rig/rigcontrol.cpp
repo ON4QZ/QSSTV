@@ -119,12 +119,13 @@ bool rigControl::init()
         if (!initHamlibNetwork()) {
             addToLog("Failed to initialize Hamlib Network Control.", LOGALL);
             initError = "Hamlib Network Control initialization failed";
-            cout << "Init False";
+            
             return false;
         }
         addToLog("Hamlib Network Control initialized successfully.", LOGRIGCTRL);
-        cout << "Init True";
+        
         rigControlEnabled = true;
+        enableCAT = true;
         return true;
     }
 
