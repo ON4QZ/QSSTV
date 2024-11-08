@@ -125,7 +125,7 @@ bool rigControl::init()
         addToLog("Hamlib Network Control initialized successfully.", LOGRIGCTRL);
         
         rigControlEnabled = true;
-        enableCAT = true;
+        
         return true;
     }
 
