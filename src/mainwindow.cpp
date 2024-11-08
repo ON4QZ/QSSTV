@@ -215,7 +215,7 @@ void mainWindow::init()
       splashStr+=rigControllerPtr->initError.rightJustified(25,' ')+"\n";
       splashPtr->showMessage(splashStr ,Qt::AlignLeft,Qt::white);
     }
-  startTimer(1000);
+  startTimer(2000);
   if(fileWatcherPtr==nullptr) fileWatcherPtr=new fileWatcher;
   fileWatcherPtr->init();
 }
@@ -486,6 +486,7 @@ void mainWindow::slotSendWfText()
 
 void mainWindow::slotSetFrequency(int freqIndex)
 {
+  soundIOPtr->stopSoundThread();
   QByteArray ba;
   QString freqStr,mode,passBand;
   freqStr=freqComboBox->itemText(freqIndex);
@@ -508,24 +509,102 @@ void mainWindow::slotSetFrequency(int freqIndex)
           QMessageBox::critical(this,"Cat Error","Advanced command invalid");
         }
     }
+  restartSound(true);
+  dispatcherPtr->startRX();
+}
+
+void mainWindow::fullAudioStop() {
+    // Fully stop and release ALSA resources
+    soundIOPtr->stopSoundThread();        // Stop any active threads
+    delete soundIOPtr;
+    soundIOPtr = nullptr;
+    qDebug() << "Debug message:" << "Sound stopped and resources released";
+
+}
+
+void mainWindow::fullAudioStart() {
+#ifndef __APPLE__
+    if (pulseSelected) {
+        soundIOPtr = new soundPulse();
+        qDebug() << "Debug message:" << "Using PulseAudio for sound";
+    } else {
+        soundIOPtr = new soundAlsa();
+        qDebug() << "Debug message:" << "Using ALSA for sound";
+    }
+#else
+    soundIOPtr = new soundPulse();
+    qDebug() << "Debug message:" << "Using PulseAudio on macOS";
+#endif
+
+    // Reinitialize dispatcher and restart sound system
+    restartSound(true);
+    qDebug() << "Debug message:" << "restartSound(true) completed";
+    
+    dispatcherPtr->startRX();
+    qDebug() << "Debug message:" << "Dispatcher RX started";
 }
 
 
 
+void mainWindow::timerEvent(QTimerEvent *) {
+    static double lastFrequency = -1.0;  // Track the last known frequency
+    static QString lastMode = "";        // Track the last known mode
+    static int failureCount = 0;         // Track consecutive failures to detect unresponsiveness
 
-void mainWindow::timerEvent(QTimerEvent *)
-{
-  double fr;
-  if(rigControllerPtr->getFrequency(fr))
-    {
-      fr/=1000000.;
-      if(fr>1) freqDisplay->setText(QString::number(fr,'f',6));
-    }
-  else
-    {
-      freqDisplay->setText("No Rig");
+    double fr;
+    QString currentMode;
+
+    if (rigControllerPtr->getFrequency(fr)) {
+        // Reset failure count on successful frequency retrieval
+        failureCount = 0;
+        fr /= 1000000.0;
+
+        // Get the current mode
+        rigControllerPtr->getMode(currentMode);
+        
+        // Check if the frequency or mode has changed
+        if (fr != lastFrequency || currentMode != "PKTUSB") {
+            // Stop sound before making adjustments
+            fullAudioStop();
+            qDebug() << "Debug message:" << "Stopping Sound";
+            // Set mode to PKTUSB if not already set
+            if (currentMode != "PKTUSB") {
+                rigControllerPtr->setMode("PKTUSB", "3000");
+                qDebug() << "Debug message:" << "Reseting mode";
+                
+            }
+
+            // Restart sound and dispatcher
+            fullAudioStart();
+            qDebug() << "Debug message:" << "Sound Restarted";
+            //dispatcherPtr->startRX();
+
+            // Update last known frequency and mode
+            lastFrequency = fr;
+            lastMode = "PKTUSB";
+        }
+
+        if (fr > 1) {
+            freqDisplay->setText(QString::number(fr, 'f', 6));
+        }
+    } else {
+        freqDisplay->setText("No Rig");
+        
+        // Increment failure count if rig is unresponsive
+        failureCount++;
+
+        // Restart sound if rig is unresponsive for several attempts (e.g., 3 failures)
+        if (failureCount >= 3) {
+            qDebug() << "Debug message:" << "Rig Not responding";
+            fullAudioStop();
+            fullAudioStart();
+            //dispatcherPtr->startRX();
+            failureCount = 0;  // Reset failure count after restarting
+        }
     }
 }
+
+
 
 void mainWindow::cleanUpCache(QString dirPath)
 {
@@ -628,6 +707,9 @@ void mainWindow::slotTxTestPattern()
       txWidgetPtr->txTestPattern(sel);
     }
 }
+
+
+
 
 
 #endif

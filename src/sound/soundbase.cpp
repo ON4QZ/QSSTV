@@ -9,6 +9,7 @@
 #include <time.h>
 #include <sys/time.h>
 
+
 #define FASTCAPTURE
 
 const QString captureStateStr[soundBase::CPEND+1]=
@@ -48,6 +49,14 @@ soundBase::~soundBase()
   delete downsampleFilterPtr;
 }
 
+void soundBase::forceCloseSound() {
+    stopSoundThread();       // Stop sound thread safely
+    waveOut.close();         // Close any open wave files
+    waveIn.close();          // Close input files if open
+    closeDevices();          // Ensure all sound devices are released
+    qDebug() << "Forced close of sound resources on mode change";
+}
+
 void soundBase::run()
 {
   stopThread=false;
@@ -59,6 +68,12 @@ void soundBase::run()
           msleep(100);
           continue;
         }
+      if (!soundDriverOK) {
+            qDebug() << "Sound driver not OK, resetting sound";
+            forceCloseSound();  // Reset sound if driver state is not OK
+            msleep(100);
+            continue;
+        }  
       switch (captureState)
         {
         case CPINIT:
@@ -321,8 +336,10 @@ void soundBase::stopSoundThread()
   while(isRunning())
     {
       QApplication::processEvents();
+      
     }
   closeDevices();
+  qDebug() << "Debug message:" << "Closing sound devices";
 }
 
 

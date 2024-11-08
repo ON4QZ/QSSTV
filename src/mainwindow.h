@@ -45,6 +45,8 @@ private slots:
   void slotSendBSR();
   void slotSendWfText();
   void slotSetFrequency(int freqIndex);
+  void fullAudioStart();
+  void fullAudioStop();
 
 
 

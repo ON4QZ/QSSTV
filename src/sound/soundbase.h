@@ -46,6 +46,7 @@ public:
   void idleRX();
   void idleTX();
   void stopSoundThread();
+  void forceCloseSound();
   virtual void getCardList() {;}
 
   bool startCapture();
