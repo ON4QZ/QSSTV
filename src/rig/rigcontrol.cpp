@@ -114,6 +114,18 @@ rigControl::~rigControl()
 bool rigControl::init()
 {
   int retcode;
+  if (catParams.enableHamlibNetworkControl) {
+        // Attempt to initialize network connection to Hamlib server
+        if (!initHamlibNetwork()) {
+            addToLog("Failed to initialize Hamlib Network Control.", LOGALL);
+            initError = "Hamlib Network Control initialization failed";
+            return false;
+        }
+        addToLog("Hamlib Network Control initialized successfully.", LOGRIGCTRL);
+        rigControlEnabled = true;
+        return true;
+    }
+
   if(!catParams.enableCAT) return false;
 
   catParams.radioModelNumber=getModelNumber(getRadioModelIndex());
