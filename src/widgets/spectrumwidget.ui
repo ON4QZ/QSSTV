@@ -57,7 +57,7 @@
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>8</height>
+       <height>1</height>
       </size>
      </property>
      <property name="text">
@@ -84,7 +84,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -93,7 +93,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>191</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -102,7 +102,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>159</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -111,7 +111,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -120,7 +120,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>84</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -165,7 +165,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -183,7 +183,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -221,7 +221,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -230,7 +230,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>191</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -239,7 +239,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>159</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -248,7 +248,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -257,7 +257,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>84</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -302,7 +302,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -320,7 +320,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -349,7 +349,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -358,7 +358,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -367,7 +367,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>191</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -376,7 +376,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>159</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -385,7 +385,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -394,7 +394,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>84</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -403,7 +403,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -421,7 +421,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -430,7 +430,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -439,7 +439,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -457,7 +457,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -498,7 +498,7 @@
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>8</height>
+       <height>1</height>
       </size>
      </property>
      <property name="text">
@@ -525,7 +525,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -534,7 +534,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>191</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -543,7 +543,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>159</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -552,7 +552,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -561,7 +561,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>84</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -606,7 +606,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -624,7 +624,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -662,7 +662,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -671,7 +671,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>191</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -680,7 +680,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>159</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -689,7 +689,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -698,7 +698,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>84</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -743,7 +743,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -761,7 +761,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -790,7 +790,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -799,7 +799,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -808,7 +808,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>191</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -817,7 +817,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>159</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -826,7 +826,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -835,7 +835,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>84</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -844,7 +844,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -862,7 +862,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>63</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -871,7 +871,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -880,7 +880,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>
@@ -898,7 +898,7 @@
           <color alpha="255">
            <red>0</red>
            <green>0</green>
-           <blue>127</blue>
+           <blue>0</blue>
           </color>
          </brush>
         </colorrole>

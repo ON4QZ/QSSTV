@@ -11,7 +11,7 @@ const QString MINORVERSION  = ".11";
 const QString LOGVERSION = ("qsstv."+MAJORVERSION+MINORVERSION+".log");
 const QString ORGANIZATION = "ON4QZ";
 const QString APPLICATION  = ("qsstv_" +CONFIGVERSION);
-const QString qsstvVersion=QString("QSSTV " + MAJORVERSION+MINORVERSION);
+const QString qsstvVersion = QString("QSSTV SBITX Edition ") + MAJORVERSION + MINORVERSION;
 const QString APPNAME=QString("QSSTV");
 
 

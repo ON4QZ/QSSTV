@@ -1,5 +1,6 @@
 #include "soundalsa.h"
 #include "configparams.h"
+#include <QDebug>
 
 
 soundAlsa::soundAlsa()
@@ -13,52 +14,133 @@ soundAlsa::~soundAlsa()
 
 }
 
-void soundAlsa::closeDevices()
-{
-  if(captureHandle!=NULL) snd_pcm_close(captureHandle);
-  captureHandle=NULL;
-  if(playbackHandle!=NULL) snd_pcm_close(playbackHandle);
-  playbackHandle=NULL;
+void soundAlsa::closeDevices() {
+    // Close the capture handle if open
+    if (captureHandle != NULL) {
+        snd_pcm_state_t captureState = snd_pcm_state(captureHandle);
 
+        // Drain if in a running or prepared state
+        if (captureState == SND_PCM_STATE_RUNNING || captureState == SND_PCM_STATE_PREPARED) {
+            snd_pcm_drain(captureHandle);
+        }
+
+        snd_pcm_reset(captureHandle);
+        snd_pcm_drop(captureHandle);
+        snd_pcm_unlink(captureHandle);
+
+        if (snd_pcm_close(captureHandle) == 0) {
+            qDebug() << "captureHandle successfully closed";
+        } else {
+            qDebug() << "Error closing captureHandle";
+        }
+        captureHandle = NULL;
+    }
+
+    // Close the playback handle if open
+    if (playbackHandle != NULL) {
+        snd_pcm_state_t playbackState = snd_pcm_state(playbackHandle);
+
+        // Drain if in a running or prepared state
+        if (playbackState == SND_PCM_STATE_RUNNING || playbackState == SND_PCM_STATE_PREPARED) {
+            snd_pcm_drain(playbackHandle);
+        }
+
+        snd_pcm_reset(playbackHandle);
+        snd_pcm_drop(playbackHandle);
+        snd_pcm_unlink(playbackHandle);
+
+        if (snd_pcm_close(playbackHandle) == 0) {
+            qDebug() << "playbackHandle successfully closed";
+        } else {
+            qDebug() << "Error closing playbackHandle";
+        }
+        playbackHandle = NULL;
+    }
+
+    // Free hwparams and swparams if they were allocated
+    if (hwparams) {
+        snd_pcm_hw_params_free(hwparams);
+        hwparams = nullptr;
+        qDebug() << "hwparams successfully freed";
+    }
+
+    if (swparams) {
+        snd_pcm_sw_params_free(swparams);
+        swparams = nullptr;
+        qDebug() << "swparams successfully freed";
+    }
+
+    // Optional delay to ensure the system has time to release resources
+    QThread::msleep(200);
+
+    // Optional: Clear ALSA global configuration to ensure complete release
+    snd_config_update_free_global();
+
+    qDebug() << "All ALSA devices and parameters fully released";
 }
+
+
+
+
+
+
 
 bool soundAlsa::init(int samplerate)
 {
-  int iteration=0;
-  soundDriverOK=false;
-  sampleRate=samplerate;
-  int err;
-  QString tempDevice;
-  tempDevice=outputAudioDevice.left(outputAudioDevice.indexOf(" "));
-  for(iteration=0;iteration<20;iteration++)
-    {
-      err = snd_pcm_open(&playbackHandle,tempDevice.toLatin1().data(), SND_PCM_STREAM_PLAYBACK,0); //open in blocking mode
-      if (err==-EBUSY)
-        {
-          msleep(500);
-          continue;// give it another try
-        }
-      else
-        {
-          if(!alsaErrorHandler(err,"Unable to open "+outputAudioDevice)) return false;
-          break;
-        }
-    }
-  if(!alsaErrorHandler(err,"Unable to open "+outputAudioDevice)) return false;
-  tempDevice=inputAudioDevice.left(inputAudioDevice.indexOf(" "));
-  err = snd_pcm_open(&captureHandle,tempDevice.toLatin1().data(), SND_PCM_STREAM_CAPTURE, 0);
-  if(!alsaErrorHandler(err,"Unable to open "+inputAudioDevice)) return false;
-  snd_pcm_hw_params_malloc ( &hwparams );
-  snd_pcm_sw_params_malloc ( &swparams );
+    int iteration = 0;
+    soundDriverOK = false;
+    sampleRate = samplerate;
+    int err;
 
-  if(setupSoundParams(true))
+    // Add "plug:" prefix if not already present
+    if (outputAudioDevice.contains("sbitx") && !outputAudioDevice.startsWith("plug:"))
+        outputAudioDevice = "plug:" + outputAudioDevice;
+    if (inputAudioDevice.contains("sbitx") && !inputAudioDevice.startsWith("plug:"))
+        inputAudioDevice = "plug:" + inputAudioDevice;
+
+    // Process the output device
+    QString tempDevice = outputAudioDevice.left(outputAudioDevice.indexOf(" "));
+    for (iteration = 0; iteration < 20; iteration++)
     {
-      if(setupSoundParams(false)) soundDriverOK=true;
+        qDebug() << "Attempting to open playback device: " << tempDevice.toLatin1().data();
+        err = snd_pcm_open(&playbackHandle, tempDevice.toLatin1().data(), SND_PCM_STREAM_PLAYBACK, 0); // open in blocking mode
+        if (err == -EBUSY)
+        {
+            msleep(500);
+            continue; // give it another try
+        }
+        else
+        {
+            if (!alsaErrorHandler(err, "Unable to open " + outputAudioDevice))
+                return false;
+            break;
+        }
     }
-  snd_pcm_hw_params_free ( hwparams );
-  snd_pcm_sw_params_free ( swparams );
-  return soundDriverOK;
+    if (!alsaErrorHandler(err, "Unable to open " + outputAudioDevice))
+        return false;
+
+    // Process the input device
+    tempDevice = inputAudioDevice.left(inputAudioDevice.indexOf(" "));
+    qDebug() << "Attempting to open capture device: " << tempDevice.toLatin1().data();
+    err = snd_pcm_open(&captureHandle, tempDevice.toLatin1().data(), SND_PCM_STREAM_CAPTURE, SND_PCM_NONBLOCK);
+    if (!alsaErrorHandler(err, "Unable to open " + inputAudioDevice))
+        return false;
+
+    // Hardware and software parameter setup
+    snd_pcm_hw_params_malloc(&hwparams);
+    snd_pcm_sw_params_malloc(&swparams);
+
+    if (setupSoundParams(true)) // Configure capture parameters
+    {
+        if (setupSoundParams(false)) // Configure playback parameters
+            soundDriverOK = true;
+    }
+
+    snd_pcm_hw_params_free(hwparams);
+    snd_pcm_sw_params_free(swparams);
+    return soundDriverOK;
 }
+
 
 void soundAlsa::prepareCapture()
 {
@@ -348,95 +430,95 @@ bool soundAlsa::alsaErrorHandler(int err,QString info)
 
 void getCardList(QStringList &alsaInputList, QStringList &alsaOutputList)
 {
-  bool isOutput,isInput;
-  QString deviceName;
-  QString deviceDescription;
-  void **hints, **n;
-  char *name, *descr,  *io;
+    bool isOutput, isInput;
+    QString deviceName;
+    QString deviceDescription;
+    void **hints, **n;
+    char *name, *descr, *io;
 
-  alsaInputList.clear();
-  alsaOutputList.clear();
+    alsaInputList.clear();
+    alsaOutputList.clear();
 
-
-  if (snd_device_name_hint(-1, "pcm", &hints) < 0)  return;
-  n = hints;
-  while (*n != NULL)
+    if (snd_device_name_hint(-1, "pcm", &hints) < 0) return;
+    n = hints;
+    while (*n != NULL)
     {
-      isInput=isOutput=true;
-      io    = snd_device_name_get_hint(*n, "IOID");
-      if(io!=NULL)
+        isInput = isOutput = true;
+        io = snd_device_name_get_hint(*n, "IOID");
+        if (io != NULL)
         {
-          if (strcmp(io, "Input") == 0) isOutput=false;
-          if (strcmp(io, "Output") == 0) isInput=false;
+            if (strcmp(io, "Input") == 0) isOutput = false;
+            if (strcmp(io, "Output") == 0) isInput = false;
         }
-      name   = snd_device_name_get_hint(*n, "NAME");
-      descr  = snd_device_name_get_hint(*n, "DESC");
-      deviceName=QString(name);
-      if (descr!=NULL)
-        {
-          deviceDescription=QString(descr).split("\n").at(0);
-        }
-
-      if(
-         !deviceName.contains("surround",Qt::CaseInsensitive)
-         && !deviceName.contains("dmix",Qt::CaseInsensitive)
-         && !deviceName.contains("front",Qt::CaseInsensitive)
-         && !deviceName.contains("plughw",Qt::CaseInsensitive)
-         && !deviceName.contains("null",Qt::CaseInsensitive)
-         && !deviceName.contains("hdmi",Qt::CaseInsensitive)
-         && !deviceName.contains("sysdefault",Qt::CaseInsensitive)
-         && !deviceName.contains("dsnoop",Qt::CaseInsensitive)
-
-
-         )
-        {
-          if(isInput)  alsaInputList.append(deviceName + " -- " +deviceDescription);
-          if(isOutput) alsaOutputList.append(deviceName+ " -- " +deviceDescription);
+        name = snd_device_name_get_hint(*n, "NAME");
+        descr = snd_device_name_get_hint(*n, "DESC");
+        deviceName = QString(name);
+        
+        // If deviceName contains "sbitx", change it to "plug:sbitx" variant
+        if (deviceName.contains("sbitx")) {
+            deviceName = "plug:" + deviceName;
         }
 
-      if (name != NULL)  free(name);
-      if (descr != NULL) free(descr);
-      if (io != NULL)    free(io);
-      n++;
+        if (descr != NULL)
+        {
+            deviceDescription = QString(descr).split("\n").at(0);
+        }
+
+        if (!deviceName.contains("surround", Qt::CaseInsensitive) &&
+            !deviceName.contains("front", Qt::CaseInsensitive) &&
+            !deviceName.contains("null", Qt::CaseInsensitive) &&
+            !deviceName.contains("hdmi", Qt::CaseInsensitive) &&
+            !deviceName.contains("sysdefault", Qt::CaseInsensitive))
+        {
+            if (isInput) alsaInputList.append(deviceName + " -- " + deviceDescription);
+            if (isOutput) alsaOutputList.append(deviceName + " -- " + deviceDescription);
+        }
+
+        if (name != NULL) free(name);
+        if (descr != NULL) free(descr);
+        if (io != NULL) free(io);
+        n++;
     }
-  snd_device_name_free_hint(hints);
-#ifdef __FreeBSD__
+    snd_device_name_free_hint(hints);
 
-	snd_config_t	*pcmc;
-	snd_pcm_t	*pcm;
-	if (!snd_config)
-		snd_config_update();
-	if(snd_config_search(snd_config, "pcm", &pcmc)==0) {
-		snd_config_iterator_t i, next;
-		snd_config_for_each(i, next, pcmc) {
-			snd_config_t *n = snd_config_iterator_entry(i);
-			if (snd_config_get_type(n) != SND_CONFIG_TYPE_COMPOUND)
-				continue;
-			const char *id;
-			if(snd_config_get_id(n, &id)==0) {
-				deviceName = QString(id);
-				if (deviceName == "hw" ||
-						deviceName == "plughw" ||
-						deviceName == "plug" ||
-						deviceName == "dsnoop" ||
-						deviceName == "tee" ||
-						deviceName == "file" ||
-						deviceName == "null" ||
-						deviceName == "shm" ||
-						deviceName == "cards" ||
-						deviceName == "rate_convert")
-					continue;
-				if (snd_pcm_open(&pcm, id, SND_PCM_STREAM_PLAYBACK, 0) == 0) {
-					alsaOutputList.append(deviceName + " ");
-					snd_pcm_close(pcm);
-				}
-				if (snd_pcm_open(&pcm, id, SND_PCM_STREAM_CAPTURE, 0) == 0) {
-					alsaInputList.append(deviceName + " ");
-					snd_pcm_close(pcm);
-				}
-			}
-		}
-	}
+#ifdef __FreeBSD__
+    snd_config_t *pcmc;
+    snd_pcm_t *pcm;
+    if (!snd_config)
+        snd_config_update();
+    if (snd_config_search(snd_config, "pcm", &pcmc) == 0) {
+        snd_config_iterator_t i, next;
+        snd_config_for_each(i, next, pcmc) {
+            snd_config_t *n = snd_config_iterator_entry(i);
+            if (snd_config_get_type(n) != SND_CONFIG_TYPE_COMPOUND)
+                continue;
+            const char *id;
+            if (snd_config_get_id(n, &id) == 0) {
+                deviceName = QString(id);
+                if (deviceName == "hw" ||
+                    deviceName == "plughw" ||
+                    deviceName == "plug" ||
+                    deviceName == "dsnoop" ||
+                    deviceName == "tee" ||
+                    deviceName == "file" ||
+                    deviceName == "null" ||
+                    deviceName == "shm" ||
+                    deviceName == "cards" ||
+                    deviceName == "rate_convert")
+                    continue;
+                if (snd_pcm_open(&pcm, id, SND_PCM_STREAM_PLAYBACK, 0) == 0) {
+                    alsaOutputList.append(deviceName + " ");
+                    snd_pcm_close(pcm);
+                }
+                if (snd_pcm_open(&pcm, id, SND_PCM_STREAM_CAPTURE, 0) == 0) {
+                    alsaInputList.append(deviceName + " ");
+                    snd_pcm_close(pcm);
+                }
+            }
+        }
+    }
 #endif /* __FreeBSD__ */
 }
+
+
 

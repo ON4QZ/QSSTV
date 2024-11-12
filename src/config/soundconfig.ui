@@ -120,6 +120,9 @@
       </item>
       <item>
        <widget class="QRadioButton" name="pulseRadioButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>PulseAudio</string>
         </property>

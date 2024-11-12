@@ -24,7 +24,7 @@
 #include "logging.h"
 #include "dispatch/dispatcher.h"
 #include "ui_mainwindow.h"
-#include "soundpulse.h"
+//#include "soundpulse.h"
 #ifndef __APPLE__
 #  include "soundalsa.h"
 #endif
@@ -49,6 +49,9 @@
 #include <QApplication>
 #include "filewatcher.h"
 #include "ftpfunctions.h"
+#include <QThread>
+#include <QFile>
+#include <QApplication>
 
 
 /**
@@ -90,6 +93,14 @@ mainWindow::mainWindow(QWidget *parent) : QMainWindow(parent),  ui(new Ui::MainW
   configDialogPtr->readSettings();
 
   ui->setupUi(this);
+  QFile file("../ElegantDark.qss");  // Replace with the actual path
+  if (file.open(QFile::ReadOnly)) {
+      QString styleSheet = QLatin1String(file.readAll());
+      qApp->setStyleSheet(styleSheet);
+      file.close();
+  } else {
+      qWarning("Could not open QSS file");
+  }
   setWindowTitle(qsstvVersion);
   setWindowIcon(QPixmap(":/icons/qsstv.png"));
   ui->maintabWidget->setCurrentIndex(0);
@@ -114,13 +125,8 @@ mainWindow::mainWindow(QWidget *parent) : QMainWindow(parent),  ui(new Ui::MainW
   txWidgetPtr=ui->txWindow;
   galleryWidgetPtr=ui->galleryWindow;
   readSettings();
-#ifndef __APPLE__
-  if(pulseSelected)
-#endif
-    soundIOPtr=new soundPulse;
-#ifndef __APPLE__
-  else  soundIOPtr=new soundAlsa;
-#endif
+  soundIOPtr=new soundAlsa;
+
   dispatcherPtr=new dispatcher;
   waterfallPtr=new waterfallText;
   xmlIntfPtr=new xmlInterface;
@@ -203,12 +209,14 @@ void mainWindow::init()
   //start rx and tx threads
   rxWidgetPtr->functionsPtr()->start();
   txWidgetPtr->functionsPtr()->start();
+  rigControllerPtr->init();
+  rigControllerPtr->setMode("PKTUSB", "3000");
   restartSound(true);
   dispatcherPtr->init();
   galleryWidgetPtr->init();
   txWidgetPtr->init();
   waterfallPtr->init();
-  rigControllerPtr->init();
+  
   rxWidgetPtr->init();
   if(!rigControllerPtr->initError.isEmpty())
     {
@@ -222,20 +230,18 @@ void mainWindow::init()
 
 void mainWindow::restartSound(bool inStartUp)
 {
+  qDebug() << "Restarting Sound Triggered!";
   //first check if sound
   if(soundIOPtr!=nullptr)
     {
       soundIOPtr->stopSoundThread();
+      soundIOPtr->closeDevices();
       delete soundIOPtr;
       soundIOPtr=nullptr;
     }
-#ifndef __APPLE__
-  if(pulseSelected)
-#endif
-    soundIOPtr=new soundPulse;
-#ifndef __APPLE__
-  else soundIOPtr=new soundAlsa;
-#endif
+
+  soundIOPtr=new soundAlsa;
+
   if(!soundIOPtr->init(BASESAMPLERATE))
     {
       if(inStartUp)
@@ -513,96 +519,48 @@ void mainWindow::slotSetFrequency(int freqIndex)
   dispatcherPtr->startRX();
 }
 
-void mainWindow::fullAudioStop() {
-    // Fully stop and release ALSA resources
-    soundIOPtr->stopSoundThread();        // Stop any active threads
-    delete soundIOPtr;
-    soundIOPtr = nullptr;
-    qDebug() << "Debug message:" << "Sound stopped and resources released";
-
-}
-
-void mainWindow::fullAudioStart() {
-#ifndef __APPLE__
-    if (pulseSelected) {
-        soundIOPtr = new soundPulse();
-        qDebug() << "Debug message:" << "Using PulseAudio for sound";
-    } else {
-        soundIOPtr = new soundAlsa();
-        qDebug() << "Debug message:" << "Using ALSA for sound";
-    }
-#else
-    soundIOPtr = new soundPulse();
-    qDebug() << "Debug message:" << "Using PulseAudio on macOS";
-#endif
-
-    // Reinitialize dispatcher and restart sound system
-    restartSound(true);
-    qDebug() << "Debug message:" << "restartSound(true) completed";
-    
-    dispatcherPtr->startRX();
-    qDebug() << "Debug message:" << "Dispatcher RX started";
-}
-
 
 
 void mainWindow::timerEvent(QTimerEvent *) {
-    static double lastFrequency = -1.0;  // Track the last known frequency
-    static QString lastMode = "";        // Track the last known mode
-    static int failureCount = 0;         // Track consecutive failures to detect unresponsiveness
-
+    static bool audioActive = true;  // Track whether audio is active
     double fr;
     QString currentMode;
 
-    if (rigControllerPtr->getFrequency(fr)) {
-        // Reset failure count on successful frequency retrieval
-        failureCount = 0;
+    // Attempt to get frequency and mode
+    bool hasFrequency = rigControllerPtr->getFrequency(fr);
+    bool hasMode = rigControllerPtr->getMode(currentMode);
+
+    // Check if both frequency and mode retrievals are successful
+    if (hasFrequency && hasMode) {
         fr /= 1000000.0;
 
-        // Get the current mode
-        rigControllerPtr->getMode(currentMode);
-        
-        // Check if the frequency or mode has changed
-        if (fr != lastFrequency || currentMode != "PKTUSB") {
-            // Stop sound before making adjustments
-            fullAudioStop();
-            qDebug() << "Debug message:" << "Stopping Sound";
-            // Set mode to PKTUSB if not already set
-            if (currentMode != "PKTUSB") {
-                rigControllerPtr->setMode("PKTUSB", "3000");
-                qDebug() << "Debug message:" << "Reseting mode";
-                
+        if (currentMode == "PKTUSB") {
+            // Start audio if inactive
+            if (!audioActive) {
+                restartSound(false);
+                audioActive = true;
             }
-
-            // Restart sound and dispatcher
-            fullAudioStart();
-            qDebug() << "Debug message:" << "Sound Restarted";
-            //dispatcherPtr->startRX();
-
-            // Update last known frequency and mode
-            lastFrequency = fr;
-            lastMode = "PKTUSB";
-        }
-
-        if (fr > 1) {
-            freqDisplay->setText(QString::number(fr, 'f', 6));
+            freqDisplay->setText(fr > 1 ? QString::number(fr, 'f', 6) : "No Rig");
+        } else {
+            // Stop audio if active
+            if (audioActive) {
+                soundIOPtr->forceCloseSound();
+                soundIOPtr->closeDevices();
+                delete soundIOPtr;
+                soundIOPtr = nullptr;
+                audioActive = false;
+            }
+            freqDisplay->setText("Bad Mode");
         }
     } else {
+        // Display "No Rig" if frequency or mode retrieval failed
         freqDisplay->setText("No Rig");
-        
-        // Increment failure count if rig is unresponsive
-        failureCount++;
-
-        // Restart sound if rig is unresponsive for several attempts (e.g., 3 failures)
-        if (failureCount >= 3) {
-            qDebug() << "Debug message:" << "Rig Not responding";
-            fullAudioStop();
-            fullAudioStart();
-            //dispatcherPtr->startRX();
-            failureCount = 0;  // Reset failure count after restarting
-        }
     }
 }
+
+
+
+
 
 
 

@@ -18,11 +18,12 @@ public:
   void preparePlayback();
   int read(int &countAvailable);
   int write(uint numFrames);
+  void closeDevices();
 
 protected:
   void flushCapture();
   void flushPlayback();
-  void closeDevices();
+  
   void waitPlaybackEnd();
 
 private:

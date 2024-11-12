@@ -269,15 +269,21 @@ bool rigControl::setMode(QString mode,QString passBand)
   int retcode;
   if(!rigControlEnabled || !canSetMode) return false;
 
-  for(int i=0;i<RIGCMDTRIES;i++)
-    {
-      retcode = rig_set_mode(my_rig, RIG_VFO_CURR, rmode, pb);
-      if (retcode==RIG_OK)
-        {
-          mode=QString(rig_strrmode(rmode));
-          return true;
+  for (int i = 0; i < RIGCMDTRIES; i++) {
+    retcode = rig_set_mode(my_rig, RIG_VFO_CURR, rmode, pb);
+    if (retcode == RIG_OK) {
+        // Verify the mode by retrieving it and comparing
+        rmode_t checkMode;
+        pbwidth_t checkPassband;
+        if (rig_get_mode(my_rig, RIG_VFO_CURR, &checkMode, &checkPassband) == RIG_OK) {
+            if (checkMode == rmode) {
+                mode = QString(rig_strrmode(rmode));
+                return true;
+            }
         }
     }
+  }
+
   canSetMode=false; // too many errors
   errorMessage(retcode,"setMode");
   return false;

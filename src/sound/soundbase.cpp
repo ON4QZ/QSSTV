@@ -51,11 +51,20 @@ soundBase::~soundBase()
 
 void soundBase::forceCloseSound() {
     stopSoundThread();       // Stop sound thread safely
-    waveOut.close();         // Close any open wave files
-    waveIn.close();          // Close input files if open
+    waveOut.close();         // Close any open wave output
+    waveIn.close();          // Close any open wave input
     closeDevices();          // Ensure all sound devices are released
+
+    // Nullify or reinitialize pointers to force resource cleanup
+    delete downsampleFilterPtr;
+    downsampleFilterPtr = nullptr;
+
+    // Reset sound driver state if necessary
+    soundDriverOK = false;  // Mark sound driver as not OK to avoid reuse
+    
     qDebug() << "Forced close of sound resources on mode change";
 }
+
 
 void soundBase::run()
 {
@@ -328,18 +337,17 @@ void soundBase::idleRX()
 }
 
 
-void soundBase::stopSoundThread()
-{
-  idleRX();
-  idleTX();
-  stopThread=true;
-  while(isRunning())
-    {
-      QApplication::processEvents();
-      
+void soundBase::stopSoundThread() {
+    stopThread = true;
+    while (isRunning()) {
+        QApplication::processEvents();
     }
-  closeDevices();
-  qDebug() << "Debug message:" << "Closing sound devices";
+    
+    idleRX();
+    idleTX();
+
+    closeDevices();
+    qDebug() << "Debug message:" << "Stopping and closing sound devices fully";
 }
 
 

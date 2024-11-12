@@ -48,6 +48,7 @@ public:
   void stopSoundThread();
   void forceCloseSound();
   virtual void getCardList() {;}
+  virtual void closeDevices()=0;
 
   bool startCapture();
   bool startPlayback();
@@ -79,7 +80,7 @@ protected:
   virtual void flushPlayback()=0;
   virtual void prepareCapture() {;}
   virtual void preparePlayback() {;}
-  virtual void closeDevices()=0;
+  
   virtual void waitPlaybackEnd()=0;
 
 
