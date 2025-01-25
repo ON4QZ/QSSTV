@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2000-2019 by Johan Maes                                 *
  *   on4qz@telenet.be                                                      *
- *   http://users.telenet.be/on4qz                                         *
+ *   https://www.qsl.net/o/on4qz                                           *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
