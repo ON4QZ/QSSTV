@@ -48,7 +48,7 @@ class NCO  // numerical controlled oscillator
   ~NCO()
     {
     }
-	/** initialize the oscilator
+	/** initialize the oscillator
 
 			This function is automatically called from the constructor
 			\param[in] frequency the frequency the oscillator must be running at

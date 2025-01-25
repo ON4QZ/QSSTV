@@ -68,7 +68,7 @@ QSSTV 9.5.x Support for Qt 5.15.X
 
 QSSTV 9.4.x has the following new features compared to QSSTV 9.3.x
 - improved template editor
-     (PLease run all your templates through the new editor to allign items correctly and save them again as a template with the same name)
+     (Please run all your templates through the new editor to align items correctly and save them again as a template with the same name)
 
 QSSTV 9.3.x has the following new features compared to QSSTV 9.2.x
 - Repeater functions are implemented now (both SSTV and DRM).
@@ -102,7 +102,7 @@ QSSTV 9.2.x has the following new features compared to QSSTV 8.2.x
     - processing and initialization of DRM frames taking too long
     - Fftw plan on arm processors is very slow.
     - made some changes to make it "runnable" on Raspberry Pi.<br>
-    - (tested on RPI 4 (4G) , Rasberry OS / Buster)
+    - (tested on RPI 4 (4G) , Raspberry OS / Buster)
 
 \li 20210731 QSSTV 9.5.7
     - switching to DRM was taking more dan 45 seconds on slow cpu's.
@@ -154,14 +154,14 @@ QSSTV 9.2.x has the following new features compared to QSSTV 8.2.x
     - redesign of the template editor
     - fixed template image corruption when image Fit mode was selected.
     - use of transparent images fixed (imageBackgroundColor (see Config GUI) is used to process transparency)
-    - removed c++11 Config option in qsstv.pro. Eliminated dependencies on c++11 to commpile with older compilers.
+    - removed c++11 Config option in qsstv.pro. Eliminated dependencies on c++11 to compile with older compilers.
 
 
 \li 20190418 QSSTV 9.3.3
   - fixed api documentation generation
 
 \li 20190418 QSSTV 9.3.2
- - complete rewrite of the FTP interfaces. They now run in a seperate thread
+ - complete rewrite of the FTP interfaces. They now run in a separate thread
  - removed Hybrid notify config. All hybrid configurations are in one tab: Hybrid
  - size of recorded wav files was internally set to 0, fixed.
  - tx audio to wav file was output in mono with half the samples -> fixed
@@ -203,8 +203,8 @@ QSSTV 9.2.x has the following new features compared to QSSTV 8.2.x
 
 \li 20161022 QSSTV 9.2.4
 - some minor bugfixing
-- eliminated online status setting in Config Notication tab (doubled with setting in Operator settings)
-- bug fix: incremental counter on filename wih hybrid mode
+- eliminated online status setting in Config Notification tab (doubled with setting in Operator settings)
+- bug fix: incremental counter on filename with hybrid mode
 - added filename to statusbar when sending DRM image
 
 \li 20161021 QSSTV 9.2.3
@@ -212,7 +212,7 @@ QSSTV 9.2.x has the following new features compared to QSSTV 8.2.x
 - faster compression of tx images
 - bug-fix: hybrid mode saved images with wrong file extension. Receivers tried downloading wrong file.
 - Added all the patches (more then 20) from Mike, VK6M: rx/tx notifications and a large number of patches for image handling
-- Added new features (such a save waterfall image) implmented by Mike, VK6M
+- Added new features (such a save waterfall image) implemented by Mike, VK6M
 - Todo: update the documentation !
 
 \li 20160929 QSSTV 9.2.2
@@ -272,7 +272,7 @@ bottom taskbars are masking part of the QSSTV window.
 - fixed hang on exit
 
 \li 20150928 QSSTV 9.0.6
-- performace optimization (especially for Raspberry Pi 2)
+- performance optimization (especially for Raspberry Pi 2)
 
 \li 20150926 QSSTV 9.0.4
 - added option for slow cpu (see Options ->GUI) This makes it possible to run QSSTV running on a Raspberry Pi 2.
@@ -321,7 +321,7 @@ On older distributions:
 On newer distributions
 <pre>sudo apt-get install libhamlib++-dev</pre>
 
-If you don't find libopenjp2-7 you can download it with the follwing commands if you're running a Debian derived distribution:
+If you don't find libopenjp2-7 you can download it with the following commands if you're running a Debian derived distribution:
 
 <pre>wget http://ftp.de.debian.org/debian/pool/main/o/openjpeg2/libopenjp2-7_2.1.0-2_i386.deb</pre>
 <pre>wget http://ftp.de.debian.org/debian/pool/main/o/openjpeg2/libopenjp2-7-dev_2.1.0-2_i386.deb</pre>
@@ -367,7 +367,7 @@ Note: you will need to install doxygen and libqwt
 <pre>
 sudo apt-get install doxygen libqwt-qt5-dev
 </pre>
-You can also run qmake with the following atributes:
+You can also run qmake with the following attributes:
 <pre>qmake CONFIG+=debug</pre>
 and use an external debugger (such as gdb)
 
@@ -382,7 +382,7 @@ The program is build around 3 windows
 <br>
 The program will remember the last position and the size of each window on restart.
 
-Start the program and follow the configuation and calibration instructions below.
+Start the program and follow the configuration and calibration instructions below.
 
 \page config Configuration
 
@@ -428,7 +428,7 @@ The following tabs are available
 - Image Background Colour: Default image background
 Push the push button to select the colour selector.
 - Gallery: Rows and columns: set-up the number of rows and columns to be used in the Gallery tab. If you're running on a slow CPU (like on a Raspberry Pi) select row=1 and columns=1.
-- Slow CPU: Select this option if you're running on a slow CPU (e.g. Rapsberry Pi)
+- Slow CPU: Select this option if you're running on a slow CPU (e.g. Raspberry Pi)
 - Low Resolution: Select this option if your display is for example 800x480. This options sets the maximum vertical resolution of QSSTV to less than 480 lines. It therefore removes some features
 from the receive window (Rx Notification Window in DRM) and the transmit window (Image replay Preview and TX Notifications in DRM mode).
 You can toggle to and from full screen by using the CTRL_F key combination.
@@ -459,7 +459,7 @@ See also \ref volume
    - Playback: playback a wav-file (use 48000 samples per second recording in mono or stereo)
    - Playback and record: playback the sound and record at the same time.
  - Swap left and right channel
-    - If selected, audio will be sent on the right audio channel instead of the left channel (e.g Kenwood tranceivers using USB sound interfaces)
+    - If selected, audio will be sent on the right audio channel instead of the left channel (e.g Kenwood transceivers using USB sound interfaces)
  - PTT tone on other audio channel
     - A tone will be sent on the right channel to enable PTT. If the above "Swap left and right channel" is selected, it will be sent on the left channel.
 <br><br>
@@ -488,7 +488,7 @@ You cannot select both +RTS and -RTS or +DTR and -DTR at the same time.
 let Hamlib use the RTS or DTR on the serial port specified by "PTT Serial Port".
 - There are 2 CAT ports:
     -CAT (voice port): the normal setting
-    -CAT (data port): to be used with some kenwood tranceivers(e.g. kenwood TS-480) to force data port instead of audio port (source: David  VK3DCU)
+    -CAT (data port): to be used with some kenwood transceivers(e.g. kenwood TS-480) to force data port instead of audio port (source: David  VK3DCU)
 Example: IC-706MKIIG via a cat interface such as interfaceOne.
 \anchor flrigconfig
 - Enable XMLRPC
@@ -597,14 +597,14 @@ You will either see a pop-up with "Connection OK" or an error message showing th
 - Password: will be encrypted
 - Directory: default empty
 
-Login name, password,hostname and directories will be encrypted before being sent on the air.
+Login name, password, hostname and directories will be encrypted before being sent on the air.
 
 The directories on the FTP server must be created at root level.
 - HybridFiles1 -- where the hybrid files are uploaded
 - RxOkNotifications1 -- where the notification are sent when receiving an DRM image
 - OnlineCallsigns1 -- where the call sign and info text is sent
 
-If a directory is specified (e.g test) then the following directories must be cretaed:
+If a directory is specified (e.g test) then the following directories must be created:
 - test/HybridFiles1
 - test/RxOkNotifications1
 - test/OnlineCallsigns1
@@ -681,7 +681,7 @@ remote           local      st poll reach  delay   offset    disp
 </pre>
 
 
-Newer sytems default install timesyncd instead of ntpd.
+Newer systems default install timesyncd instead of ntpd.
 timesyncd connects to the same time servers and works in roughly the same way,
 but is more lightweight and more integrated with systemd.
 The status of timesyncd can be checked by running timedatectl with no arguments.
@@ -906,7 +906,7 @@ The three markers above the waterfall indicate  the position of the pilot freque
 <br>
 Who is On?
 Information about other station on the hybrid server. There are some
-- The stations must enable : Allow other users to see youtr online status ... see  \ref operator configuration
+- The stations must enable : Allow other users to see your online status ... see  \ref operator configuration
 
 see \ref RXSSTV
 
@@ -970,7 +970,7 @@ QAM 64 : most demanding, used on VHF/UHF in really good conditions<br>
 QAM 16 : used on VHF/UHF in fairly good conditions sometime also on HF<br>
 QAM  4 : least demanding, used on HF <br>
 
-Bandwith:
+Bandwidth:
 - 2.5 kHz: VHF/UHF
 - 2.2 kHz; HF
 
@@ -1028,7 +1028,7 @@ The Gallery contains six tabs. The directories where the different images are st
 - TX Stock: Contains your selection of "Stock" images you want to use for transmission.
 - Templates: template images to be used as overlay on tx images
 <br> <br>
-Some examles
+Some examples
 \image html Gallery_txdrm.png
 <br>
 \image html Gallery_templates.png
@@ -1286,7 +1286,7 @@ It will first receive an image and after decoding it will retransmit the process
 The repeater acts like a parrot, it is not just retransmitting the audio.
 
 
-When the repeater is inactief for a time (idle time) specified in the repeater configuration, 1 of 4 images will be transmitted.
+When the repeater is inactive for a time (idle time) specified in the repeater configuration, 1 of 4 images will be transmitted.
 The overlay can be specified in the configuration.
 
 The retransmitted images are send in the mode selected in the Transmit window.
@@ -1296,7 +1296,7 @@ The repeater does not allow for cross-mode (i.e SSTV repeated in DRM or vice ver
 
 Images will only be repeated if:
 - For DRM: the image was received without errors or after correction.
-- For SSTV: the image was received and the Complete precentage has been met.
+- For SSTV: the image was received and the Complete percentage has been met.
 
 In DRM the repeater will never use Hybrid mode to repeat the image.
 
@@ -1318,7 +1318,7 @@ Easypal was used extensively to test my program. <br>
 
 Erik is now silent key as of 14th march 2015.     We will miss him.
 <br>
-I hope there will be other OM's that take up the maintenance,enhancements  and development of EasyPal so that people running Windows will continue to enjoy his software.
+I hope there will be other OM's that take up the maintenance, enhancements and development of EasyPal so that people running Windows will continue to enjoy his software.
 
 \page externalprog External Programs
 

@@ -371,7 +371,7 @@ void ftpThread::dumpState( int state )
       addToLog(QString("FTPss Closing name:=%1 :host=%2").arg(idName).arg(host),LOGFTPTHREAD);
       break;
     default:
-      addToLog(QString("FTPss uknown %1 name:=%2 host=%3").arg(qftpPtr->state()).arg(idName).arg(host),LOGFTPTHREAD);
+      addToLog(QString("FTPss unknown %1 name:=%2 host=%3").arg(qftpPtr->state()).arg(idName).arg(host),LOGFTPTHREAD);
       break;
     }
 }

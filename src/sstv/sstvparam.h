@@ -103,7 +103,7 @@ enum esstvMode
 
 /*
 
-// struc used in frequency detection 
+// struct used in frequency detection
 struct sTimeFreq
 {
   DSPFLOAT t;            // time in sec

@@ -50,7 +50,7 @@ struct sgradientParam
 */
 class gradientForm;
 
-/** Widget to disply the various canvasItems */
+/** Widget to display the various canvasItems */
 class gradientDialog : public QDialog,private Ui::gradientForm
 {
 Q_OBJECT

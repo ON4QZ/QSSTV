@@ -229,7 +229,7 @@ private:
 
 /**********************************************************************
  *
- * QFtpCommand implemenatation
+ * QFtpCommand implementation
  *
  *********************************************************************/
 class QFtpCommand
@@ -278,7 +278,7 @@ QFtpCommand::~QFtpCommand()
 
 /**********************************************************************
  *
- * QFtpDTP implemenatation
+ * QFtpDTP implementation
  *
  *********************************************************************/
 QFtpDTP::QFtpDTP(QFtpPI *p, QObject *parent) :
@@ -771,7 +771,7 @@ void QFtpDTP::clearData()
 
 /**********************************************************************
  *
- * QFtpPI implemenatation
+ * QFtpPI implementation
  *
  *********************************************************************/
 QFtpPI::QFtpPI(QObject *parent) :
@@ -2103,7 +2103,7 @@ bool QFtp::hasPendingCommands() const
 */
 void QFtp::clearPendingCommands()
 {
-  // delete all entires except the first one
+  // delete all entries except the first one
   while (d->pending.count() > 1)
     delete d->pending.takeLast();
 }

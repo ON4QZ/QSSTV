@@ -220,7 +220,7 @@ template<class TData> CVectorEx<TData>* CCyclicBuffer<TData>::Get(const int iReq
 #ifdef _DEBUG_
 	if (iAvailSpace < iRequestedSize)
 	{
-		DebugError("CyclicBuffer Get()", "Availabe space",
+		DebugError("CyclicBuffer Get()", "Available space",
 			iAvailSpace, "Requested size", iAvailSpace);
 	}
 #endif

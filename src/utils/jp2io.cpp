@@ -330,7 +330,7 @@ QImage jp2IO::decode(QString fileName)
       G = jp2Image->comps[1].data[ idx( x, y ) ];
       B = jp2Image->comps[2].data[ idx( x, y ) ];
 
-      // fill the bit with read pallete
+      // fill the bit with read palette
       bits[i] = qRgb(R, G, B);
     }
   destroy_parameters(&parameters);
