@@ -861,7 +861,7 @@ bool imageViewer::copyToBuffer(QByteArray *ba)
 
 uint  imageViewer:: setSize(int tcompressSize, bool usesCompression)
 {
-  compressSize=tcompressSize; //allways set it
+  compressSize=tcompressSize; //always set it
   if(!usesCompression)
     {
       applyTemplate();

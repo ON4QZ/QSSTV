@@ -111,7 +111,7 @@ QString dirDialog::openDirName(const QString &path)
     Saves a file to disk. A dialogbox is opened with \a startWith directory (or /dir/subdir/..../filename) preselected
     \param path directory to open (can include filename to preselect)
     \param filter    file types to select from (e.g. *.txt *.doc)
-    \param extension if extension is not empty or NULL, thenn this string will be appended to the filename. A dot will automatically be insterted (i.e specify "txt" not ".txt").
+    \param extension if extension is not empty or NULL, then this string will be appended to the filename. A dot will automatically be inserted (i.e specify "txt" not ".txt").
     \return if canceled or no selection then return an empty string else return string containing absolute filename.
 */
 

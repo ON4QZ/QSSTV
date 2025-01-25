@@ -65,11 +65,11 @@ calibration::~calibration()
 /**
  * @brief start calibration
  *
- * Call this function to start the calibration proces. The use the results, check the return status and get the value of the clocks by calling getRXClock() and getTXClock().
+ * Call this function to start the calibration process. The use the results, check the return status and get the value of the clocks by calling getRXClock() and getTXClock().
  *
  * \sa getRXClock() \sa getTXClock()
  *
- * @return bool true if calibration is successful. Return false if an error occured or the dialog was canceled
+ * @return bool true if calibration is successful. Return false if an error occurred or the dialog was canceled
  */
 int calibration::exec()
 {
@@ -115,7 +115,7 @@ void calibration::init()
  * @brief slot for finish
  *
  * This slot is called when the dialog is closed by pressing CANCEL or OK. It will abort the loop executed in start and set the bool canceled to false or true
- * depending on the CANCEL or OK button being presssed.
+ * depending on the CANCEL or OK button being pressed.
  **/
 
 void calibration::hasFinished(int result)
@@ -132,7 +132,7 @@ void calibration::hasFinished(int result)
  *
  * Start is called by exec and performs the clock calibration using NTP (Network Time Protocol).
  * It starts counting when the first 100 blocks are read or when the first 100 blocks are written in order to start with a stable condition.
- * @return bool returns true if calibration is successful or false when either the CANCEL button was pressed or a read NTP time erro has occured.
+ * @return bool returns true if calibration is successful or false when either the CANCEL button was pressed or a read NTP time error has occurred.
  *
  **/
 

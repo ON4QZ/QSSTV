@@ -296,7 +296,7 @@ void syncProcessor::extractSync()
  *
  * The function evaluates the sync pulse width and sets the retrace flag
  * *
- * \retval false if no valid sync and no further processing is neeeded
+ * \retval false if no valid sync and no further processing is needed
  *         true if a new syncArray entry is added and further processing is necessary
  */
 

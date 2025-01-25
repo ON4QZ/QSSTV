@@ -346,7 +346,7 @@ void modeBase::showLine()
   combineColors();
 }
 /**
-  \brief tranfer data to rxImage in RGB mode
+  \brief transfer data to rxImage in RGB mode
 
   Combine  R, G and B arrays (like in Martin mode) into the rxImage and advances the displayCounter
 */
@@ -368,7 +368,7 @@ void modeBase::combineColors()
 
 
 /**
-  \brief tranfer data to rxImage in grayscale
+  \brief transfer data to rxImage in grayscale
 
   Black and White image transfer. greenArray contains the luminance info.
 */
@@ -386,7 +386,7 @@ void modeBase::grayConversion()
 }
 
 /**
-  \brief tranfer data to rxImage in YUV mode
+  \brief transfer data to rxImage in YUV mode
 
   Combine  Y, U  and V arrays (like in PD modes) into the rxImage and advances the displayCounter
 */

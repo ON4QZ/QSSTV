@@ -30,7 +30,7 @@ If you want to be able to debug the program, the simplest way is to install QtCr
 
 `sudo apt-get install doxygen libqwt-qt5-dev`
 
-You can also run qmake with the following atributes:
+You can also run qmake with the following attributes:
 
 `qmake CONFIG+=debug`
 

@@ -123,7 +123,7 @@ bool rigControl::init()
   // int verbose=0;
   // rig_set_debug(verbose<2 ? RIG_DEBUG_NONE: (rig_debug_level_e)verbose);
   // rig_debug(RIG_DEBUG_VERBOSE, "rigctl, %s\n", hamlib_version);
-  // test if we can contact the tranceiver
+  // test if we can contact the transceiver
 
   canSetFreq=(my_rig->caps->set_freq != NULL);
   canGetFreq=(my_rig->caps->get_freq != NULL);

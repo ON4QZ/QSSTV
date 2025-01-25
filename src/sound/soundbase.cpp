@@ -179,7 +179,7 @@ int soundBase::capture()
 
       if((storedFrames<=(ulong)recordingSize*1048576L) && (soundRoutingInput==SNDINCARDTOFILE))
         {
-          addToLog(QString("writen %1 tofile").arg(count),LOGSOUND);
+          addToLog(QString("written %1 tofile").arg(count),LOGSOUND);
           waveOut.write((quint16*)tempRXBuffer,count,false);
           storedFrames+=count;
         }

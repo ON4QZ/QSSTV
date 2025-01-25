@@ -19,7 +19,7 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 *                                                                         *
 *                                                                         *
-*   This software contains parts of the following softwares               *
+*   This software contains parts of the following software                *
 *      videoCapture.cpp -- Kapture                                        *
 *                                                                         *
 *      Copyright (C) 2006-2009                                            *
@@ -383,7 +383,7 @@ bool videoCapture::stopStreaming()
   if(captureStop())
     {
       streaming = false;
-      addToLog(" * Succesful Stopped",LOGCAM);
+      addToLog(" * Successfully Stopped",LOGCAM);
     }
   return true;
 }

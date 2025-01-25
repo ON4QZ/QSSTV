@@ -105,7 +105,7 @@ public:
 
 
 /**
-  this event is send with teh sync quality info and the signal volume
+  this event is send with the sync quality info and the signal volume
 */
 class displaySyncEvent : public baseEvent
 {

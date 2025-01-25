@@ -145,7 +145,7 @@ bool  wavIO::openFileForRead(QString fname,bool ask)
 
   \param dPtr pointer to buffer for SOUNDFRAME type samples.
   \param numSamples  number of samples to read
-  \return returns the number of samples read. -1 is returned if there is an error, 0 is returned on end of the file else the numeber of samples read.
+  \return returns the number of samples read. -1 is returned if there is an error, 0 is returned on end of the file else the number of samples read.
 
 The file will be closed on reaching the end of file;
 
@@ -163,7 +163,7 @@ int  wavIO::read(short int *dPtr ,uint numSamples)
       return -1;
     }
 
-  llen=numSamples*sizeof(quint16)*numberOfChannels; // lenght in bytes
+  llen=numSamples*sizeof(quint16)*numberOfChannels; // length in bytes
   if(waveHeader.numChannels==1)
     {
       result=inopf.read((char*)dPtr,llen); //we do not need conversion

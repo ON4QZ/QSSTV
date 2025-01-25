@@ -289,7 +289,7 @@ bool soundAlsa::setupSoundParams(bool isCapture)
 
       snd_pcm_hw_params_get_channels_min(hwparams,&minChannelsPlayback);
       snd_pcm_hw_params_get_channels_max(hwparams,&maxChannelsPlayback);
-      err = snd_pcm_hw_params_set_channels ( handle, hwparams, 2); //allways stereo output
+      err = snd_pcm_hw_params_set_channels ( handle, hwparams, 2); //always stereo output
       if(!alsaErrorHandler(err,"Channels count not correct; " ))
         {
           return false;

@@ -121,7 +121,7 @@ bool logFile::reopen()
   errorOut() << "opening logfile: " << finfaux.absoluteFilePath();
   if(!auxFile->open(QIODevice::WriteOnly))
     {
-      errorOut() << "auxillary file creation failed";
+      errorOut() << "auxiliary file creation failed";
       lf->close();
       return false;
     }
@@ -238,7 +238,7 @@ void logFile::addToAux(QString t)
 void logFile::addToAux(QString ){}
 #endif
 /*!
-  if enable=true logging wil be performed
+  if enable=true logging will be performed
   \return previous logging state (true if logging was enabled)
 */
 

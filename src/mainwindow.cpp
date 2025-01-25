@@ -85,7 +85,7 @@ mainWindow::mainWindow(QWidget *parent) : QMainWindow(parent),  ui(new Ui::MainW
   pttIcon->setFrameShape(QFrame::Panel);
   pttIcon->setFrameShadow(QFrame::Raised);
   pttIcon->setLineWidth(2);
-  rigControllerPtr=new rigControl(1); // must preceed configDialog construction
+  rigControllerPtr=new rigControl(1); // must precede configDialog construction
   configDialogPtr=new configDialog(this);
   configDialogPtr->readSettings();
 

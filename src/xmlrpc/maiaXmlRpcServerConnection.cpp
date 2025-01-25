@@ -272,7 +272,7 @@ QByteArray getReturnType(const QMetaObject *obj,const QByteArray &method, const 
 }
 
 /*
-  simple Qt4 class emulater
+  simple Qt4 class emulator
 */
 
 #if QT_VERSION >= 0x050000
