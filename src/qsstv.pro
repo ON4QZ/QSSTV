@@ -511,7 +511,7 @@ contains(QMAKE_HOST.arch, arm.*):{
   else {
        message(Compiling for x86)
        CONFIG(debug ,debug|release){
-       dox.commands = cd $$PWD/documentation/manual ;doxygen  manual.doxy; cd $$PWD ;doxygen  $$PWD/documentation/api/api.doxy;
+       dox.commands = cd $$PWD/documentation/manual ;doxygen  manual.y; cd $$PWD ;doxygen  $$PWD/documentation/api/api.doxy;
        dox.depends= FORCE
        PRE_TARGETDEPS       +=    dox
        message(dox will be generated)
