@@ -390,12 +390,23 @@ Before we can use QSSTV you need to set some configuration options.
 \image html config.png
 The configuration tool is accessed through the "Options" menu in the receive window.
 The following tabs are available
-<br><br>
-\anchor operator
-\li Operator Settings
-<br><br>
+\li \ref Operator
+\li \ref Directories
+\li \ref Gui
+\li \ref Sound
+\li \ref CAT
+\li \ref CW
+\li \ref Repeater
+\li \ref FTP
+\li \ref Waterfall
+\li \ref Hybrid
+\li \ref DRM
+\li \ref Frequencies
+
+\section Operator Operator Settings
+
 \image html config1.png
-<br><br>
+
 - Call sign
 - First Name
 - Last Name
@@ -406,10 +417,10 @@ The following tabs are available
 - Allow other users to see your online status via the notification server
 <br>The text will be added to the notification sent to the hybrid server<br>
 
-\li Directories
-<br><br>
+\section Directories
+
 \image html config2.png
-<br><br>
+
 - RX SSTV Images: directory for saving the SSTV received images
 - RX DRM Images: directory for saving the DRM received images
 - TX Images: directory for images to transmit
@@ -417,12 +428,11 @@ The following tabs are available
 - Audio Records: directory for audio files (where you save/read recorded audio files)
 - Save TX images in TX SSTV or TX DRM directory: if selected the TX image will be saved
 - Documentation: URL of the user manual (if you copied the manual locally then you can point to it with e.g. file:///usr/share/doc/qsstv/manual)
-<br><br>
 
-\li Gui
-<br><br>
+\section Gui
+
 \image html config3.png
-<br><br>
+
 - Stretch: if checked, the image will fill the receive window (keeping the aspect ratio)  else it will be displayed as is.
 - Background Colour: colour used for image borders and background in the gallery
 - Image Background Colour: Default image background
@@ -435,11 +445,8 @@ You can toggle to and from full screen by using the CTRL_F key combination.
 - Ask for confirmation when deleting file: When you delete a file from the gallery it will ask for confirmation before deleting the file, otherwise it will simply delete the file.
 - Ask for confirmation when closing QSSTV: if checked, ask: "Are you sure to exit QSSTV" before closing the program
 
+\section Sound
 
-<br><br>
-
-\li Audio
-<br><br>
 \image html config4.png
 <br>
 See also \ref volume
@@ -458,19 +465,17 @@ See also \ref volume
    - To sound card: default
    - Playback: playback a wav-file (use 48000 samples per second recording in mono or stereo)
    - Playback and record: playback the sound and record at the same time.
- - Swap left and right channel
+- Swap left and right channel
     - If selected, audio will be sent on the right audio channel instead of the left channel (e.g. Kenwood transceivers using USB sound interfaces)
- - PTT tone on other audio channel
+- PTT tone on other audio channel
     - A tone will be sent on the right channel to enable PTT. If the above "Swap left and right channel" is selected, it will be sent on the left channel.
-<br><br>
+
 Note: To playback an audio file, be sure the format is of type wav and has a samplerate of 48000 samples/second. You can always open the file with audacity and export the file to adapt the type and/or
  samplerate<br>
 
+\section CAT
 
-\li CAT
-<br><br>
 \image html config5.png
-<br><br>
 
 - Special Serial Port: If you have a separate serial interface to control the PTT you can enable Special Serial Port to control it.
 You can select RTS and or DTR in inverted or non-inverted mode (i.e. +RTS will assert RTS at +12V when the PTT is active
@@ -504,12 +509,12 @@ Note: The option Enable XMLRPC excludes the use of hamlib.
 A sample set-up of Flrig (version <1.3.4x) is shown below.
 <br><br>
 \image html flrig1.png
-<br><br>
 
 You can now also connect via Hamlib to Flrig (model number 4).
 There are two prerequisites
 - Hamlib version 3
 - Flrig 1.3.4x or higher
+
 \image html cat_flrig.png
 <br>
 
@@ -517,10 +522,10 @@ There are two prerequisites
 
 
 
-\li CW
-<br><br>
+\section CW
+
 \image html config6.png
-<br><br>
+
 - Tone: frequency of the CW tone
 - Words per Minute: CW transmission speed
 - Text To Send: this text will be sent at the end of an image transmission if the option is enabled.
@@ -528,13 +533,11 @@ There are two prerequisites
 
 
 
-\li Repeater
-<br>
+\section Repeater
+
 \anchor repAnchor
 
-<br>
 \image html config7.png
-<br><br>
 
 - Enable repeater: enable repeater operation
 - Image Interval (min): interval time before sending one of the Idle Images
@@ -547,10 +550,10 @@ There are two prerequisites
 
 See also \ref repeater
 
-\li FTP
-<br><br>
+\section FTP
+
 \image html config8.png
-<br><br>
+
 This is used to save the received images to an FTP server. The images will also still be saved in the local rx folder.
 - Enable FTP: enable ftp operation
 - FTP Port: default 21
@@ -573,10 +576,10 @@ You will either see a pop-up with "Connection OK" or an error message showing th
 
 
 
-\li Waterfall
-<br><br>
+\section Waterfall
+
 \image html config9.png
-<br><br>
+
 - Start Pic: Waterfall text to send at the beginning of a DRM transmission
 - End Pic: Waterfall text to send at the end of a DRM transmission
 - FIX: Waterfall text to send at the beginning of a DRM retransmission
@@ -584,10 +587,10 @@ You will either see a pop-up with "Connection OK" or an error message showing th
 <br> Note: you can also use macros (e.g. %%m, %%q ...) in the text (see \ref macros "macros")
 
 
-\li Hybrid
-<br><br>
+\section Hybrid
+
 \image html config10.png
-<br><br>
+
 - Enable Reception in Hybrid Mode: allows reception of hamDRM in hybrid mode. If not enabled, hybrid mode files will not be shown or stored.
 - FTP Port: default 21 (cannot be modified at this moment for compatibility with EasyPal)
 - Send RX Notifications in Hybrid mode: The notifications will be sent to the server used by the sender
@@ -618,22 +621,21 @@ There are some public servers you can use.
 Have a look at http://www.easypal.org/
 
 
-\li DRM Profiles
-<br><br>
+\section DRM DRM Profiles
+
 \image html config11.png
-<br><br>
+
 Used for quick selection of the most common settings you use in DRM.
 Choose a short name for the profile and make a selection for all the parameters.
 The name will appear in the Profiles drop-down box in the Transmit window for DRM.
 
-See
+See also \ref TXDRM
 
-\li Frequencies
-\anchor configFreq
-<br><br>
+\section Frequencies
+
 \image html config12.png
-<br><br>
-- List of selectable frequencies. Click Add to add a new combo frequency/mode/modulation/passband. Enter the frequency and select the mode, modulation and passband type.<br>
+
+- List of selectable frequencies. Click Add to add a new combo frequency/mode/modulation/passband. Enter the frequency and select the mode,modulation and passband type.<br>
 To move a frequency/mode/modulation/passband  up or down the list, click first on the entry in the table and then click on one of the arrow buttons.
 - Filter 1 will be selected if PKTxxx is used on ICOM (hamlib limitation).
 - Hamlib Data Command: (only used with Hamlib)
@@ -712,7 +714,7 @@ When RX and TX calibration is finished, press the OK button to accept the new va
 \page statusbar Statusbar
 \image html statusbar.png
 - Radio Frequency: the current frequency of the radio (only if CAT interface is enabled and there is a connection with the radio, else "No Rig" will be displayed)
-- Drop down menu to set the radio on the selected frequency (only if CAT interface is enabled) (see also \ref configFreq Config freq)
+- Drop down menu to set the radio on the selected frequency (only if CAT interface is enabled) (see also \ref Frequencies)
 - WF Text: gives you a selection of user defined text you can send to appear as waterfall text.
 <br><br>
 \image html wftextpopup.png
@@ -906,7 +908,7 @@ The three markers above the waterfall indicate  the position of the pilot freque
 <br>
 Who is On?
 Information about other station on the hybrid server. There are some
-- The stations must enable : Allow other users to see your online status ... see  \ref operator configuration
+- The stations must enable : Allow other users to see your online status ... see  \ref Operator
 
 see \ref RXSSTV
 
@@ -929,7 +931,7 @@ For the other icons and actions see also \ref TXSSTV
 <br>
 Mode Selection
 \image html txdrm_options.png
-<br>
+
 - Mode (A, B or E)
 - Bandwidth (2.2 kHz or 2.5 kHz)
 - Interleave (Short or Long)
