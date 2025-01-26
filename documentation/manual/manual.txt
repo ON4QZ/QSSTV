@@ -762,7 +762,7 @@ stop receiving images
 force a restart (e.g. when you see a wrong synchronization then click the restart button).
 \li \image html filesave.png
 save the image at any time using the save button. You will probably want to use this if the Auto-save is not selected. Note only active in SSTV mode.
-\li \image html i_eraser.png
+\li \image html eraser.png
 erase the screen
 
 
@@ -814,7 +814,7 @@ loads a file in the transmit window
 opens the image editor
 \li \image html camera.png
 takes a snapshot if there is a camera installed that is supported by v4l2
-\li \image html i_binary.png
+\li \image html binary.png
 only used in DRM mode
 \li \image html doubletone.png
 lets you select frequency and duration of a tone to send
@@ -920,7 +920,7 @@ see \ref RXSSTV
 
 see  also \ref sstvMenu under SSTV TX
 
-- \image html i_binary.png
+- \image html binary.png
 Click here to send a binary file (basically any file will do)
 
 - \image html hybrid_checkbox.png
