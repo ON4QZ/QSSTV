@@ -1,7 +1,7 @@
 /**************************************************************************
 *   Copyright (C) 2000-2019 by Johan Maes                                 *
 *   on4qz@telenet.be                                                      *
-*   http://users.telenet.be/on4qz                                         *
+*   https://www.qsl.net/o/on4qz                                           *
 *                                                                         *
 *   This program is free software; you can redistribute it and/or modify  *
 *   it under the terms of the GNU General Public License as published by  *
@@ -65,7 +65,7 @@ void directoriesConfig::readSettings()
   txStockImagesPath=qSettings.value("txStockImagesPath",QString(getenv("HOME"))+"/qsstv/tx_stock/").toString();
   templatesPath=qSettings.value("templatesPath",QString(getenv("HOME"))+"/qsstv/templates/").toString();
   audioPath=qSettings.value("audioPath",QString(getenv("HOME"))+"/qsstv/audio/").toString();
-  docURL=qSettings.value("docURL","http://users.telenet.be/on4qz/qsstv/manual").toString();
+  docURL=qSettings.value("docURL","https://www.qsl.net/o/on4qz/qsstv/manual").toString();
   saveTXimages=qSettings.value("saveTXimages",false).toBool();
   recursiveScanDirs=qSettings.value("recursiveScanDirs",false).toBool();
   qSettings.endGroup();

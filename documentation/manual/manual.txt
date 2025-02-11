@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2000-2019 by Johan Maes                                 *
  *   on4qz@telenet.be                                                      *
- *   http://users.telenet.be/on4qz                                         *
+ *   https://www.qsl.net/o/on4qz                                           *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -29,7 +29,7 @@
 QSSTV is a program for receiving and transmitting SSTV and HAMDRM (sometimes called DSSTV). It is compatible with most of MMSSTV and EasyPal<br>
 
 
-!!!  ALSO READ THE FAQ AT http://users.telenet.be/on4qz/qsstv/faq.html !!!
+!!!  ALSO READ THE FAQ AT https://www.qsl.net/o/on4qz/qsstv/faq.html !!!
 
 This manual is divided in the following sections:
 - \subpage whatsnew
@@ -334,11 +334,11 @@ First install the library and then the development package. This is the case for
 
 
 For specific instructions on installation on different distributions: have a look at the FAQ
-html http://users.telenet.be/on4qz/qsstv/faq.html
+html https://www.qsl.net/o/on4qz/qsstv/faq.html
 
 \section step2 Step 2: Getting the software
 
-The latest versions of QSSTV is always available at http://users.telenet.be/on4qz
+The latest versions of QSSTV is always available at https://www.qsl.net/o/on4qz
 Download the latest tar file to a local directory (e.g. ~/Downloads)
 
 \section step3 Step 3: Compile and Install the software

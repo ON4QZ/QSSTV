@@ -1,7 +1,7 @@
 /**************************************************************************
 *   Copyright (C) 2000-2019 by Johan Maes                                 *
 *   on4qz@telenet.be                                                      *
-*   http://users.telenet.be/on4qz                                         *
+*   https://www.qsl.net/o/on4qz                                           *
 *                                                                         *
 *   This program is free software; you can redistribute it and/or modify  *
 *   it under the terms of the GNU General Public License as published by  *
@@ -408,7 +408,7 @@ void mainWindow::slotDocumentation()
 void mainWindow::slotAboutQSSTV()
 {
   QString temp=tr("QSSTV\nVersion: ") + MAJORVERSION + MINORVERSION;
-  temp += "\n http://users.telenet.be/on4qz \n(c) 2000-2019 -- Johan Maes - ON4QZ\n HAMDRM Software based on RX/TXAMADRM\n from PA0MBO";
+  temp += "\n https://www.qsl.net/o/on4qz \n(c) 2000-2019 -- Johan Maes - ON4QZ\n HAMDRM Software based on RX/TXAMADRM\n from PA0MBO";
   QMessageBox::about(this,tr("About..."),temp);
 
 }
