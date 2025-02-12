@@ -40,14 +40,29 @@
 #define HAMLIB_FILPATHLEN FILPATHLEN
 #endif
 
+#ifdef RIGCAPS_NOT_CONST
+  /* Since this commit:
+   *   https://github.com/Hamlib/Hamlib/commit/ed941939359da9f8734dbdf4a21a9b01622a1a6e
+   * a 'struct rig_caps' is no longer constant (as passed to 'rig_list_foreach()' etc.).
+   */
+  QList<rig_caps *> capsList;
+#else
+  QList<const rig_caps *> capsList;
+#endif
 
-QList<const rig_caps *> capsList;
 bool radiolistLoaded=false;
 
 
 
-
+#ifdef RIGCAPS_NOT_CONST
+/* Since this commit:
+   *   https://github.com/Hamlib/Hamlib/commit/ed941939359da9f8734dbdf4a21a9b01622a1a6e
+   * a 'struct rig_caps' is no longer constant (as passed to 'rig_list_foreach()' etc.).
+   */
+int collect(rig_caps *caps,rig_ptr_t)
+#else
 int collect(const rig_caps *caps,rig_ptr_t)
+#endif
 {
   capsList.append(caps);
   return 1;
