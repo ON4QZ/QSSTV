@@ -24,7 +24,7 @@ INCLUDEPATH += config dispatch drmrx drmtx dsp editor logbook mainwidgets rig sc
 #QMAKE_LIBDIR += $$[QT_SYSROOT]/usr/local/lib
 
 CONFIG += link_pkgconfig
-PKGCONFIG += libopenjp2
+PKGCONFIG += libopenjp2 fftw3 libpulse libpulse-simple hamlib
 TARGET = qsstv
 macx {
  # Enable pkg-config (pkg-config is disabled by default in the Qt package for mac)

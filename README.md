@@ -11,10 +11,27 @@ For apt based distros you can install dependencies as follows:
 apt install pkg-config g++ libfftw3-dev qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools libqt5svg5-dev libhamlib++-dev libasound2-dev libpulse-dev libopenjp2-7 libopenjp2-7-dev libv4l-dev build-essential
 ```
 
+### macOS Dependencies
+
+For macOS users, you can install dependencies using Homebrew:
+
+```bash
+brew install qt@5 fftw hamlib openjpeg pulseaudio qwt pkg-config
+```
+
+**Note:** You must have PulseAudio running for sound to work:
+```bash
+brew services start pulseaudio
+```
+
 ### Compile and Install
 	mkdir src/build
 	cd src/build
+	# For Linux
 	qmake ..
+	# For macOS
+	/opt/homebrew/opt/qt@5/bin/qmake ..
+	
 	make -j2
 	sudo make install
 
