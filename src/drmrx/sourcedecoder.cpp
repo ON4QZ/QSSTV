@@ -342,6 +342,7 @@ bool sourceDecoder::addHeaderSegment()
 
   while(currentDataPacket.ba.count())
     {
+      dataPtr=(unsigned char *)currentDataPacket.ba.data();
       PLI=dataPtr[0]>>6;
       paramID=dataPtr[0]&0x3F;
       switch (PLI)
