@@ -30,6 +30,7 @@
 #include <QSplashScreen>
 #include <QMessageBox>
 #include <QApplication>
+#include <QMutexLocker>
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -61,11 +62,13 @@ rigControl::rigControl(int radioIndex)
   getRadioList();
   serialP=0;
   lastFrequency=0.0;
+  getFreqErrorCount=0;
   xmlModes<<"USB"<<"LSB"<<"FM"<<"AM";
 }
 
 rigControl::~rigControl()
 {
+  QMutexLocker locker(&rigAccessMutex);
   rig_close(my_rig); /* close port */
   rig_cleanup(my_rig); /* if you care about memory */
 }
@@ -145,23 +148,27 @@ bool rigControl::getFrequency(double &frequency)
   if(catParams.enableXMLRPC)
     {
       frequency=xmlIntfPtr->getFrequency();
+      lastFrequency=frequency;
+      getFreqErrorCount=0;
       return true;
     }
 
   if(!rigControlEnabled || !canGetFreq) return false;
+  QMutexLocker locker(&rigAccessMutex);
   retcode = rig_get_freq(my_rig, RIG_VFO_CURR, &frequency);
-  for(int i=0;i<RIGCMDTRIES;i++)
+  if (retcode==RIG_OK)
     {
-      qDebug() << "getFreq";
-      retcode = rig_get_freq(my_rig, RIG_VFO_CURR, &frequency);
-      qDebug() << "got Freq";
-      if (retcode==RIG_OK)
-        {
-          return true;
-        }
+      lastFrequency=frequency;
+      getFreqErrorCount=0;
+      return true;
     }
-  //  errorMessage(retcode,"getFrequency");
-  canGetFreq=false; // too many errors;
+
+  getFreqErrorCount++;
+  if(getFreqErrorCount>=RIGCMDTRIES)
+    {
+      // Stop polling after repeated failures to avoid blocking the UI thread.
+      canGetFreq=false;
+    }
   frequency=lastFrequency;
   return false;
 
@@ -176,6 +183,7 @@ bool rigControl::setFrequency(double frequency)
       return true;
     }
   if(!rigControlEnabled || !canSetFreq) return false;
+  QMutexLocker locker(&rigAccessMutex);
   //        retcode = rig_set_vfo(my_rig, RIG_VFO_CURR);
   //        if (retcode != RIG_OK ) {errorMessage(retcode,"setVFO"); return false; }
 
@@ -194,6 +202,7 @@ bool rigControl::setFrequency(double frequency)
 
 void rigControl::disable()
 {
+  QMutexLocker locker(&rigAccessMutex);
   if(rigControlEnabled)
     {
       rig_close(my_rig); /* close port */
@@ -214,6 +223,7 @@ bool rigControl::getMode(QString &mode)
   pbwidth_t width;
   int retcode;
   if(!rigControlEnabled || !canGetMode) return false;
+  QMutexLocker locker(&rigAccessMutex);
 
   for(int i=0;i<RIGCMDTRIES;i++)
     {
@@ -268,6 +278,7 @@ bool rigControl::setMode(QString mode,QString passBand)
     }
   int retcode;
   if(!rigControlEnabled || !canSetMode) return false;
+  QMutexLocker locker(&rigAccessMutex);
 
   for(int i=0;i<RIGCMDTRIES;i++)
     {
@@ -291,6 +302,7 @@ bool rigControl::setPTT(bool on)
   /* Hamlib will fall back to RIG_PTT_ON if RIG_PTT_ON_DATA is not available in current hamlib configuration */
   if(on) ptt=RIG_PTT_ON_DATA; else ptt=RIG_PTT_OFF;
   if(!rigControlEnabled || !canSetPTT) return false;
+  QMutexLocker locker(&rigAccessMutex);
 
   for(int i=0;i<RIGCMDTRIES;i++)
     {
@@ -458,6 +470,7 @@ int  rigControl::rawCommand(QByteArray ba)
   QString command="w ";
   QByteArray cmdBa;
   if(!rigControlEnabled) return 0;
+  QMutexLocker locker(&rigAccessMutex);
   struct rig_state *rs;
   rs = &my_rig->state;
   // check if backend via rigctld
