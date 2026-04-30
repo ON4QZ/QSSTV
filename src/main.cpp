@@ -42,6 +42,8 @@ int main( int argc, char ** argv )
   QCoreApplication::setOrganizationName(ORGANIZATION);
   QCoreApplication::setApplicationName(APPLICATION);
   QApplication app( argc, argv );
+  QFile styleFile(":./qsstvmania.qss");
+  if(styleFile.open(QFile::ReadOnly)) { app.setStyleSheet(styleFile.readAll()); styleFile.close(); }
   QPixmap pixmap(":/icons/qsstvsplash.png");
   QSplashScreen splash(pixmap,Qt::WindowStaysOnTopHint);
 
