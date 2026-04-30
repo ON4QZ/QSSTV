@@ -58,13 +58,13 @@ void directoriesConfig::readSettings()
 {
   QSettings qSettings;
   qSettings.beginGroup("DIRECTORIES");
-  rxSSTVImagesPath=qSettings.value("rxSSTVImagesPath",QString(getenv("HOME"))+"/qsstv/rx_sstv/").toString();
-  rxDRMImagesPath=qSettings.value("rxDRMImagesPath",QString(getenv("HOME"))+"/qsstv/rx_drm/").toString();
-  txSSTVImagesPath=qSettings.value("txSSTVImagesPath",QString(getenv("HOME"))+"/qsstv/tx_sstv/").toString();
-  txDRMImagesPath=qSettings.value("txDRMImagesPath",QString(getenv("HOME"))+"/qsstv/tx_drm/").toString();
-  txStockImagesPath=qSettings.value("txStockImagesPath",QString(getenv("HOME"))+"/qsstv/tx_stock/").toString();
-  templatesPath=qSettings.value("templatesPath",QString(getenv("HOME"))+"/qsstv/templates/").toString();
-  audioPath=qSettings.value("audioPath",QString(getenv("HOME"))+"/qsstv/audio/").toString();
+  rxSSTVImagesPath=qSettings.value("rxSSTVImagesPath",QString(getenv("HOME"))+"/qsstvmania/rx_sstv/").toString();
+  rxDRMImagesPath=qSettings.value("rxDRMImagesPath",QString(getenv("HOME"))+"/qsstvmania/rx_drm/").toString();
+  txSSTVImagesPath=qSettings.value("txSSTVImagesPath",QString(getenv("HOME"))+"/qsstvmania/tx_sstv/").toString();
+  txDRMImagesPath=qSettings.value("txDRMImagesPath",QString(getenv("HOME"))+"/qsstvmania/tx_drm/").toString();
+  txStockImagesPath=qSettings.value("txStockImagesPath",QString(getenv("HOME"))+"/qsstvmania/tx_stock/").toString();
+  templatesPath=qSettings.value("templatesPath",QString(getenv("HOME"))+"/qsstvmania/templates/").toString();
+  audioPath=qSettings.value("audioPath",QString(getenv("HOME"))+"/qsstvmania/audio/").toString();
   docURL=qSettings.value("docURL","https://www.qsl.net/o/on4qz/qsstv/manual").toString();
   saveTXimages=qSettings.value("saveTXimages",false).toBool();
   recursiveScanDirs=qSettings.value("recursiveScanDirs",false).toBool();
