@@ -57,7 +57,7 @@
          </property>
          <property name="icon">
           <iconset resource="../qsstv.qrc">
-           <normaloff>:/icons/start.png</normaloff>:/icons/start.png</iconset>
+           <normaloff>:/icons/modern/start.svg</normaloff>:/icons/modern/start.svg</iconset>
          </property>
         </widget>
        </item>
@@ -74,7 +74,7 @@
          </property>
          <property name="icon">
           <iconset resource="../qsstv.qrc">
-           <normaloff>:/icons/stop.png</normaloff>:/icons/stop.png</iconset>
+           <normaloff>:/icons/modern/stop.svg</normaloff>:/icons/modern/stop.svg</iconset>
          </property>
         </widget>
        </item>
@@ -91,7 +91,7 @@
          </property>
          <property name="icon">
           <iconset resource="../qsstv.qrc">
-           <normaloff>:/icons/tone.png</normaloff>:/icons/tone.png</iconset>
+           <normaloff>:/icons/modern/tone.svg</normaloff>:/icons/modern/tone.svg</iconset>
          </property>
         </widget>
        </item>
@@ -108,7 +108,7 @@
          </property>
          <property name="icon">
           <iconset resource="../qsstv.qrc">
-           <normaloff>:/icons/fileopen.png</normaloff>:/icons/fileopen.png</iconset>
+           <normaloff>:/icons/modern/fileopen.svg</normaloff>:/icons/modern/fileopen.svg</iconset>
          </property>
         </widget>
        </item>
@@ -125,7 +125,7 @@
          </property>
          <property name="icon">
           <iconset resource="../qsstv.qrc">
-           <normaloff>:/icons/edit.png</normaloff>:/icons/edit.png</iconset>
+           <normaloff>:/icons/modern/edit.svg</normaloff>:/icons/modern/edit.svg</iconset>
          </property>
         </widget>
        </item>
@@ -142,7 +142,7 @@
          </property>
          <property name="icon">
           <iconset resource="../qsstv.qrc">
-           <normaloff>:/icons/camera.png</normaloff>:/icons/camera.png</iconset>
+           <normaloff>:/icons/modern/camera.svg</normaloff>:/icons/modern/camera.svg</iconset>
          </property>
         </widget>
        </item>
@@ -150,7 +150,7 @@
         <widget class="QPushButton" name="binaryPushButton">
          <property name="icon">
           <iconset resource="../qsstv.qrc">
-           <normaloff>:/icons/binary.png</normaloff>:/icons/binary.png</iconset>
+           <normaloff>:/icons/modern/binary.svg</normaloff>:/icons/modern/binary.svg</iconset>
          </property>
         </widget>
        </item>
@@ -187,7 +187,7 @@
          </property>
          <property name="icon">
           <iconset resource="../qsstv.qrc">
-           <normaloff>:/icons/up.png</normaloff>:/icons/up.png</iconset>
+           <normaloff>:/icons/modern/up.svg</normaloff>:/icons/modern/up.svg</iconset>
          </property>
         </widget>
        </item>
@@ -217,7 +217,7 @@
          </property>
          <property name="icon">
           <iconset resource="../qsstv.qrc">
-           <normaloff>:/icons/doubletone.png</normaloff>:/icons/doubletone.png</iconset>
+           <normaloff>:/icons/modern/doubletone.svg</normaloff>:/icons/modern/doubletone.svg</iconset>
          </property>
         </widget>
        </item>
@@ -234,7 +234,7 @@
          </property>
          <property name="icon">
           <iconset resource="../qsstv.qrc">
-           <normaloff>:/icons/sweep.png</normaloff>:/icons/sweep.png</iconset>
+           <normaloff>:/icons/modern/sweep.svg</normaloff>:/icons/modern/sweep.svg</iconset>
          </property>
         </widget>
        </item>
