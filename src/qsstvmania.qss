@@ -286,3 +286,34 @@ QProgressBar::chunk {
   background: #a6e3a1;
   border-radius: 3px;
 }
+
+/* Settings panel card */
+QTabWidget#settingsTableWidget {
+  border: 2px solid #3a6a3a;
+  border-radius: 6px;
+  background-color: #181825;
+}
+
+QTabWidget#settingsTableWidget::pane {
+  border: none;
+  background-color: #181825;
+  border-radius: 6px;
+  padding: 6px;
+}
+
+QTabWidget#settingsTableWidget QLabel {
+  color: #a6adc8;
+  font-size: 12px;
+  padding-right: 4px;
+}
+
+QTabWidget#settingsTableWidget QComboBox,
+QTabWidget#settingsTableWidget QSpinBox {
+  min-width: 80px;
+}
+
+QTabWidget#settingsTableWidget QCheckBox {
+  color: #cdd6f4;
+  font-size: 12px;
+  padding: 2px 0px;
+}
