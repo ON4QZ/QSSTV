@@ -56,7 +56,7 @@ void guiConfig::readSettings()
   galleryColumns=qSettings.value("galleryColumns",4).toInt();
   imageStretch=qSettings.value("imageStretch",true).toBool();
   backGroundColor=qSettings.value("backGroundColor",QColor(0,86,230)).value<QColor>();
-  imageBackGroundColor=qSettings.value("imageBackGroundColor",QColor(128,128,128)).value<QColor>();
+  imageBackGroundColor=qSettings.value("imageBackGroundColor",QColor(30,30,46)).value<QColor>();
   slowCPU=qSettings.value("slowCPU",false).toBool();
   lowRes=qSettings.value("lowRes",false).toBool();
   confirmDeletion=qSettings.value("confirmDeletion",true).toBool();

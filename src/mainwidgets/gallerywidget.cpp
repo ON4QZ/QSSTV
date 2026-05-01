@@ -102,20 +102,20 @@ void galleryWidget::readSettings()
   qSettings.beginGroup ("Gallery");
 
   splashStr+=QString( "Loading RX images" ).rightJustified(25,' ')+"\n";
-  splashPtr->showMessage ( splashStr ,Qt::AlignLeft,Qt::white);
+  splashPtr->showMessage(splashStr, Qt::AlignHCenter|Qt::AlignBottom, QColor("#a6e3a1"));
   qApp->processEvents();
   ui->rxSSTVMatrix->init(galleryRows,galleryColumns,rxSSTVImagesPath,imageViewer::RXSSTVTHUMB);
   ui->rxDRMMatrix->init(galleryRows,galleryColumns,rxDRMImagesPath,imageViewer::RXDRMTHUMB);
 
   splashStr+=QString( "Loading TX images" ).rightJustified(25,' ')+"\n";
-  splashPtr->showMessage ( splashStr ,Qt::AlignLeft,Qt::white);
+  splashPtr->showMessage(splashStr, Qt::AlignHCenter|Qt::AlignBottom, QColor("#a6e3a1"));
   qApp->processEvents();
   ui->txSSTVMatrix->init(galleryRows,galleryColumns,txSSTVImagesPath,imageViewer::TXSSTVTHUMB);
   ui->txDRMMatrix->init(galleryRows,galleryColumns,txDRMImagesPath,imageViewer::TXDRMTHUMB);
   ui->txStockMatrix->init(galleryRows,galleryColumns,txStockImagesPath,imageViewer::TXSTOCKTHUMB);
 
   splashStr+=QString( "Loading Templates" ).rightJustified(25,' ')+"\n";
-  splashPtr->showMessage ( splashStr ,Qt::AlignLeft,Qt::white);
+  splashPtr->showMessage(splashStr, Qt::AlignHCenter|Qt::AlignBottom, QColor("#a6e3a1"));
   ui->templateMatrix->init(galleryRows,galleryColumns,templatesPath,imageViewer::TEMPLATETHUMB);
 }
 
