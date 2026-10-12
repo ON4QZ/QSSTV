@@ -47,6 +47,7 @@
 #include <QMessageBox>
 #include <QScreen>
 #include <QApplication>
+#include <QtConcurrent/QtConcurrentRun>
 #include "filewatcher.h"
 #include "ftpfunctions.h"
 
@@ -59,6 +60,9 @@
 mainWindow::mainWindow(QWidget *parent) : QMainWindow(parent),  ui(new Ui::MainWindow)
 {
   inStartup=true;
+  exitingApp=false;
+  rigPollInProgress=false;
+  rigFreqWatcher=nullptr;
   QApplication::instance()->thread()->setObjectName("qsstv_main");
   wfTextPushButton=new QPushButton("WF Text",this);
   bsrPushButton=new QPushButton("BSR",this);
@@ -103,6 +107,8 @@ mainWindow::mainWindow(QWidget *parent) : QMainWindow(parent),  ui(new Ui::MainW
   ui->statusBar->addPermanentWidget(pttIcon);
   statusBarPtr=statusBar(); // must be after setup UI
   spectrumFramePtr=ui->spectrumFrame;
+  rigFreqWatcher=new QFutureWatcher<double>(this);
+  connect(rigFreqWatcher,SIGNAL(finished()),this,SLOT(slotRigFrequencyPollFinished()));
 
 
   // setting up pointers
@@ -355,6 +361,7 @@ void mainWindow::slotExit()
 
   if(exit==QMessageBox::Ok)
     {
+      exitingApp=true;
       statusBarPtr->showMessage("Cleaning up...");
       dispatcherPtr->idleAll();
       rxWidgetPtr->setOnlineStatus(false);
@@ -515,11 +522,26 @@ void mainWindow::slotSetFrequency(int freqIndex)
 
 void mainWindow::timerEvent(QTimerEvent *)
 {
-  double fr;
-  if(rigControllerPtr->getFrequency(fr))
+  if(exitingApp) return;
+  if(rigPollInProgress) return;
+
+  rigPollInProgress=true;
+  rigFreqWatcher->setFuture(QtConcurrent::run([this]() -> double {
+    double fr=0;
+    if(rigControllerPtr->getFrequency(fr)) return fr;
+    return -1;
+  }));
+}
+
+void mainWindow::slotRigFrequencyPollFinished()
+{
+  rigPollInProgress=false;
+  if(exitingApp) return;
+
+  const double fr=rigFreqWatcher->result();
+  if(fr>1000000.)
     {
-      fr/=1000000.;
-      if(fr>1) freqDisplay->setText(QString::number(fr,'f',6));
+      freqDisplay->setText(QString::number(fr/1000000.,'f',6));
     }
   else
     {

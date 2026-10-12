@@ -6,6 +6,7 @@
 
 #include <QObject>
 #include <QComboBox>
+#include <QMutex>
 
 extern "C" int write_block(hamlib_port_t *p, const char *txbuffer, size_t count);
 extern "C" int read_block(hamlib_port_t *p, char *rxbuffer, size_t count);
@@ -88,6 +89,8 @@ private:
   bool canGetMode;
   bool canSetPTT;
   bool canGetPTT;
+  int getFreqErrorCount;
+  QMutex rigAccessMutex;
 };
 
 
