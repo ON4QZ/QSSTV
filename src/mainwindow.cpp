@@ -213,7 +213,7 @@ void mainWindow::init()
   if(!rigControllerPtr->initError.isEmpty())
     {
       splashStr+=rigControllerPtr->initError.rightJustified(25,' ')+"\n";
-      splashPtr->showMessage(splashStr ,Qt::AlignLeft,Qt::white);
+      splashPtr->showMessage(splashStr, Qt::AlignHCenter|Qt::AlignBottom, QColor("#a6e3a1"));
     }
   startTimer(1000);
   if(fileWatcherPtr==nullptr) fileWatcherPtr=new fileWatcher;
@@ -241,7 +241,7 @@ void mainWindow::restartSound(bool inStartUp)
       if(inStartUp)
         {
           splashStr+=QString("Soundcard error: %1").arg(soundIOPtr->getLastError()).rightJustified(25,' ')+"\n";;
-          splashPtr->showMessage(splashStr ,Qt::AlignLeft,Qt::white);
+          splashPtr->showMessage(splashStr, Qt::AlignHCenter|Qt::AlignBottom, QColor("#a6e3a1"));
         }
       else
         {
@@ -407,8 +407,8 @@ void mainWindow::slotDocumentation()
 
 void mainWindow::slotAboutQSSTV()
 {
-  QString temp=tr("QSSTV\nVersion: ") + MAJORVERSION + MINORVERSION;
-  temp += "\n https://www.qsl.net/o/on4qz \n(c) 2000-2019 -- Johan Maes - ON4QZ\n HAMDRM Software based on RX/TXAMADRM\n from PA0MBO";
+  QString temp=tr("QSSTVMania\nVersion: ") + MAJORVERSION + MINORVERSION;
+  temp += "\nForked from QSSTV by Johan Maes - ON4QZ\nhttps://github.com/chengmania/QSSTVMania\n\nApril 2026 - KC3SMW\n(c) 2000-2019 Johan Maes - ON4QZ\nHAMDRM Software based on RX/TXAMADRM from PA0MBO";
   QMessageBox::about(this,tr("About..."),temp);
 
 }

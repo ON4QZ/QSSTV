@@ -125,7 +125,7 @@ txWidget::~txWidget()
 void txWidget::init()
 {
   splashStr+=QString( "Setting up TX" ).rightJustified(25,' ')+"\n";
-  splashPtr->showMessage ( splashStr ,Qt::AlignLeft,Qt::white);
+  splashPtr->showMessage(splashStr, Qt::AlignHCenter|Qt::AlignBottom, QColor("#a6e3a1"));
   qApp->processEvents();
 
   readSettings();

@@ -25,7 +25,7 @@
 
 
 
-#define MINRETRACEWIDTH ((SAMPLERATE*290)/1000)
+#define MINRETRACEWIDTH ((SAMPLERATE*350)/1000)
 
 class fskDecoder :  public QObject
 {
