@@ -1082,12 +1082,12 @@
           <widget class="QComboBox" name="drmTxInterleaveComboBox">
            <item>
             <property name="text">
-             <string>Short</string>
+             <string>Long</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Long</string>
+             <string>Short</string>
             </property>
            </item>
           </widget>
