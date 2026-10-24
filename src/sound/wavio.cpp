@@ -90,7 +90,7 @@ bool  wavIO::openFileForRead(QString fname,bool ask)
       return false;
     }
   reading=true;
-  if(inopf.read(&waveHeader.chunkID[0],sizeof(sWave))!=sizeof(sWave))
+  if(inopf.read(&waveHeader.chunkID[0],12)!=12)
     {
       stmb= new displayMBoxEvent("WAVIO Error", QString("Invalid format"));
       QApplication::postEvent( dispatcherPtr, stmb );
@@ -98,12 +98,37 @@ bool  wavIO::openFileForRead(QString fname,bool ask)
       return false;
     }
 
+  // walk the chunks: other chunks (e.g. LIST, auxi) may come before or between "fmt " and "data"
+  bool fmtFound=false;
+  bool dataFound=false;
+  if(checkString(waveHeader.chunkID,"RIFF") && checkString(waveHeader.format,"WAVE"))
+    {
+      char chunkID[4];
+      quint32 chunkSize;
+      while(!dataFound)
+        {
+          if((inopf.read(chunkID,4)!=4) || (inopf.read((char *)&chunkSize,4)!=4)) break;
+          if(checkString(chunkID,"fmt ") && (chunkSize>=16))
+            {
+              memcpy(waveHeader.subChunk1ID,chunkID,4);
+              waveHeader.subChunk1Size=16; // any extension bytes are skipped below
+              if(inopf.read((char *)&waveHeader.audioFormat,16)!=16) break;
+              chunkSize-=16;
+              fmtFound=true;
+            }
+          else if(checkString(chunkID,"data"))
+            {
+              memcpy(waveHeader.subChunk2ID,chunkID,4);
+              waveHeader.subChunk2Size=chunkSize;
+              dataFound=true;
+              break;
+            }
+          if(!inopf.seek(inopf.pos()+chunkSize+(chunkSize&1))) break; // chunks are padded to an even size
+        }
+    }
 
   // check the header
-  if(  (!checkString(waveHeader.chunkID,"RIFF"))
-       ||(!checkString(waveHeader.format,"WAVE"))
-       ||(!checkString(waveHeader.subChunk1ID,"fmt "))
-       ||(!checkString(waveHeader.subChunk2ID,"data")))
+  if(!fmtFound || !dataFound)
     {
       addToLog("wavio read header error",LOGALL);
       stmb= new displayMBoxEvent("WAVIO Error", QString("Invalid Header Format"));
