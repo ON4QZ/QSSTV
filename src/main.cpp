@@ -30,6 +30,8 @@
 #include "dispatcher.h"
 
 
+
+
 QSplashScreen *splash;
 
 int main( int argc, char ** argv )
@@ -42,8 +44,10 @@ int main( int argc, char ** argv )
   QCoreApplication::setOrganizationName(ORGANIZATION);
   QCoreApplication::setApplicationName(APPLICATION);
   QApplication app( argc, argv );
+  QFile styleFile(":./qsstvmania.qss");
+  if(styleFile.open(QFile::ReadOnly)) { app.setStyleSheet(styleFile.readAll()); styleFile.close(); }
   QPixmap pixmap(":/icons/qsstvsplash.png");
-  QSplashScreen splash(pixmap,Qt::WindowStaysOnTopHint);
+  QSplashScreen splash(pixmap, Qt::WindowStaysOnTopHint);
 
   splashPtr=&splash;
 #ifdef QT_NO_DEBUG
@@ -55,8 +59,8 @@ int main( int argc, char ** argv )
   splashPtr->setFont(f);
   splashStr="\n\n\n";
   splashStr+=QString( "Starting %1").arg(qsstvVersion).rightJustified(25,' ')+"\n";
-  splash.showMessage (splashStr,Qt::AlignLeft,Qt::white);
-  tm.start(100);
+  splash.showMessage(splashStr, Qt::AlignLeft|Qt::AlignBottom, QColor("#a6e3a1"));
+  tm.start(800);
   globalInit();
   mainWindowPtr=new mainWindow;
   mainWindowPtr->setWindowIcon(QPixmap(":/icons/qsstv.png"));
@@ -67,7 +71,7 @@ int main( int argc, char ** argv )
    }
   mainWindowPtr->init(); // this must follow show() because window has to be drawn first to determine fftframe window size
   mainWindowPtr->hide();
-  tm.start(100);
+  tm.start(800);
   while(1)
   {
     app.processEvents();
