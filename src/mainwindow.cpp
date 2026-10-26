@@ -539,7 +539,7 @@ void mainWindow::slotRigFrequencyPollFinished()
   if(exitingApp) return;
 
   const double fr=rigFreqWatcher->result();
-  if(fr>1000000.)
+  if(fr>0)
     {
       freqDisplay->setText(QString::number(fr/1000000.,'f',6));
     }
