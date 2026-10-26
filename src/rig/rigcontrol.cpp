@@ -93,7 +93,9 @@ bool rigControl::init()
     }
   if(!catParams.serialPort.isEmpty())
     {
-      strncpy(my_rig->state.rigport.pathname,(const char *)catParams.serialPort.toLatin1().data(),HAMLIB_FILPATHLEN-1);
+       rig_set_conf(my_rig,
+                 rig_token_lookup(my_rig,"rig_pathname"),
+                 catParams.serialPort.toLatin1().constData());
     }
   my_rig->state.rigport.parm.serial.rate = catParams.baudrate;
   my_rig->state.rigport.parm.serial.data_bits=catParams.databits;
