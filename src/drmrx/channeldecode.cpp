@@ -38,7 +38,7 @@
 #define PI (4.0*atan(1.0))
 
 #define CHANNELDECODING 1
-char localDrmCallsign[9]= {0, 0, 0, 0, 0, 0, 0, 0, 0}; //changed ON4QZ
+char localDrmCallsign[10]= {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; //changed ON4QZ
 
 #define MSD_ITER 4
 extern int transmission_frame_buffer_data_valid;
