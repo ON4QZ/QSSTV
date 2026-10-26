@@ -152,9 +152,9 @@ bool rigControl::getFrequency(double &frequency)
   retcode = rig_get_freq(my_rig, RIG_VFO_CURR, &frequency);
   for(int i=0;i<RIGCMDTRIES;i++)
     {
-      qDebug() << "getFreq";
+//      qDebug() << "getFreq";
       retcode = rig_get_freq(my_rig, RIG_VFO_CURR, &frequency);
-      qDebug() << "got Freq";
+//      qDebug() << "got Freq";
       if (retcode==RIG_OK)
         {
           return true;
