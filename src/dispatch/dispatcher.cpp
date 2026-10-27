@@ -316,9 +316,9 @@ void dispatcher::startRX()
 void dispatcher::startTX(txFunctions::etxState state)
 {
   idleAll();
-  rigControllerPtr->activatePTT(true);
   soundIOPtr->startPlayback();
   txWidgetPtr->functionsPtr()->startTX(state);
+  rigControllerPtr->activatePTT(true);
 }
 
 
