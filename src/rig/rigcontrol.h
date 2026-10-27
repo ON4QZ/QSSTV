@@ -67,7 +67,7 @@ public:
 
 private:
 
-  RIG *my_rig;            // handle to rig (nstance)
+  RIG *my_rig=nullptr;    // handle to rig (nstance)
   freq_t freq;            // frequency
   rmode_t rmode;          // radio mode of operation
   pbwidth_t width;

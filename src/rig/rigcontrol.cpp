@@ -69,8 +69,12 @@ rigControl::rigControl(int radioIndex)
 rigControl::~rigControl()
 {
   QMutexLocker locker(&rigAccessMutex);
-  rig_close(my_rig); /* close port */
-  rig_cleanup(my_rig); /* if you care about memory */
+  if(my_rig)
+    {
+      rig_close(my_rig); /* close port */
+      rig_cleanup(my_rig); /* if you care about memory */
+      my_rig=nullptr;
+    }
 }
 
 bool rigControl::init()
@@ -80,6 +84,7 @@ bool rigControl::init()
 
   {
     QMutexLocker locker(&rigAccessMutex);
+    rigControlEnabled=false;
 
     if (my_rig)
       {
@@ -217,6 +222,7 @@ void rigControl::disable()
     {
       rig_close(my_rig); /* close port */
       rig_cleanup(my_rig);
+      my_rig=nullptr;
       rigControlEnabled=false;
     }
 }
