@@ -27,6 +27,7 @@ rxWidget::rxWidget(QWidget *parent):QWidget(parent),ui(new Ui::rxWidget)
   ui->vuWidget->setHorizontal(true);
   ui->vuWidget->setLabelText("V");
   imageViewerPtr=ui->imageFrame;
+  ui->imageFrame->setStyleSheet("border: 2px solid #3a6a3a; border-radius: 4px; background-color: #1e1e2e;");
 
 
   ui->sstvModeComboBox->addItem("Auto");
@@ -61,7 +62,7 @@ rxWidget::~rxWidget()
 void rxWidget::init()
 {
   splashStr+=QString( "Setting up RX" ).rightJustified(25,' ')+"\n";
-  splashPtr->showMessage ( splashStr ,Qt::AlignLeft,Qt::white);
+  splashPtr->showMessage(splashStr, Qt::AlignHCenter|Qt::AlignBottom, QColor("#a6e3a1"));
 
   qApp->processEvents();
   readSettings();

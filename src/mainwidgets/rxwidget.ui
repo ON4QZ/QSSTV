@@ -72,7 +72,7 @@
            </property>
            <property name="icon">
             <iconset resource="../qsstv.qrc">
-             <normaloff>:/icons/start.png</normaloff>:/icons/start.png</iconset>
+             <normaloff>:/icons/modern/start.svg</normaloff>:/icons/modern/start.svg</iconset>
            </property>
           </widget>
          </item>
@@ -89,7 +89,7 @@
            </property>
            <property name="icon">
             <iconset resource="../qsstv.qrc">
-             <normaloff>:/icons/stop.png</normaloff>:/icons/stop.png</iconset>
+             <normaloff>:/icons/modern/stop.svg</normaloff>:/icons/modern/stop.svg</iconset>
            </property>
           </widget>
          </item>
@@ -106,7 +106,7 @@
            </property>
            <property name="icon">
             <iconset resource="../qsstv.qrc">
-             <normaloff>:/icons/replay.png</normaloff>:/icons/replay.png</iconset>
+             <normaloff>:/icons/modern/resync.svg</normaloff>:/icons/modern/resync.svg</iconset>
            </property>
           </widget>
          </item>
@@ -123,7 +123,7 @@
            </property>
            <property name="icon">
             <iconset resource="../qsstv.qrc">
-             <normaloff>:/icons/filesave.png</normaloff>:/icons/filesave.png</iconset>
+             <normaloff>:/icons/modern/save.svg</normaloff>:/icons/modern/save.svg</iconset>
            </property>
           </widget>
          </item>
@@ -134,7 +134,7 @@
            </property>
            <property name="icon">
             <iconset resource="../qsstv.qrc">
-             <normaloff>:/icons/eraser.png</normaloff>:/icons/eraser.png</iconset>
+             <normaloff>:/icons/modern/erase.svg</normaloff>:/icons/modern/erase.svg</iconset>
            </property>
           </widget>
          </item>
@@ -248,7 +248,7 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="spacing">
-          <number>1</number>
+          <number>6</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -265,7 +265,7 @@
          <item>
           <layout class="QGridLayout" name="gridLayout_2">
            <property name="spacing">
-            <number>1</number>
+            <number>6</number>
            </property>
            <item row="4" column="2">
             <widget class="QComboBox" name="defaultImageFormatComboBox"/>

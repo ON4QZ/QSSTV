@@ -7,12 +7,12 @@
 
 const QString MAJORVERSION  = "9.5";
 const QString CONFIGVERSION = "9.0";
-const QString MINORVERSION  = ".11";
+const QString MINORVERSION  = ".12";
 const QString LOGVERSION = ("qsstv."+MAJORVERSION+MINORVERSION+".log");
-const QString ORGANIZATION = "ON4QZ";
-const QString APPLICATION  = ("qsstv_" +CONFIGVERSION);
-const QString qsstvVersion=QString("QSSTV " + MAJORVERSION+MINORVERSION);
-const QString APPNAME=QString("QSSTV");
+const QString ORGANIZATION = "KC3SMW";
+const QString APPLICATION  = ("qsstvmania_" +CONFIGVERSION);
+const QString qsstvVersion=QString("QSSTVMania " + MAJORVERSION+MINORVERSION);
+const QString APPNAME=QString("QSSTVMania");
 
 
 QSplashScreen *splashPtr;

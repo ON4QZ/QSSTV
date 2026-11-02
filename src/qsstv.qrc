@@ -29,5 +29,19 @@
         <file>icons/down.png</file>
         <file>icons/up.png</file>
         <file>icons/line.png</file>
+        <file>qsstvmania.qss</file>
+        <file>icons/modern/start.svg</file>
+        <file>icons/modern/stop.svg</file>
+        <file>icons/modern/resync.svg</file>
+        <file>icons/modern/save.svg</file>
+        <file>icons/modern/erase.svg</file>
+        <file>icons/modern/tone.svg</file>
+        <file>icons/modern/fileopen.svg</file>
+        <file>icons/modern/edit.svg</file>
+        <file>icons/modern/camera.svg</file>
+        <file>icons/modern/binary.svg</file>
+        <file>icons/modern/up.svg</file>
+        <file>icons/modern/doubletone.svg</file>
+        <file>icons/modern/sweep.svg</file>
     </qresource>
 </RCC>

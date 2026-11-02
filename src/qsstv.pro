@@ -25,7 +25,7 @@ INCLUDEPATH += config dispatch drmrx drmtx dsp editor logbook mainwidgets rig sc
 
 CONFIG += link_pkgconfig
 PKGCONFIG += libopenjp2 fftw3 libpulse libpulse-simple hamlib
-TARGET = qsstv
+TARGET = qsstvmania
 macx {
  # Enable pkg-config (pkg-config is disabled by default in the Qt package for mac)
  QT_CONFIG -= no-pkg-config
@@ -532,7 +532,7 @@ isEmpty(PREFIX) {
     }
 target.path = $$PREFIX/bin
 
-shortcutfiles.files =qsstv.desktop
+shortcutfiles.files = qsstvmania.desktop
 shortcutfiles.path = $$PREFIX/share/applications/
 data.files += icons/qsstv.png
 data.path=$$PREFIX/share/icons/hicolor/128x128/apps/
@@ -549,7 +549,7 @@ DISTFILES += \
     README.txt \
     documentation/manual/images/i_binary.png \
     documentation/manual/images/i_eraser.png \
-    qsstv.desktop \
+    qsstvmania.desktop \
     documentation/api/api.doxy \
     documentation/manual/images/editor_1b.png \
     documentation/manual/images/editor_2b.png \

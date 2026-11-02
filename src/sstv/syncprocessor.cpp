@@ -30,9 +30,9 @@
 ssenitivity sensitivityArray[NUMBEROFSENSITIVITIES]=
 {
   // minMatchedLines maxLineDistanceModeDetect maxLineDistanceInSync onRatio offRatio minVolume maxTempOutOfSyncLines maxOutOfSyncLines;
-  {         4,                2,                       7,              0.5,    0.3,   2000,        10, 15},
-  {         4,                2,                       7,              0.5  ,  0.3,   1000,        10, 20},
-  {         4,                2,                       7,              0.5,    0.3,   100,         15, 30},
+  {         4,                2,                       7,              0.5,    0.3,   2000,        25, 30},
+  {         4,                2,                       7,              0.5  ,  0.3,   1000,        25, 35},
+  {         4,                2,                       7,              0.5,    0.3,   100,         30, 45},
   {         4,                2,                       7 ,             0.5,    0.3,   500,         15, 30}
 };
 
