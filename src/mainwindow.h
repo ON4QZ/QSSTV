@@ -5,6 +5,7 @@
 #include <QComboBox>
 #include <QPushButton>
 #include <QLabel>
+#include <QFutureWatcher>
 
 class configDialog;
 class spectrumWidget;
@@ -45,6 +46,7 @@ private slots:
   void slotSendBSR();
   void slotSendWfText();
   void slotSetFrequency(int freqIndex);
+  void slotRigFrequencyPollFinished();
 
 
 
@@ -79,6 +81,9 @@ private:
   void timerEvent(QTimerEvent *);
   QStringList modModeList;
   QStringList modPassBandList;
+  bool exitingApp;
+  bool rigPollInProgress;
+  QFutureWatcher<double> *rigFreqWatcher;
 };
 
 #endif // MAINWINDOW_H
